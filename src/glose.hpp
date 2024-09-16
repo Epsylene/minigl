@@ -1,3 +1,4 @@
 #pragma once
 
-#include "glose/hello_world.hpp"
+#include "glose/app/window.hpp"
+#include "glose/app/app.hpp"

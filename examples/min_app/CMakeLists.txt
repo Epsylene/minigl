@@ -1,14 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
-# Set the project name
 project(min_app VERSION 1.0)
 
-# Specify the C++ standard
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
+add_executable(${PROJECT_NAME} src/main.cpp)
 
-# Add the executable
-add_executable(min_app src/main.cpp)
-
-include_directories(min_app PUBLIC ${GLOSE_SOURCES})
-target_link_libraries(min_app glose)
+include_directories(${PROJECT_NAME} PUBLIC ${GLOSE_INCLUDE})
+target_link_libraries(${PROJECT_NAME} PRIVATE glose)
