@@ -1,6 +1,7 @@
 #include "app.hpp"
+#include "glose/render_command.hpp"
 
-#include "glad/glad.h"
+#include <glad/glad.h>
 
 namespace glose
 {
@@ -42,8 +43,8 @@ namespace glose
         while (running) {
             if(!minimized) {
                 // Clear the screen
-                glClearColor(0.2f, 0.2f, 0.2f, 1.0f);
-                glClear(GL_COLOR_BUFFER_BIT);
+                RenderCommand::setClearColor({0.2f});
+                RenderCommand::clear();
 
                 // Draw stuff
                 render();
