@@ -1,4 +1,4 @@
-#include "glose/app/app.hpp"
+#include "glose/glose.hpp"
 
 class MinApp: public glose::App {
     public:
