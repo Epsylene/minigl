@@ -6,29 +6,27 @@ class Triangle: public App {
     public:
         Triangle(): App(800, 600) 
         {
-            // Vertices and indices
-            float tri_vtx[] = {
-                -0.5f, -0.5f, 0.0f,
-                 0.5f, -0.5f, 0.0f,
-                 0.0f,  0.5f, 0.0f
+            // Vertices
+            std::vector<Vertex> vertices = {
+                // Position, Normal, Texcoord, Color
+                {{-0.5f, -0.5f, 0.0f}, {}, {}, {1.0, 0.0, 0.0}},
+                {{ 0.5f, -0.5f, 0.0f}, {}, {}, {0.0, 1.0, 0.0}},
+                {{ 0.0f,  0.5f, 0.0f}, {}, {}, {0.0, 0.0, 1.0}}
             };
-            auto tri_idx = std::vector<uint32_t> { 0, 1, 2 };
+            
+            std::vector<uint32_t> indices { 0, 1, 2 };
  
             // Vertex buffer and index buffer
-            auto ib = ref<IndexBuffer>(tri_idx);            
-            auto vb = ref<VertexBuffer>(tri_vtx, sizeof(tri_vtx));
-            vb->setLayout({{DataType::Float3, "a_position"}});
+            auto ib = ref<IndexBuffer>(indices);          
+            auto vb = ref<VertexBuffer>(vertices);
 
             // Vertex array and shader
             tri_va = ref<VertexArray>(vb, ib);
             shader = ref<Shader>("res/triangle.glsl");
-
-            // Shader uniforms
-            shader->bind();
-            shader->uniformFloat3("u_color", Color::Red);
         }
 
         void render() override {
+            // Draw the triangle
             tri_va->bind();
             RenderCommand::drawIndexed(tri_va, Primitives::TRIANGLES);
         }

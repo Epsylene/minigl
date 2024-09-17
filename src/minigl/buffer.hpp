@@ -299,7 +299,7 @@ namespace minigl
 
         public:
 
-            /// @brief Main constructor
+            /// @brief Index buffer constructor
             /// 
             /// @details The index buffer is created and bound
             /// to OpenGL, with usage set to GL_STATIC_DRAW
