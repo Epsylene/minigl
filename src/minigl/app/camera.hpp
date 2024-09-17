@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core.hpp"
-#include "geometry.hpp"
+#include "minigl/geometry.hpp"
 
 namespace minigl
 {

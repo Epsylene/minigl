@@ -17,25 +17,27 @@ set(SOURCES
     src/minigl/shader.cpp
     src/minigl/shader.hpp
     
-    src/minigl/camera.cpp
-    src/minigl/camera.hpp
     src/minigl/mesh.cpp
     src/minigl/mesh.hpp
-
+    
     src/minigl/geometry.cpp
     src/minigl/geometry.hpp
     src/minigl/color.cpp
     src/minigl/color.hpp
-
+    
     src/minigl/app/app.hpp
     src/minigl/app/app.cpp
     src/minigl/app/app_3d.hpp
+    
     src/minigl/app/window.hpp
     src/minigl/app/window.cpp
     src/minigl/app/input/input.cpp
     src/minigl/app/input/input.hpp
     src/minigl/app/input/key_codes.h
     src/minigl/app/input/mouse_codes.h
+    
+    src/minigl/app/camera.cpp
+    src/minigl/app/camera.hpp
 )
 
 add_library(${PROJECT_NAME} STATIC ${SOURCES})

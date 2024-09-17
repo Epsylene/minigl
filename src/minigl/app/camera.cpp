@@ -1,8 +1,8 @@
 #include "camera.hpp"
 
-#include "app/input/input.hpp"
-#include "app/input/key_codes.h"
-#include "app/input/mouse_codes.h"
+#include "input/input.hpp"
+#include "input/key_codes.h"
+#include "input/mouse_codes.h"
 
 namespace minigl
 {
