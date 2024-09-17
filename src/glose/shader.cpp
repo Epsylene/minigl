@@ -59,7 +59,7 @@ namespace glose
         }
         else
         {
-            printf("Could not open file '%s'", filepath.c_str());
+            printf("Could not open file '%s'\n", filepath.c_str());
         }
 
         return result;
@@ -151,8 +151,8 @@ namespace glose
             for (auto& id: glShaderIDs)
                 glDeleteShader(id);
 
-            printf("%s", infoLog.data());
-            printf("OpenGLShader link failure !");
+            printf("%s\n", infoLog.data());
+            GLS_ASSERT(false, "OpenGLShader link failure !");
 
             return;
         }

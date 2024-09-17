@@ -21,11 +21,11 @@ class Triangle: public App {
 
             // Vertex array and shader
             tri_va = ref<VertexArray>(vb, ib);
-            tri_shader = ref<Shader>("res/triangle.glsl");
+            shader = ref<Shader>("res/triangle.glsl");
 
             // Shader uniforms
-            tri_shader->bind();
-            tri_shader->uniformFloat3("u_color", Color::Red);
+            shader->bind();
+            shader->uniformFloat3("u_color", Color::Red);
         }
 
         void render() override {
@@ -35,7 +35,7 @@ class Triangle: public App {
 
     private:
         Ref<VertexArray> tri_va;
-        Ref<Shader> tri_shader;
+        Ref<Shader> shader;
 };
 
 int main() {

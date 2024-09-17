@@ -1,7 +1,7 @@
 #pragma once
 #include "glspch.hpp"
 
-#define GLS_ASSERT(x, msg) { if(!(x)) { printf(msg); } }
+#define GLS_ASSERT(x, msg) { if(!(x)) { printf(msg "\n"); assert(false); } }
 
 namespace glose
 {

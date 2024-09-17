@@ -16,15 +16,26 @@ set(SOURCES
     src/glose/buffer.hpp
     src/glose/shader.cpp
     src/glose/shader.hpp
+    
+    src/glose/camera.cpp
+    src/glose/camera.hpp
+    src/glose/mesh.cpp
+    src/glose/mesh.hpp
 
+    src/glose/geometry.cpp
     src/glose/geometry.hpp
     src/glose/color.cpp
     src/glose/color.hpp
 
     src/glose/app/app.hpp
     src/glose/app/app.cpp
+    src/glose/app/app_3d.hpp
     src/glose/app/window.hpp
     src/glose/app/window.cpp
+    src/glose/app/input/input.cpp
+    src/glose/app/input/input.hpp
+    src/glose/app/input/key_codes.h
+    src/glose/app/input/mouse_codes.h
 )
 
 add_library(glose STATIC ${SOURCES})
@@ -38,7 +49,9 @@ target_include_directories(glose PUBLIC ${GLOSE_INCLUDE})
 add_subdirectory(lib/glfw EXCLUDE_FROM_ALL)
 add_subdirectory(lib/glad EXCLUDE_FROM_ALL)
 add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
-target_link_libraries(glose glfw ${GLFW_LIBRARIES} opengl32 glad glm)
+add_subdirectory(lib/rapidobj EXCLUDE_FROM_ALL)
+target_link_libraries(glose PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj)
+target_link_libraries(glose PUBLIC -Wl,-static -static-libgcc -static-libstdc++ -lstdc++fs)
 
 # Avoid clashes between GLFW and Glad
 add_definitions(-DGLFW_INCLUDE_NONE)
@@ -49,3 +62,4 @@ target_precompile_headers(glose PUBLIC src/glspch.hpp)
 # Examples
 add_subdirectory(examples/min_app)
 add_subdirectory(examples/triangle)
+add_subdirectory(examples/mesh)

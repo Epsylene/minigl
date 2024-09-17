@@ -8,6 +8,7 @@ namespace glose
     App::App(const int width, const int height)
     {
         window = box<Window>(width, height);
+        input = box<Input>(window->get_native_window());
 
         glfwSetWindowUserPointer(window->get_native_window(), this);
 
@@ -41,12 +42,17 @@ namespace glose
     void App::run()
     {
         while (running) {
+            auto time = (float)glfwGetTime();
+            float dt = time - lastFrameTime;
+            lastFrameTime = time;
+
             if(!minimized) {
                 // Clear the screen
                 RenderCommand::setClearColor({0.2f});
                 RenderCommand::clear();
 
-                // Draw stuff
+                // Update and draw stuff
+                onUpdate(input, dt);
                 render();
             }
 
