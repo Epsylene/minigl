@@ -5,7 +5,7 @@
 
 #include <glad/glad.h>
 
-namespace glose
+namespace minigl
 {
     /// @brief Shader abstraction class
     class Shader

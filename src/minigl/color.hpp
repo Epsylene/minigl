@@ -1,7 +1,7 @@
 #pragma once
 #include "geometry.hpp"
 
-namespace glose
+namespace minigl
 {
     /// @brief Color class
     ///

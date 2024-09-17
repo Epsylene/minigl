@@ -4,7 +4,7 @@
 #include "window.hpp"
 #include "input/input.hpp"
 
-namespace glose
+namespace minigl
 {
     class App 
     {

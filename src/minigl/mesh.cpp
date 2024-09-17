@@ -1,7 +1,7 @@
 #include "mesh.hpp"
 #include <rapidobj/rapidobj.hpp>
 
-namespace glose
+namespace minigl
 {
     Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices):
         vertices(vertices), indices(indices)
@@ -15,10 +15,10 @@ namespace glose
     Mesh::Mesh(const std::string& filepath)
     {
         auto result = rapidobj::ParseFile(filepath);
-        GLS_ASSERT(!result.error, "Failed to parse file.");
+        MGL_ASSERT(!result.error, "Failed to parse file.");
         
         auto success = rapidobj::Triangulate(result);
-        GLS_ASSERT(success, "Failed to triangulate mesh.");
+        MGL_ASSERT(success, "Failed to triangulate mesh.");
 
         std::vector<Vertex> vertices;
         std::vector<uint32_t> indices;

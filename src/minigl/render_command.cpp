@@ -1,6 +1,6 @@
 #include "render_command.hpp"
 
-namespace glose
+namespace minigl
 {
     void RenderCommand::clear()
     {

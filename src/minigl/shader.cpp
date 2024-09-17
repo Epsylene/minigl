@@ -1,7 +1,7 @@
 #include "core.hpp"
 #include "shader.hpp"
 
-namespace glose
+namespace minigl
 {
     static GLenum shaderTypeFromString(const std::string& type)
     {
@@ -9,7 +9,7 @@ namespace glose
         if(type == "fragment" || type == "pixel") return GL_FRAGMENT_SHADER;
         if(type == "geometry") return GL_GEOMETRY_SHADER;
 
-        GLS_ASSERT(false, "Unknown shader type !");
+        MGL_ASSERT(false, "Unknown shader type !");
         return GL_INVALID_ENUM;
     }
 
@@ -79,9 +79,9 @@ namespace glose
             // Place the cursor at the shader type marker word
             size_t begin = pos + tokenLength + 1;
             size_t eol = source.find_first_of("\r\n", pos);
-            GLS_ASSERT(eol != std::string::npos, "Error");
+            MGL_ASSERT(eol != std::string::npos, "Error");
             std::string type = source.substr(begin, eol - begin);
-            GLS_ASSERT(shaderTypeFromString(type), "Invalid shader type specified.");
+            MGL_ASSERT(shaderTypeFromString(type), "Invalid shader type specified.");
 
             // Add to the unordered map the [shader type] source at
             // [type]
@@ -97,7 +97,7 @@ namespace glose
     {
         shaderID = glCreateProgram();
 
-        GLS_ASSERT(shaderSources.size() <= 3, "Too many shaders.");
+        MGL_ASSERT(shaderSources.size() <= 3, "Too many shaders.");
         std::array<GLenum, 3> glShaderIDs {};
 
         // Compile the shaders
@@ -152,7 +152,7 @@ namespace glose
                 glDeleteShader(id);
 
             printf("%s\n", infoLog.data());
-            GLS_ASSERT(false, "OpenGLShader link failure !");
+            MGL_ASSERT(false, "OpenGLShader link failure !");
 
             return;
         }

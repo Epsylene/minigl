@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-namespace glose
+namespace minigl
 {
     using Vec2 = glm::vec2;
     using Vec3 = glm::vec3;

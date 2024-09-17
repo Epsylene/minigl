@@ -1,8 +1,8 @@
-#include "glose/glose.hpp"
+#include "minigl/minigl.hpp"
 
-using namespace glose;
+using namespace minigl;
 
-class MeshApp: public App3D {
+class MeshApp: public App3D{
     public:
         MeshApp(): App3D(800, 600) 
         {

@@ -1,9 +1,9 @@
 #pragma once
-#include "glspch.hpp"
+#include "mglpch.hpp"
 
-#define GLS_ASSERT(x, msg) { if(!(x)) { printf(msg "\n"); assert(false); } }
+#define MGL_ASSERT(x, msg) { if(!(x)) { printf(msg "\n"); assert(false); } }
 
-namespace glose
+namespace minigl
 {
     template<typename T> using Box = std::unique_ptr<T>;
     template<typename T> using Ref = std::shared_ptr<T>;

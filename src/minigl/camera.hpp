@@ -3,7 +3,7 @@
 #include "core.hpp"
 #include "geometry.hpp"
 
-namespace glose
+namespace minigl
 {
     class Input;
 
@@ -82,7 +82,7 @@ namespace glose
             /// up. The projection matrix is a `perspective()`
             /// that takes the arguments from the constructor.
             ///
-            /// @see Camera3D constructor, `glose::lookAt()`, `glose::perspective()`
+            /// @see Camera3D constructor, `minigl::lookAt()`, `minigl::perspective()`
             void recalculateViewProj();
     };
 }

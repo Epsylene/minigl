@@ -1,9 +1,9 @@
-#include "glose/glose.hpp"
+#include "minigl/minigl.hpp"
 
-class MinApp: public glose::App {
+class MinApp: public minigl::App {
     public:
         // 800x600 window
-        MinApp(): glose::App(800, 600) {}
+        MinApp(): minigl::App(800, 600) {}
 
         void render() override {
             // Draw stuff

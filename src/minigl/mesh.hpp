@@ -3,7 +3,7 @@
 #include "core.hpp"
 #include "buffer.hpp"
 
-namespace glose
+namespace minigl
 {
     /// @brief Helper class: a model is formed of a mesh or
     /// collection of meshes.

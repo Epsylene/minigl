@@ -1,9 +1,9 @@
 #pragma once
 
 #include "app.hpp"
-#include "glose/camera.hpp"
+#include "minigl/camera.hpp"
 
-namespace glose
+namespace minigl
 {
     class App3D: public App
     {

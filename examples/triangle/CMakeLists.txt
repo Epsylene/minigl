@@ -4,8 +4,8 @@ project(triangle VERSION 1.0)
 
 add_executable(${PROJECT_NAME} src/main.cpp)
 
-include_directories(${PROJECT_NAME} PUBLIC ${GLOSE_INCLUDE})
-target_link_libraries(${PROJECT_NAME} PRIVATE glose)
+include_directories(${PROJECT_NAME} PUBLIC ${MGL_INCLUDE})
+target_link_libraries(${PROJECT_NAME} PRIVATE minigl)
 
 # Copy resources
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD

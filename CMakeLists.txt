@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.10)
-project(glose)
+project(minigl)
 
 # C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -8,56 +8,57 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Sources
 set(SOURCES
     src/core.hpp
-    src/glose/glose.hpp
+    src/minigl/minigl.hpp
 
-    src/glose/render_command.cpp
-    src/glose/render_command.hpp
-    src/glose/buffer.cpp
-    src/glose/buffer.hpp
-    src/glose/shader.cpp
-    src/glose/shader.hpp
+    src/minigl/render_command.cpp
+    src/minigl/render_command.hpp
+    src/minigl/buffer.cpp
+    src/minigl/buffer.hpp
+    src/minigl/shader.cpp
+    src/minigl/shader.hpp
     
-    src/glose/camera.cpp
-    src/glose/camera.hpp
-    src/glose/mesh.cpp
-    src/glose/mesh.hpp
+    src/minigl/camera.cpp
+    src/minigl/camera.hpp
+    src/minigl/mesh.cpp
+    src/minigl/mesh.hpp
 
-    src/glose/geometry.cpp
-    src/glose/geometry.hpp
-    src/glose/color.cpp
-    src/glose/color.hpp
+    src/minigl/geometry.cpp
+    src/minigl/geometry.hpp
+    src/minigl/color.cpp
+    src/minigl/color.hpp
 
-    src/glose/app/app.hpp
-    src/glose/app/app.cpp
-    src/glose/app/app_3d.hpp
-    src/glose/app/window.hpp
-    src/glose/app/window.cpp
-    src/glose/app/input/input.cpp
-    src/glose/app/input/input.hpp
-    src/glose/app/input/key_codes.h
-    src/glose/app/input/mouse_codes.h
+    src/minigl/app/app.hpp
+    src/minigl/app/app.cpp
+    src/minigl/app/app_3d.hpp
+    src/minigl/app/window.hpp
+    src/minigl/app/window.cpp
+    src/minigl/app/input/input.cpp
+    src/minigl/app/input/input.hpp
+    src/minigl/app/input/key_codes.h
+    src/minigl/app/input/mouse_codes.h
 )
 
-add_library(glose STATIC ${SOURCES})
-set_target_properties(glose PROPERTIES LINKER_LANGUAGE CXX)
+add_library(${PROJECT_NAME} STATIC ${SOURCES})
+set_target_properties(${PROJECT_NAME} PROPERTIES LINKER_LANGUAGE CXX)
 
 # Include directories
-set(GLOSE_INCLUDE src)
-target_include_directories(glose PUBLIC ${GLOSE_INCLUDE})
+set(MGL_INCLUDE src)
+target_include_directories(${PROJECT_NAME} PUBLIC ${MGL_INCLUDE})
 
 # Libraries
 add_subdirectory(lib/glfw EXCLUDE_FROM_ALL)
 add_subdirectory(lib/glad EXCLUDE_FROM_ALL)
 add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
 add_subdirectory(lib/rapidobj EXCLUDE_FROM_ALL)
-target_link_libraries(glose PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj)
-target_link_libraries(glose PUBLIC -Wl,-static -static-libgcc -static-libstdc++ -lstdc++fs)
+
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj)
+target_link_libraries(${PROJECT_NAME} PUBLIC -Wl,-static -static-libgcc -static-libstdc++ -lstdc++fs)
 
 # Avoid clashes between GLFW and Glad
-add_definitions(-DGLFW_INCLUDE_NONE)
+target_compile_definitions(${PROJECT_NAME} PUBLIC -DGLFW_INCLUDE_NONE)
 
 # Pre-compiled headers
-target_precompile_headers(glose PUBLIC src/glspch.hpp)
+target_precompile_headers(${PROJECT_NAME} PUBLIC src/mglpch.hpp)
 
 # Examples
 add_subdirectory(examples/min_app)

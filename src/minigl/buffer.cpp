@@ -1,6 +1,6 @@
 #include "buffer.hpp"
 
-namespace glose
+namespace minigl
 {
     //----------- VERTEX BUFFER -----------//
 
@@ -116,7 +116,7 @@ namespace glose
         glBindVertexArray(vtxArrID);
         vertexBuffer->bind();
 
-        GLS_ASSERT(!vertexBuffer->getLayout().getElements().empty(), "Vertex buffer has no layout.")
+        MGL_ASSERT(!vertexBuffer->getLayout().getElements().empty(), "Vertex buffer has no layout.")
 
         // For each element in the layout, enable the vertex
         // attribute array at the element's index and give it

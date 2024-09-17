@@ -3,11 +3,11 @@
 #version 420 core
 
 layout(location = 0) in vec3 a_position;
-layout(location = 3) in vec3 a_vtxColor;
+layout(location = 3) in vec4 a_vtxColor;
 
 uniform mat4 u_viewProj;
 
-out vec3 v_color;
+out vec4 v_color;
 
 void main()
 {
@@ -21,9 +21,9 @@ void main()
 layout(location = 0) out vec4 color;
 
 uniform vec3 u_color;
-in vec3 v_color;
+in vec4 v_color;
 
 void main()
 {
-    color = vec4(v_color, 1.0);
+    color = v_color;
 }

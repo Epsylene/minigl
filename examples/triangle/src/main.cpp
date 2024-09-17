@@ -1,6 +1,6 @@
-#include "glose/glose.hpp"
+#include "minigl/minigl.hpp"
 
-using namespace glose;
+using namespace minigl;
 
 class Triangle: public App {
     public:

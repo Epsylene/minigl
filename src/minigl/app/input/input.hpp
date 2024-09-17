@@ -1,9 +1,9 @@
 #pragma once
 
-#include "glose/geometry.hpp"
+#include "minigl/geometry.hpp"
 #include <GLFW/glfw3.h>
 
-namespace glose
+namespace minigl
 {
     /// @brief Input class
     /// 
@@ -47,7 +47,7 @@ namespace glose
             bool mouseInArea(const Vec2& p0, const Vec2& p1, bool screenCoords = false) const;
 
         public:
-        
+
             Vec2 lastMousePos;
         
         private:

@@ -1,11 +1,11 @@
 #include "core.hpp"
 
-#include "glspch.hpp"
+#include "mglpch.hpp"
 #include "window.hpp"
 
 #include <glad/glad.h>
 
-namespace glose
+namespace minigl
 {
     static bool glfwInitialized = false;
 
@@ -17,7 +17,7 @@ namespace glose
     Window::Window(const int width, const int height) {
         // Init GLFW
         if (!glfwInitialized) {
-            GLS_ASSERT(glfwInit(), "Failed to initialize GLFW");
+            MGL_ASSERT(glfwInit(), "Failed to initialize GLFW");
             
             glfwSetErrorCallback(glfwErrorCallback);
             glfwInitialized = true;
@@ -29,7 +29,7 @@ namespace glose
 
         // Binds GLAD to GLFW's OpenGL context
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-        GLS_ASSERT(status, "Failed to initialize GLAD.");
+        MGL_ASSERT(status, "Failed to initialize GLAD.");
 
         // Print OpenGL info
         printf("OpenGL info:\n");

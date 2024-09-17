@@ -1,9 +1,9 @@
 #include "app.hpp"
-#include "glose/render_command.hpp"
+#include "minigl/render_command.hpp"
 
 #include <glad/glad.h>
 
-namespace glose
+namespace minigl
 {
     App::App(const int width, const int height)
     {

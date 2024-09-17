@@ -1,13 +1,13 @@
 #pragma once
 
 #include "core.hpp"
-#include "glspch.hpp"
+#include "mglpch.hpp"
 #include "geometry.hpp"
 #include "color.hpp"
 
 #include <glad/glad.h>
 
-namespace glose
+namespace minigl
 {
     /// @brief DataType
     ///
@@ -46,7 +46,7 @@ namespace glose
             case DataType::None: break;
         }
 
-        GLS_ASSERT(false, "Unknown shader data type.");
+        MGL_ASSERT(false, "Unknown shader data type.");
         return -1;
     }
 
@@ -70,7 +70,7 @@ namespace glose
             case DataType::None: break;
         }
 
-        GLS_ASSERT(false, "Unknown shader data type.");
+        MGL_ASSERT(false, "Unknown shader data type.");
         return -1;
     }
 
@@ -136,7 +136,7 @@ namespace glose
                     case DataType::None: break;
                 }
 
-            GLS_ASSERT(false, "Unknown shader or data type not supported.");
+            MGL_ASSERT(false, "Unknown shader or data type not supported.");
             return -1;
         }
     };

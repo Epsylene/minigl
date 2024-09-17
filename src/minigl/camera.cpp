@@ -4,7 +4,7 @@
 #include "app/input/key_codes.h"
 #include "app/input/mouse_codes.h"
 
-namespace glose
+namespace minigl
 {
     Camera::Camera(): Camera(90.f, 16.f/9.f, 0.1f, 10.f)
     {}

@@ -1,10 +1,11 @@
 #pragma once
 
 #include "core.hpp"
-using glose::Ref;
-using glose::Box;
-using glose::ref;
-using glose::box;
+
+using minigl::Ref;
+using minigl::Box;
+using minigl::ref;
+using minigl::box;
 
 #include "app/input/input.hpp"
 #include "app/window.hpp"

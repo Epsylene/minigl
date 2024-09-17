@@ -1,10 +1,10 @@
-#include "glspch.hpp"
+#include "mglpch.hpp"
 #include "color.hpp"
 #include "buffer.hpp"
 
 #include <glad/glad.h>
 
-namespace glose
+namespace minigl
 {
     enum class Primitives
     {
