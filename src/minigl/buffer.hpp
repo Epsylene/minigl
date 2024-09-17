@@ -209,6 +209,8 @@ namespace minigl
         Vec2 texCoord;
         Color color;
 
+        Vertex() = default;
+
         Vertex(const Vec3& pos, const Vec3& normal, const Vec2& texCoord,
                 const Color& color = Color::White):
             pos(pos), normal(normal), texCoord(texCoord), color(color) {}
