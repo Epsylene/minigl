@@ -19,15 +19,16 @@ namespace minigl
             /// @details A vertex array is created from
             /// the mesh vertices and indices, but not
             /// bound.
-            Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices);
+            Mesh(const std::vector<Vertex>& vertices, 
+                const std::vector<uint32_t>& indices,
+                DataUsage usage = DataUsage::Static);
 
             /// @brief A mesh constructed from an OBJ file.
-            Mesh(const std::string& filepath);
+            Mesh(const std::string& filepath, DataUsage usage = DataUsage::Static);
 
         public:
 
             Ref<VertexArray> vertexArray;
-
             std::vector<Vertex> vertices;
             std::vector<uint32_t> indices;
     };

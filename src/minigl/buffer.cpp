@@ -4,18 +4,18 @@ namespace minigl
 {
     //----------- VERTEX BUFFER -----------//
 
-    VertexBuffer::VertexBuffer(float* vertices, size_t size)
+    VertexBuffer::VertexBuffer(float* vertices, size_t size, DataUsage usage)
     {
         glCreateBuffers(1, &bufferID);
         glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-        glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, size, vertices, (GLenum)usage);
     }
 
-    VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices)
+    VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage)
     {
         glCreateBuffers(1, &bufferID);
         glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], (GLenum)usage);
 
         layout = {{{DataType::Float3, "a_pos"},
                    {DataType::Float3, "a_normal"},
@@ -40,18 +40,18 @@ namespace minigl
 
     //----------- INDEX BUFFER -----------//
 
-    IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count): count(count)
+    IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage): count(count)
     {
         glCreateBuffers(1, &idxBufferID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxBufferID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, (GLenum)usage);
     }
 
-    IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices): count(indices.size())
+    IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage): count(indices.size())
     {
         glCreateBuffers(1, &idxBufferID);
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxBufferID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], (GLenum)usage);
     }
 
     IndexBuffer::~IndexBuffer()

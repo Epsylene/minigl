@@ -209,11 +209,23 @@ namespace minigl
         Vec2 texCoord;
         Color color;
 
-        Vertex() = default;
+        // Vertex() = default;
 
-        Vertex(const Vec3& pos, const Vec3& normal, const Vec2& texCoord,
-                const Color& color = Color::White):
-            pos(pos), normal(normal), texCoord(texCoord), color(color) {}
+        // Vertex(const Vec3& pos, const Vec3& normal, const Vec2& texCoord,
+        //         const Color& color = Color::White):
+        //     pos(pos), normal(normal), texCoord(texCoord), color(color) {}
+    };
+
+    /// @brief How the data of the mesh is supposed to be used
+    /// during rendering
+    enum class DataUsage
+    {
+        /// Loaded and then unchanged. Most common usage.
+        Static = GL_STATIC_DRAW,
+        /// Loaded and then occasionaly modified.
+        Dynamic = GL_DYNAMIC_DRAW,
+        /// Modified repeatedly (every frame).
+        Stream = GL_STREAM_DRAW,
     };
 
     /// @brief Vertex buffer abstraction class
@@ -240,7 +252,7 @@ namespace minigl
             ///
             /// @param vertices The array of vertices
             /// @param size The array size in bytes (`sizeof()`)
-            VertexBuffer(float* vertices, size_t size);
+            VertexBuffer(float* vertices, size_t size, DataUsage usage = DataUsage::Static);
 
             /// @brief Create a vertex buffer from an array of vertices
             ///
@@ -251,7 +263,7 @@ namespace minigl
             ///
             /// @param vertices The array of vertices
             /// @see Vertex struct
-            explicit VertexBuffer(const std::vector<Vertex>& vertices);
+            explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::Static);
 
             /// @brief VertexBuffer destructor
             /// 
@@ -309,9 +321,9 @@ namespace minigl
             ///
             /// @param indices The vertex indices array
             /// @param count The array number of elements
-            IndexBuffer(const uint32_t* indices, size_t count);
+            IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage = DataUsage::Static);
 
-            explicit IndexBuffer(const std::vector<uint32_t>& indices);
+            explicit IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage = DataUsage::Static);
 
             /// @brief Index Buffer destructor
             virtual ~IndexBuffer();
