@@ -21,3 +21,4 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 configure_file(
     ${CMAKE_CURRENT_SOURCE_DIR}/res/flat.glsl
     ${CMAKE_CURRENT_BINARY_DIR}/res/flat.glsl COPYONLY
+)
