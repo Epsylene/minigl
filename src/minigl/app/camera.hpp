@@ -65,9 +65,9 @@ namespace minigl
 
         public:
 
-            Mat4 projMatrix;
-            Mat4 viewMatrix;
-            Mat4 viewProjMatrix;
+            Mat4 proj;
+            Mat4 view;
+            Mat4 viewProj;
 
         private:
 

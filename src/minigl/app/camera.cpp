@@ -6,13 +6,13 @@
 
 namespace minigl
 {
-    Camera::Camera(): Camera(90.f, 16.f/9.f, 0.1f, 10.f)
+    Camera::Camera(): Camera(90.f, 16.f/9.f, 0.3f, 10.f)
     {}
 
     Camera::Camera(float fov, float aspect, float near, float far):
         pos(0.f, 0.f, 1.f), direction(0.f, 0.f, -1.f), up(0.f, 1.f, 0.f)
     {
-        projMatrix = perspective(fov, aspect, near, far);
+        proj = perspective(fov, aspect, near, far);
         recalculateViewProj();
     }
 
@@ -37,13 +37,12 @@ namespace minigl
         this->pitch = pitch;
         this->yaw = yaw;
         this->roll = roll;
-
         recalculateViewProj();
     }
 
     void Camera::change_projection(float fov, float aspect, float near, float far)
     {
-        projMatrix = perspective(fov, aspect, near, far);
+        proj = perspective(fov, aspect, near, far);
         recalculateViewProj();
     }
 
@@ -62,8 +61,8 @@ namespace minigl
         // looks from a position (pos) to a certain point (pos
         // + direction) in a space whose up-pointing vector is
         // 'up'.
-        viewMatrix = lookAt(pos, pos + direction, up);
-        viewProjMatrix = projMatrix * viewMatrix;
+        view = lookAt(pos, pos + direction, up);
+        viewProj = proj * view;
     }
 
     void Camera::onUpdate(Ref<Input> input, float dt)
