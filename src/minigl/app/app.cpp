@@ -10,17 +10,8 @@ namespace minigl
         window = box<Window>(width, height);
         input = box<Input>(window->get_native_window());
 
-        glfwSetWindowUserPointer(window->get_native_window(), this);
-
-        glfwSetWindowCloseCallback(window->get_native_window(), [](GLFWwindow* window) {
-            App* app = (App*)glfwGetWindowUserPointer(window);
-            app->onWindowClose();
-        });
-
-        glfwSetWindowSizeCallback(window->get_native_window(), [](GLFWwindow* window, int width, int height) {
-            App* app = (App*)glfwGetWindowUserPointer(window);
-            app->onWindowResize(width, height);
-        });
+        // Set the GLFW callbacks
+        set_callbacks();
     }
 
     void App::onWindowClose()
@@ -61,5 +52,23 @@ namespace minigl
             glfwPollEvents();
             glfwSwapBuffers(window->get_native_window());
         }
+    }
+
+    void App::set_callbacks()
+    {
+        // App pointer for the callbacks
+        glfwSetWindowUserPointer(window->get_native_window(), this);
+
+        // Window close callback
+        glfwSetWindowCloseCallback(window->get_native_window(), [](GLFWwindow* window) {
+            auto app = (App*)glfwGetWindowUserPointer(window);
+            app->onWindowClose();
+        });
+
+        // Window resize callback
+        glfwSetWindowSizeCallback(window->get_native_window(), [](GLFWwindow* window, int width, int height) {
+            auto app = (App*)glfwGetWindowUserPointer(window);
+            app->onWindowResize(width, height);
+        });
     }
 }

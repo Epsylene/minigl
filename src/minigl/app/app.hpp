@@ -28,6 +28,8 @@ namespace minigl
             void onWindowClose();
             void onWindowResize(int new_width, int new_height);
 
+            void set_callbacks();
+
             Box<Window> window;
             bool running = true, minimized = false;
             float lastFrameTime = 0.f;
