@@ -42,17 +42,18 @@ namespace minigl
     void App::run()
     {
         while (running) {
+            // Update dt
             auto time = (float)glfwGetTime();
-            float dt = time - lastFrameTime;
+            dt = time - lastFrameTime;
             lastFrameTime = time;
 
             if(!minimized) {
                 // Clear the screen
-                RenderCommand::setClearColor({0.2f});
+                RenderCommand::set_clear_color({0.2f});
                 RenderCommand::clear();
 
                 // Update and draw stuff
-                onUpdate(input, dt);
+                onUpdate(dt);
                 render();
             }
 
