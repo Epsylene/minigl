@@ -1,7 +1,7 @@
 #pragma once
 
 #include "app.hpp"
-#include "minigl/camera.hpp"
+#include "minigl/app/camera.hpp"
 
 namespace minigl
 {
@@ -13,7 +13,7 @@ namespace minigl
                 camera(), App(width, height)
             {}
 
-            virtual void onUpdate(Ref<Input> input, float dt) override
+            virtual void onUpdate(float dt) override
             {
                 camera.onUpdate(input, dt);
             }
