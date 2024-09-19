@@ -28,7 +28,7 @@ namespace minigl
             static void clear();
 
             /// @brief Set the background clear color
-            static void setClearColor(const Color& color);
+            static void set_clear_color(const Color& color);
 
             /// @brief Set the rendering viewport
             ///
@@ -36,7 +36,7 @@ namespace minigl
             ///     rendering viewport
             /// @param width The rendering viewport's width
             /// @param height The rendering viewport's height
-            static void setViewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
+            static void set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
             /// @brief Draw a set of vertices
             ///
@@ -46,6 +46,6 @@ namespace minigl
             ///     primitive (triangles, points, etc)
             ///
             /// @see Primitives
-            static void drawIndexed(const Ref<VertexArray>& vertexArray, Primitives drawPrimitive = Primitives::TRIANGLES);
+            static void draw_indexed(const Ref<VertexArray>& vertexArray, Primitives drawPrimitive = Primitives::TRIANGLES);
     };
 }
