@@ -23,18 +23,22 @@ namespace minigl
         auto vtx_nb = result.attributes.positions.size()/3;
         vertices.resize(vtx_nb);
 
-        for (int i = 0; i < vtx_nb; i++)
-        {
-            auto& pos = result.attributes.positions;
-            auto& normals = result.attributes.normals;
-            auto& tex = result.attributes.texcoords;
+        auto& pos = result.attributes.positions;
+        auto& normals = result.attributes.normals;
+        auto& tex = result.attributes.texcoords;
+        auto& color = result.attributes.colors;
 
-            vertices[i] = Vertex {
-                .pos = {pos[3*i], pos[3*i+1], pos[3*i+2]},
-                .normal = {normals[3*i], normals[3*i+1], normals[3*i+2]},
-                .texCoord = {tex[2*i], tex[2*i+1]},
-            };
+        for (int i = 0; i < vtx_nb; i++) {
+            vertices[i].pos = {pos[3*i], pos[3*i+1], pos[3*i+2]};
+            
+            if (!normals.empty()) 
+                vertices[i].normal = {normals[3*i], normals[3*i+1], normals[3*i+2]};
 
+            if (!tex.empty())
+                vertices[i].texCoord = {tex[2*i], tex[2*i+1]};
+
+            if (!color.empty())
+                vertices[i].color = {color[3*i], color[3*i+1], color[3*i+2]};
         }
 
         // Average of 6 neighbors per vertex, so 6*(nb of
