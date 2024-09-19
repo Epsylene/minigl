@@ -21,12 +21,12 @@ namespace minigl
         MGL_ASSERT(success, "Failed to triangulate mesh.");
 
         auto vtx_nb = result.attributes.positions.size()/3;
-        std::vector<Vertex> vertices(vtx_nb);
+        vertices.resize(vtx_nb);
 
         for (int i = 0; i < vtx_nb; i++)
         {
             auto& pos = result.attributes.positions;
-            auto& normals = result.attributes.positions;
+            auto& normals = result.attributes.normals;
             auto& tex = result.attributes.texcoords;
 
             vertices[i] = Vertex {
@@ -34,11 +34,11 @@ namespace minigl
                 .normal = {normals[3*i], normals[3*i+1], normals[3*i+2]},
                 .texCoord = {tex[2*i], tex[2*i+1]},
             };
+
         }
 
         // Average of 6 neighbors per vertex, so 6*(nb of
         // vertices) indices for the whole mesh.
-        std::vector<uint32_t> indices;
         indices.reserve(vtx_nb*6);
 
         for (auto& shape: result.shapes)

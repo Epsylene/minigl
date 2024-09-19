@@ -14,11 +14,10 @@ namespace minigl
             Mesh() = default;
 
             /// @brief A mesh is constructed from the vertices,
-            ///     indices and textures
+            /// indices and textures
             ///
-            /// @details A vertex array is created from
-            /// the mesh vertices and indices, but not
-            /// bound.
+            /// @details A vertex array is created from the
+            /// mesh vertices and indices, but not bound.
             Mesh(const std::vector<Vertex>& vertices, 
                 const std::vector<uint32_t>& indices,
                 DataUsage usage = DataUsage::Static);
