@@ -12,6 +12,9 @@ namespace minigl
 
         // Set the GLFW callbacks
         set_callbacks();
+
+        // Enable depth testing
+        RenderCommand::set_depth_test(true);
     }
 
     void App::onWindowClose()

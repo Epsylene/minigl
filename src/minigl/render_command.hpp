@@ -23,12 +23,15 @@ namespace minigl
         public:
             /// @brief Clear the window
             ///
-            /// @details By default, clears the color, depth and
-            /// stencil buffers.
+            /// @details By default, clears the color and depth
+            /// buffers.
             static void clear();
 
             /// @brief Set the background clear color
             static void set_clear_color(const Color& color);
+
+            /// @brief Enable or disable depth testing
+            static void set_depth_test(bool enabled);
 
             /// @brief Set the rendering viewport
             ///
