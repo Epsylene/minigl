@@ -6,13 +6,13 @@
 
 namespace minigl
 {
-    Camera::Camera(): Camera(90.f, 16.f/9.f, 0.3f, 10.f)
+    Camera::Camera(): Camera(60.f, 16.f/9.f, 0.3f, 10.f)
     {}
 
     Camera::Camera(float fov, float aspect, float near, float far):
         pos(0.f, 0.f, 1.f), direction(0.f, 0.f, -1.f), up(0.f, 1.f, 0.f)
     {
-        proj = perspective(fov, aspect, near, far);
+        proj = perspective(radians(fov), aspect, near, far);
         recalculateViewProj();
     }
 
