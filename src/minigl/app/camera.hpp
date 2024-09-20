@@ -2,34 +2,33 @@
 
 #include "core.hpp"
 #include "minigl/geometry.hpp"
+#include "input/input.hpp"
 
 namespace minigl
 {
-    class Input;
-
     /// @brief Generic camera object class
     ///
-    /// @details This class is not intended to be instanciated,
-    /// but to be derived from and create actual camera objects
-    /// with a defined view-projection matrix.
+    /// @details This class constructs a generic perspective
+    /// camera, but doesn't handle controls, which are
+    /// implemented in child classes.
     class Camera
     {
         public:
 
-            /// @brief Constructs a default perspective
-            /// camera (90º FOV, 16/9 aspect ratio, distances to
-            /// near and far planes set to 0.1 and 10).
+            /// @brief Constructs a default perspective camera
+            /// (90º FOV, 16/9 aspect ratio, distances to near
+            /// and far planes set to 0.1 and 10).
             Camera();
 
             /// @brief Constructs a perspective 3D camera with
             /// the given parameters
             ///
             /// @param fov Field of view, that is, the angle the
-            ///     camera2D "sees" of the world; a FOV of 90º means
+            ///     camera "sees" of the world; a FOV of 90º means
             ///     that the righmost and leftmost objects in the
-            ///     camera2D's visual field are at 45º right and
+            ///     camera's visual field are at 45º right and
             ///     left.
-            /// @param aspect Aspect ratio of the camera2D's visual
+            /// @param aspect Aspect ratio of the camera's visual
             ///     field
             /// @param near Near plane distance
             /// @param far Far plane distance
@@ -61,7 +60,13 @@ namespace minigl
             /// @param far Far plane distance
             void change_projection(float fov, float aspect, float near, float far);
 
-            void onUpdate(Ref<Input> input, float dt);
+            /// @brief Update the free camera (movement with
+            /// WASD, looking around with the mouse).
+            /// @param input 
+            /// @param dt 
+            void update_free_camera(Ref<Input> input, float dt);
+
+            virtual void onUpdate(Ref<Input> input, float dt) = 0;
 
         public:
 
@@ -69,10 +74,9 @@ namespace minigl
             Mat4 view;
             Mat4 viewProj;
 
-        private:
+        protected:
 
             Vec3 pos, direction, up;
-            float pitch = 0.f, yaw = -90.f, roll = 0.f;
 
             /// @brief 	Calculates the view-projection matrix
             /// of the 3D camera.
@@ -81,8 +85,20 @@ namespace minigl
             /// eye, `pos + direction` as center and `up` as
             /// up. The projection matrix is a `perspective()`
             /// that takes the arguments from the constructor.
-            ///
-            /// @see Camera3D constructor, `minigl::lookAt()`, `minigl::perspective()`
-            void recalculateViewProj();
+            virtual void compute_viewProj() = 0;
+    };
+
+    class FreeCamera: public Camera
+    {
+        public:
+            FreeCamera() = default;
+
+            void onUpdate(Ref<Input> input, float dt) override;
+
+        private:
+            float pitch = 0.f, yaw = -90.f, roll = 0.f;
+            
+            void set_rotation(float pitch, float yaw, float roll);
+            void compute_viewProj() override;
     };
 }

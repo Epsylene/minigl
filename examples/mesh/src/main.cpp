@@ -2,13 +2,11 @@
 
 using namespace minigl;
 
-class MeshApp: public App3D{
+class MeshApp: public App3D
+{
     public:
         MeshApp(): App3D(800, 600) 
         {
-            // Set initial camera position
-            camera.setPosition({0.f, 0.f, 3.f});
-
             // Mesh and shader
             mesh = ref<Mesh>("res/suzanne.obj");
             shader = ref<Shader>("res/flat.glsl");

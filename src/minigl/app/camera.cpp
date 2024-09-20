@@ -1,6 +1,5 @@
 #include "camera.hpp"
 
-#include "input/input.hpp"
 #include "input/key_codes.h"
 #include "input/mouse_codes.h"
 
@@ -10,16 +9,15 @@ namespace minigl
     {}
 
     Camera::Camera(float fov, float aspect, float near, float far):
-        pos(0.f, 0.f, 1.f), direction(0.f, 0.f, -1.f), up(0.f, 1.f, 0.f)
+        pos(0.f, 0.f, 3.f), direction(0.f, 0.f, -1.f), up(0.f, 1.f, 0.f)
     {
         proj = perspective(radians(fov), aspect, near, far);
-        recalculateViewProj();
     }
 
     void Camera::setPosition(const Vec3& pos)
     {
         this->pos = pos;
-        recalculateViewProj();
+        compute_viewProj();
     }
 
     const Vec3& Camera::getPosition() const
@@ -32,26 +30,26 @@ namespace minigl
         return direction;
     }
 
-    void Camera::set_rotation(float pitch, float yaw, float roll)
+    void Camera::change_projection(float fov, float aspect, float near, float far)
+    {
+        proj = perspective(fov, aspect, near, far);
+        compute_viewProj();
+    }
+
+    void FreeCamera::set_rotation(float pitch, float yaw, float roll)
     {
         this->pitch = pitch;
         this->yaw = yaw;
         this->roll = roll;
-        recalculateViewProj();
+        compute_viewProj();
     }
 
-    void Camera::change_projection(float fov, float aspect, float near, float far)
-    {
-        proj = perspective(fov, aspect, near, far);
-        recalculateViewProj();
-    }
-
-    void Camera::recalculateViewProj()
+    void FreeCamera::compute_viewProj()
     {
         // The camera direction
-        direction = { std::cos(radians(yaw)) * std::cos(radians(pitch)),
-                      std::sin(radians(pitch)),
-                      std::sin(radians(yaw)) * std::cos(radians(pitch)) };
+        direction = { glm::cos(radians(yaw)) * glm::cos(radians(pitch)),
+                      glm::sin(radians(pitch)),
+                      glm::sin(radians(yaw)) * glm::cos(radians(pitch)) };
         direction = normalize(direction);
 
         // The camera's up vector
@@ -65,7 +63,7 @@ namespace minigl
         viewProj = proj * view;
     }
 
-    void Camera::onUpdate(Ref<Input> input, float dt)
+    void FreeCamera::onUpdate(Ref<Input> input, float dt)
     {
         Vec3 dir = direction;
         Vec3 up {0, 1, 0};

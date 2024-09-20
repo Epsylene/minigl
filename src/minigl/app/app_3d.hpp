@@ -20,6 +20,6 @@ namespace minigl
 
         protected:
 
-            Camera camera;
+            FreeCamera camera;
     };
 }
