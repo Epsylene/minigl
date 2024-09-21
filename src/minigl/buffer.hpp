@@ -271,11 +271,11 @@ namespace minigl
             /// buffer.
             virtual ~VertexBuffer();
 
-            /// @brief Bind the vertex buffer
             void bind() const;
-
-            /// @brief Unbind the vertex buffer
             void unbind() const;
+
+            /// @brief  Update the vertices of the vertex buffer
+            void update_vertices(const std::vector<Vertex>& vertices);
 
             /// @brief Get the vertex buffer layout
             /// @see BufferLayout
@@ -365,6 +365,10 @@ namespace minigl
 
             void bind() const;
             void unbind() const;
+
+            /// @brief Update the vertices of the vertex buffer
+            /// at the given index.
+            void updateVertices(size_t vertex_buffer, const std::vector<Vertex>& vertices);
 
             void addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
             void setIndexBuffer(const Ref<IndexBuffer>& indexBuffer);

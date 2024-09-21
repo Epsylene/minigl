@@ -38,6 +38,12 @@ namespace minigl
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
+    void VertexBuffer::update_vertices(const std::vector<Vertex>& vertices)
+    {
+        glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, vertices.size() * sizeof(Vertex), &vertices[0]);
+    }
+
     //----------- INDEX BUFFER -----------//
 
     IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage): count(count)
@@ -109,6 +115,11 @@ namespace minigl
         }
 
         glBindVertexArray(0);
+    }
+
+    void VertexArray::updateVertices(size_t vertex_buffer, const std::vector<Vertex>& vertices)
+    {
+        vertexBuffers[vertex_buffer]->update_vertices(vertices);
     }
 
     void VertexArray::addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
