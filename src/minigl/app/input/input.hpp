@@ -15,6 +15,8 @@ namespace minigl
     {
         public:
 
+            /// @brief Input data comes from GLFW, and as such
+            /// is tied to a given GLFW window.
             Input(GLFWwindow* window):
                 window(window) {}
 

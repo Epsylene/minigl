@@ -91,11 +91,17 @@ namespace minigl
     class FreeCamera: public Camera
     {
         public:
+
+            /// @brief Free 3D perspective camera created with
+            /// the default values of the base Camera class.
             FreeCamera() = default;
 
+            /// @brief Called by the application on each frame
+            /// to control the camera.
             void onUpdate(Ref<Input> input, float dt) override;
 
         private:
+
             float pitch = 0.f, yaw = -90.f, roll = 0.f;
             
             void set_rotation(float pitch, float yaw, float roll);

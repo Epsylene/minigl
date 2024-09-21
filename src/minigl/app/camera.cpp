@@ -68,7 +68,9 @@ namespace minigl
         Vec3 dir = direction;
         Vec3 up {0, 1, 0};
 
-        float movSpeed = 5.f;
+        bool shift = input->isKeyPressed(GLS_KEY_LEFT_SHIFT);
+        float movSpeed = shift ? 0.1f : 5.f;
+        float rotSpeed = shift ? 50.f : 200.f;
 
         // Move around
         if(input->isKeyPressed(GLS_KEY_W))
@@ -86,14 +88,15 @@ namespace minigl
         if(input->isKeyPressed(GLS_KEY_F))
             pos.y -= movSpeed * dt;
 
+        
         // Look around with the mouse
         if(input->isMouseButtonPressed(GLS_MOUSE_BUTTON_LEFT))
         {
             float xOffset = input->getMouseX() - input->lastMousePos.x;
             float yOffset = input->lastMousePos.y - input->getMouseY();
 
-            pitch += yOffset * 200 * dt;
-            yaw += xOffset * 200 * dt;
+            pitch += yOffset * rotSpeed * dt;
+            yaw += xOffset * rotSpeed * dt;
 
             // pitch = glm::clamp(pitch, -89.f, 89.f);
             set_rotation(pitch, yaw, roll);
