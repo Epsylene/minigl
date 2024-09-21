@@ -117,9 +117,10 @@ namespace minigl
         glBindVertexArray(0);
     }
 
-    void VertexArray::updateVertices(size_t vertex_buffer, const std::vector<Vertex>& vertices)
+    void VertexArray::updateVertices(size_t buffer_idx, const std::vector<Vertex>& vertices)
     {
-        vertexBuffers[vertex_buffer]->update_vertices(vertices);
+        glBindVertexArray(vtxArrID);
+        vertexBuffers[buffer_idx]->update_vertices(vertices);
     }
 
     void VertexArray::addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
