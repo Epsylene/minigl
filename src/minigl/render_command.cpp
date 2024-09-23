@@ -18,6 +18,12 @@ namespace minigl
                 : glDisable(GL_DEPTH_TEST);
     }
 
+    void RenderCommand::set_depth_clamp(bool enabled)
+    {
+        enabled ? glEnable(GL_DEPTH_CLAMP)
+                : glDisable(GL_DEPTH_CLAMP);
+    }
+
     void RenderCommand::set_viewport(uint32_t x, uint32_t y, uint32_t width,
                                     uint32_t height)
     {

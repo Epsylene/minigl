@@ -33,6 +33,9 @@ namespace minigl
             /// @brief Enable or disable depth testing
             static void set_depth_test(bool enabled);
 
+            /// @brief Enable or disable depth clamping
+            static void set_depth_clamp(bool enabled);
+
             /// @brief Set the rendering viewport
             ///
             /// @param x, y Coordinates of the top-left corner of the
