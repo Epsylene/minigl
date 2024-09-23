@@ -3,14 +3,16 @@
 
 namespace minigl
 {
-    static GLenum shaderTypeFromString(const std::string& type)
+    std::string to_string(ShaderType type)
     {
-        if(type == "vertex") return GL_VERTEX_SHADER;
-        if(type == "fragment" || type == "pixel") return GL_FRAGMENT_SHADER;
-        if(type == "geometry") return GL_GEOMETRY_SHADER;
+        switch (type)
+        {
+            case ShaderType::VERTEX: return "VERTEX";
+            case ShaderType::FRAGMENT: return "FRAGMENT";
+            case ShaderType::GEOMETRY: return "GEOMETRY";
+        }
 
-        MGL_ASSERT(false, "Unknown shader type !");
-        return GL_INVALID_ENUM;
+        return "UNKNOWN";
     }
 
     Shader::Shader(const std::string& filepath)
@@ -60,6 +62,7 @@ namespace minigl
         else
         {
             printf("Could not open file '%s'\n", filepath.c_str());
+            MGL_ASSERT(false, "Error in reading shader.");
         }
 
         return result;
@@ -67,30 +70,27 @@ namespace minigl
 
     std::unordered_map<GLenum, std::string> Shader::preprocess(const std::string& source)
     {
-        std::unordered_map<GLenum, std::string> shaderSources;
+        std::unordered_map<GLenum, std::string> shader_sources;
 
-        // Place the cursor at the first "#type" token occurence
-        std::string token = "#type";
-        size_t tokenLength = token.length();
-        size_t pos = source.find(token);
+        auto add_define = [&shader_sources](std::string source, ShaderType type)
+        {            
+            std::string version = "#version 420 core\n";
+            std::string define = "#define " + to_string(type) + "\n";
+         
+            // Check if the shader type was asked for in the
+            // first place to avoid linking problems later.
+            size_t type_pos = source.find("#ifdef " + to_string(type));
+            if (type_pos != std::string::npos) {
+                source.insert(0, version + define);   
+                shader_sources[GLenum(type)] = source;
+            }
+        };
 
-        while (pos != std::string::npos)
-        {
-            // Place the cursor at the shader type marker word
-            size_t begin = pos + tokenLength + 1;
-            size_t eol = source.find_first_of("\r\n", pos);
-            MGL_ASSERT(eol != std::string::npos, "Error");
-            std::string type = source.substr(begin, eol - begin);
-            MGL_ASSERT(shaderTypeFromString(type), "Invalid shader type specified.");
+        add_define(source, ShaderType::VERTEX);
+        add_define(source, ShaderType::FRAGMENT);
+        add_define(source, ShaderType::GEOMETRY);
 
-            // Add to the unordered map the [shader type] source at
-            // [type]
-            size_t typePos = source.find_first_not_of("\r\n", eol);
-            pos = source.find(token, typePos);
-            shaderSources[shaderTypeFromString(type)] = source.substr(typePos, pos - (typePos == std::string::npos ? source.size() - 1 : typePos));
-        }
-
-        return shaderSources;
+        return shader_sources;
     }
 
     void Shader::compile(const std::unordered_map<GLenum, std::string>& shaderSources)

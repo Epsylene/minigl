@@ -7,6 +7,13 @@
 
 namespace minigl
 {
+    enum class ShaderType
+    {
+        VERTEX = GL_VERTEX_SHADER,
+        FRAGMENT = GL_FRAGMENT_SHADER,
+        GEOMETRY = GL_GEOMETRY_SHADER
+    };
+
     /// @brief Shader abstraction class
     class Shader
     {
