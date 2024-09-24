@@ -1,7 +1,4 @@
-
-#type vertex
-#version 420 core
-
+#ifdef VERTEX
 layout(location = 0) in vec3 a_position;
 
 uniform mat4 u_viewProj;
@@ -13,10 +10,9 @@ void main()
     v_pos = a_position;
     gl_Position = u_viewProj * vec4(a_position, 1.0);
 }
+#endif
 
-#type fragment
-#version 420 core
-
+#ifdef FRAGMENT
 layout(location = 0) out vec4 color;
 
 in vec3 v_pos;
@@ -35,3 +31,4 @@ void main()
     // Base gray color
     color = ambient + diff * vec4(0.5, 0.5, 0.5, 1.0);
 }
+#endif

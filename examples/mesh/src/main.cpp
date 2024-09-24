@@ -5,7 +5,7 @@ using namespace minigl;
 class MeshApp: public App3D
 {
     public:
-        MeshApp(): App3D(800, 600) 
+        MeshApp(): App3D(800, 600)
         {
             // Mesh and shader
             mesh = ref<Mesh>("res/suzanne.obj");
