@@ -7,3 +7,6 @@
 [submodule "lib/rapidobj"]
 	path = lib/rapidobj
 	url = https://github.com/guybrush77/rapidobj.git
+[submodule "lib/fmt"]
+	path = lib/fmt
+	url = https://github.com/fmtlib/fmt.git

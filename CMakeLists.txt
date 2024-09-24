@@ -48,12 +48,13 @@ set(MGL_INCLUDE src)
 target_include_directories(${PROJECT_NAME} PUBLIC ${MGL_INCLUDE})
 
 # Libraries
-add_subdirectory(lib/glfw EXCLUDE_FROM_ALL)
-add_subdirectory(lib/glad EXCLUDE_FROM_ALL)
-add_subdirectory(lib/glm EXCLUDE_FROM_ALL)
-add_subdirectory(lib/rapidobj EXCLUDE_FROM_ALL)
+add_subdirectory(lib/glfw)
+add_subdirectory(lib/glad)
+add_subdirectory(lib/glm)
+add_subdirectory(lib/rapidobj)
+add_subdirectory(lib/fmt)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj)
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj fmt)
 target_link_libraries(${PROJECT_NAME} PUBLIC -Wl,-static -static-libgcc -static-libstdc++ -lstdc++fs)
 
 # Avoid clashes between GLFW and Glad
