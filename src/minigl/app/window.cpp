@@ -9,9 +9,9 @@ namespace minigl
 {
     static bool glfwInitialized = false;
 
-    static void glfwErrorCallback(int error, const char* description)
+    static void glfwErrorCallback(int err, const char* description)
     {
-        printf("GLFW error (%i): %s", error, description);
+        error("GLFW error ({}): {}", err, description);
     }
 
     Window::Window(const int width, const int height) {
@@ -32,9 +32,9 @@ namespace minigl
         MGL_ASSERT(status, "Failed to initialize GLAD.");
 
         // Print OpenGL info
-        printf("OpenGL info:\n");
-        printf("  Vendor: %s\n", glGetString(GL_VENDOR));
-        printf("  Renderer: %s\n", glGetString(GL_RENDERER));
-        printf("  Version: %s\n", glGetString(GL_VERSION));
+        info("OpenGL info:");
+        info("  Vendor: {}", (const char*)glGetString(GL_VENDOR));
+        info("  Renderer: {}", (const char*)glGetString(GL_RENDERER));
+        info("  Version: {}", (const char*)glGetString(GL_VERSION));
     }
 }

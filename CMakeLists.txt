@@ -8,6 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 # Sources
 set(SOURCES
     src/core.hpp
+    src/log.hpp
     src/minigl/minigl.hpp
 
     src/minigl/render_command.cpp

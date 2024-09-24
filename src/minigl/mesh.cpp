@@ -53,6 +53,6 @@ namespace minigl
         auto ib = std::make_shared<IndexBuffer>(indices, usage);
         vertexArray = std::make_shared<VertexArray>(vb, ib);
 
-        printf("Imported mesh from file '%s'\n", filepath.c_str());
+        trace("Imported mesh from file '{}'", filepath);
     }
 }

@@ -23,7 +23,7 @@ namespace minigl
         auto shaderSources = preprocess(source);
         compile(shaderSources);
 
-        printf("Loaded shader from file '%s'\n", filepath.c_str());
+        trace("Loaded shader from file '{}'", filepath);
     }
 
     Shader::Shader(const std::string& vertexSrc,
@@ -61,7 +61,7 @@ namespace minigl
         }
         else
         {
-            printf("Could not open file '%s'\n", filepath.c_str());
+            error("Could not open file '{}'", filepath);
             MGL_ASSERT(false, "Error in reading shader.");
         }
 
@@ -77,8 +77,8 @@ namespace minigl
             std::string version = "#version 420 core\n";
             std::string define = "#define " + to_string(type) + "\n";
          
-            // Check if the shader type was asked for in the
-            // first place to avoid linking problems later.
+            // Only add the shader to the sources if it is
+            // actually present in the source.
             size_t type_pos = source.find("#ifdef " + to_string(type));
             if (type_pos != std::string::npos) {
                 source.insert(0, version + define);   
@@ -124,9 +124,9 @@ namespace minigl
 
                 glDeleteShader(shader);
 
-                printf("Shader %u compilation failure !", type);
-                printf("%s", infoLog.data());
-                return;
+                error("Shader {} compilation failure !", type);
+                error("{}", infoLog.data());
+                MGL_ASSERT(false, "OpenGL shader compilation failure !");
             }
 
             glAttachShader(shaderID, shader);
@@ -151,10 +151,9 @@ namespace minigl
             for (auto& id: glShaderIDs)
                 glDeleteShader(id);
 
-            printf("%s\n", infoLog.data());
-            MGL_ASSERT(false, "OpenGLShader link failure !");
-
-            return;
+            error("Shader link failure !");
+            error("{}", infoLog.data());
+            MGL_ASSERT(false, "OpenGL shader link failure !");
         }
 
         for (auto& id: glShaderIDs)
