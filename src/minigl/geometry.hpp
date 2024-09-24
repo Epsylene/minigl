@@ -22,6 +22,7 @@ namespace minigl
     Mat4 scale(const Vec3& factor);
 
     float radians(float degrees);
+    float degrees(float radians);
 
     Vec3 normalize(const Vec3& vec);
     Vec3 cross(const Vec3& a, const Vec3& b);

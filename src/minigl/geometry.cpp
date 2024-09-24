@@ -46,6 +46,11 @@ namespace minigl
         return glm::radians(degrees);
     }
 
+    float degrees(float radians)
+    {
+        return glm::degrees(radians);
+    }
+
     Vec3 normalize(const Vec3& vec)
     {
         return glm::normalize(vec);

@@ -39,6 +39,7 @@ namespace minigl
 
             /// @brief Get the camera's eye direction vector
             const Vec3& getDirection() const;
+            void setDirection(const Vec3& dir);
 
             /// @brief Set the camera's rotation in Euler angles
             ///
@@ -88,6 +89,8 @@ namespace minigl
             virtual void compute_viewProj() = 0;
     };
 
+    /// @brief Free 3D perspective camera. The camera can be
+    /// moved with WASD and look around with the mouse.
     class FreeCamera: public Camera
     {
         public:
@@ -100,11 +103,20 @@ namespace minigl
             /// to control the camera.
             void onUpdate(Ref<Input> input, float dt) override;
 
+            /// @brief Set the direction vector of the camera
+            /// manually. The yaw and pitch angles are
+            /// recomputed automatically.
+            void setDirection(const Vec3& dir);
+
         private:
 
             float pitch = 0.f, yaw = -90.f, roll = 0.f;
             
             void set_rotation(float pitch, float yaw, float roll);
             void compute_viewProj() override;
+
+            /// @brief Compute the yaw and pitch angles from
+            /// the direction vector.
+            void compute_yaw_pitch();
     };
 }

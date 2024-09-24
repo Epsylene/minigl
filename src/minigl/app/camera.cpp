@@ -30,6 +30,12 @@ namespace minigl
         return direction;
     }
 
+    void Camera::setDirection(const Vec3& dir)
+    {
+        direction = dir;
+        compute_viewProj();
+    }
+
     void Camera::change_projection(float fov, float aspect, float near, float far)
     {
         proj = perspective(fov, aspect, near, far);
@@ -104,5 +110,21 @@ namespace minigl
         input->lastMousePos = input->getMousePos();
 
         setPosition(pos);
+    }
+
+    void FreeCamera::setDirection(const Vec3& dir)
+    {
+        direction = dir;
+        compute_yaw_pitch();
+        compute_viewProj();
+    }
+
+    void FreeCamera::compute_yaw_pitch()
+    {
+        // Compute the yaw (rotation around the y-axis)
+        yaw = degrees(atan2(direction.z, direction.x));
+
+        // Compute the pitch (rotation around the x-axis)
+        pitch = degrees(asin(direction.y));
     }
 }
