@@ -2,8 +2,10 @@
 #include "mglpch.hpp"
 
 #include <fmt/core.h>
+#include <fmt/os.h>
+#include <fmt/color.h>
 
-#define MGL_ASSERT(x, msg, ...) { if(!(x)) { error(msg, ##__VA_ARGS__); assert(false); } }
+#define MGL_ASSERT(x, msg, ...) { if(!(x)) { error("ERROR: " msg, ##__VA_ARGS__); assert(false); } }
 
 namespace minigl
 {
@@ -32,6 +34,6 @@ namespace minigl
 
     template<typename... Ts>
     constexpr auto error(const std::string& str, Ts&&... args) {
-        return fmt::print(stderr, fmt::runtime(str + "\n"), std::forward<Ts>(args)...);
+        return fmt::print(stderr, fmt::fg(fmt::color::red), fmt::runtime(str + "\n"), std::forward<Ts>(args)...);
     }
 }
