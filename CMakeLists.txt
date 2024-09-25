@@ -20,6 +20,8 @@ set(SOURCES
     
     src/minigl/mesh.cpp
     src/minigl/mesh.hpp
+    src/minigl/texture.cpp
+    src/minigl/texture.hpp
     
     src/minigl/geometry.cpp
     src/minigl/geometry.hpp
