@@ -56,8 +56,9 @@ add_subdirectory(lib/glad)
 add_subdirectory(lib/glm)
 add_subdirectory(lib/rapidobj)
 add_subdirectory(lib/fmt)
+add_subdirectory(lib/stb_image)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj fmt)
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj fmt stb_image)
 target_link_libraries(${PROJECT_NAME} PUBLIC -Wl,-static -static-libgcc -static-libstdc++ -lstdc++fs)
 
 # Avoid clashes between GLFW and Glad
@@ -70,3 +71,4 @@ target_precompile_headers(${PROJECT_NAME} PUBLIC src/mglpch.hpp)
 add_subdirectory(examples/min_app)
 add_subdirectory(examples/triangle)
 add_subdirectory(examples/mesh)
+add_subdirectory(examples/texture)

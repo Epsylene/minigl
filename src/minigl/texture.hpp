@@ -14,6 +14,9 @@ namespace minigl
             /// specified path.
             Texture(const std::string& path);
 
+            /// @brief Bind the texture.
+            void bind() const;
+
         private:
 
             unsigned int texture;

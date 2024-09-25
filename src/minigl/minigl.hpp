@@ -20,3 +20,4 @@ using minigl::box;
 #include "shader.hpp"
 
 #include "mesh.hpp"
+#include "texture.hpp"
