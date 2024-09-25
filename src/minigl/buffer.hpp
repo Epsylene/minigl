@@ -205,15 +205,10 @@ namespace minigl
     /// default).
     struct Vertex
     {
-        Vec3 pos, normal;
-        Vec2 texCoord;
+        Vec3 pos;
+        Vec3 normal;
+        Vec2 tex;
         Color color;
-
-        // Vertex() = default;
-
-        // Vertex(const Vec3& pos, const Vec3& normal, const Vec2& texCoord,
-        //         const Color& color = Color::White):
-        //     pos(pos), normal(normal), texCoord(texCoord), color(color) {}
     };
 
     /// @brief How the data of the mesh is supposed to be used

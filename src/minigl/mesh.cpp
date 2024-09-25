@@ -35,7 +35,7 @@ namespace minigl
                 vertices[i].normal = {normals[3*i], normals[3*i+1], normals[3*i+2]};
 
             if (!tex.empty())
-                vertices[i].texCoord = {tex[2*i], tex[2*i+1]};
+                vertices[i].tex = {tex[2*i], tex[2*i+1]};
 
             if (!color.empty())
                 vertices[i].color = {color[3*i], color[3*i+1], color[3*i+2]};

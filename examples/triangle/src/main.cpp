@@ -9,9 +9,9 @@ class Triangle: public App {
             // Vertices
             std::vector<Vertex> vertices = {
                 // Position, Normal, Texcoord, Color
-                {{-0.5f, -0.5f, 0.0f}, {}, {}, {1.0, 0.0, 0.0}},
-                {{ 0.5f, -0.5f, 0.0f}, {}, {}, {0.0, 1.0, 0.0}},
-                {{ 0.0f,  0.5f, 0.0f}, {}, {}, {0.0, 0.0, 1.0}}
+                {.pos = {-0.5f, -0.5f, 0.0f}, .color = {1.0, 0.0, 0.0}},
+                {.pos = { 0.5f, -0.5f, 0.0f}, .color = {0.0, 1.0, 0.0}},
+                {.pos = { 0.0f,  0.5f, 0.0f}, .color = {0.0, 0.0, 1.0}}
             };
             
             std::vector<uint32_t> indices { 0, 1, 2 };
