@@ -12,9 +12,9 @@ namespace minigl
         vertexArray = std::make_shared<VertexArray>(vb, ib);
     }
 
-    Mesh::Mesh(const std::string& filepath, DataUsage usage)
+    Mesh::Mesh(const std::string& path, DataUsage usage)
     {
-        auto result = rapidobj::ParseFile(filepath);
+        auto result = rapidobj::ParseFile(path);
         MGL_ASSERT(!result.error, "Failed to parse file.");
         
         auto success = rapidobj::Triangulate(result);
@@ -41,8 +41,8 @@ namespace minigl
                 vertices[i].color = {color[3*i], color[3*i+1], color[3*i+2]};
         }
 
-        // Average of 6 neighbors per vertex, so 6*(nb of
-        // vertices) indices for the whole mesh.
+        // Average of 6 neighbors per vertex, so around 6*(nb
+        // of vertices) indices for the whole mesh.
         indices.reserve(vtx_nb*6);
 
         for (auto& shape: result.shapes)
@@ -53,6 +53,6 @@ namespace minigl
         auto ib = std::make_shared<IndexBuffer>(indices, usage);
         vertexArray = std::make_shared<VertexArray>(vb, ib);
 
-        trace("Imported mesh from file '{}'", filepath);
+        trace("Imported mesh from file '{}'", path);
     }
 }

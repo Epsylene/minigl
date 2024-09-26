@@ -5,30 +5,25 @@
 
 namespace minigl
 {
-    /// @brief Helper class: a model is formed of a mesh or
-    /// collection of meshes.
-    class Mesh
+    /// A mesh is a collection of vertices and indices put
+    /// together in a vertex array.
+    struct Mesh
     {
-        public:
+        Ref<VertexArray> vertexArray;
+        std::vector<Vertex> vertices;
+        std::vector<uint32_t> indices;
 
-            Mesh() = default;
+        Mesh() = default;
 
-            /// @brief A mesh is constructed from the vertices,
-            /// indices and textures
-            ///
-            /// @details A vertex array is created from the
-            /// mesh vertices and indices, but not bound.
-            Mesh(const std::vector<Vertex>& vertices, 
-                const std::vector<uint32_t>& indices,
-                DataUsage usage = DataUsage::Static);
+        /// Construct a mesh from a set of vertices and
+        /// indices, with a certain usage (`Static` by default;
+        /// see `DataUsage`). Internally, a vertex array is
+        /// created, but not bound.
+        Mesh(const std::vector<Vertex>& vertices, 
+            const std::vector<uint32_t>& indices,
+            DataUsage usage = DataUsage::Static);
 
-            /// @brief A mesh constructed from an OBJ file.
-            Mesh(const std::string& filepath, DataUsage usage = DataUsage::Static);
-
-        public:
-
-            Ref<VertexArray> vertexArray;
-            std::vector<Vertex> vertices;
-            std::vector<uint32_t> indices;
+        /// Load a mesh from an OBJ file at the given path.
+        Mesh(const std::string& path, DataUsage usage = DataUsage::Static);
     };
 }
