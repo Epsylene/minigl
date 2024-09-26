@@ -2,10 +2,11 @@
 
 using namespace minigl;
 
-class MeshApp: public App3D
+class TextureApp: public App3D
 {
     public:
-        MeshApp(): App3D(800, 600)
+
+        TextureApp(): App3D(800, 600)
         {
             std::vector<Vertex> vertices {
                 {.pos = {-0.5f, -0.5f, 0.0f}, .tex = {0.0f, 0.0f}},
@@ -37,13 +38,14 @@ class MeshApp: public App3D
         }
 
     private:
+    
         Ref<Shader> shader;
         Ref<Mesh> quad;
         Ref<Texture> texture;
 };
 
 int main() {
-    MeshApp app {};
+    TextureApp app {};
     app.run();
 
     return 0;
