@@ -39,15 +39,18 @@ namespace minigl
             void bind() const;
             void unbind() const;
 
-            void uniformBool(const std::string& name, bool val);
-            void uniformUint(const std::string& name, uint32_t val);
-            void uniformInt(const std::string& name, int val);
-            void uniformFloat(const std::string& name, float val);
-            void uniformFloat2(const std::string& name, const Vec2& val);
-            void uniformFloat3(const std::string& name, const Vec3& val);
-            void uniformFloat4(const std::string& name, const Vec4& val);
-            void uniformMat3(const std::string& name, const Mat3& matrix);
-            void uniformMat4(const std::string& name, const Mat4& matrix);
+            template<typename T>
+            void upload(const std::string& name, T data);
+
+            void upload(const std::string& name, bool val);
+            void upload(const std::string& name, uint32_t val);
+            void upload(const std::string& name, int val);
+            void upload(const std::string& name, float val);
+            void upload(const std::string& name, const Vec2& val);
+            void upload(const std::string& name, const Vec3& val);
+            void upload(const std::string& name, const Vec4& val);
+            void upload(const std::string& name, const Mat3& matrix);
+            void upload(const std::string& name, const Mat4& matrix);
 
         private:
 

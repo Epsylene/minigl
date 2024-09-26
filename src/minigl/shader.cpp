@@ -173,56 +173,55 @@ namespace minigl
         glUseProgram(0);
     }
 
-    void Shader::uniformBool(const std::string& name, bool val)
+    void Shader::upload(const std::string& name, bool val)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniform1i(location, (int)val);
     }
 
-    void Shader::uniformUint(const std::string& name, uint32_t val)
+    void Shader::upload(const std::string& name, uint32_t val)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniform1ui(location, val);
     }
 
-    void Shader::uniformInt(const std::string& name, int val)
+    void Shader::upload(const std::string& name, int val)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniform1i(location, val);
     }
 
-    void Shader::uniformFloat(const std::string& name, float val)
+    void Shader::upload(const std::string& name, float val)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniform1f(location, val);
     }
 
-    void Shader::uniformFloat2(const std::string& name,
-                                     const Vec2& val)
+    void Shader::upload(const std::string& name, const Vec2& val)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniform2f(location, val.x, val.y);
     }
 
-    void Shader::uniformFloat3(const std::string& name, const Vec3& val)
+    void Shader::upload(const std::string& name, const Vec3& val)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniform3f(location, val.x, val.y, val.z);
     }
 
-    void Shader::uniformFloat4(const std::string& name, const Vec4& val)
+    void Shader::upload(const std::string& name, const Vec4& val)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniform4f(location, val.x, val.y, val.z, val.w);
     }
 
-    void Shader::uniformMat3(const std::string& name, const Mat3& matrix)
+    void Shader::upload(const std::string& name, const Mat3& matrix)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniformMatrix3fv(location, 1, GL_FALSE, &matrix[0][0]);
     }
 
-    void Shader::uniformMat4(const std::string& name, const Mat4& matrix)
+    void Shader::upload(const std::string& name, const Mat4& matrix)
     {
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);

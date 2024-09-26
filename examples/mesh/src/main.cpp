@@ -14,7 +14,7 @@ class MeshApp: public App3D
 
         void render() override {
             shader->bind();
-            shader->uniformMat4("u_viewProj", camera.viewProj);
+            shader->upload("u_viewProj", camera.viewProj);
 
             mesh->vertexArray->bind();
             RenderCommand::draw_indexed(mesh->vertexArray);

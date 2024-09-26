@@ -30,7 +30,7 @@ class TextureApp: public App3D
 
         void render() override {
             shader->bind();
-            shader->uniformMat4("u_viewProj", camera.viewProj);
+            shader->upload("u_viewProj", camera.viewProj);
 
             texture->bind();
             quad->vertexArray->bind();
