@@ -74,6 +74,8 @@ namespace minigl
 
         glBindTexture(GL_TEXTURE_2D, 0);
         stbi_image_free(data);
+
+        trace("Created texture from image at path '{}'", path);
     }
 
     void Texture::bind() const
