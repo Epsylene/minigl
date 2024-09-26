@@ -19,8 +19,8 @@ namespace minigl
 
         layout = {{{DataType::Float3, "a_pos"},
                    {DataType::Float3, "a_normal"},
-                   {DataType::Float2, "a_texCoord"},
-                   {DataType::Float4, "a_vtxColor"}}};
+                   {DataType::Float2, "a_tex"},
+                   {DataType::Float4, "a_color"}}};
     }
 
     VertexBuffer::~VertexBuffer()
@@ -128,20 +128,20 @@ namespace minigl
         glBindVertexArray(vtxArrID);
         vertexBuffer->bind();
 
-        MGL_ASSERT(!vertexBuffer->getLayout().getElements().empty(), "Vertex buffer has no layout.")
+        MGL_ASSERT(!vertexBuffer->getLayout().empty(), "Vertex buffer has no layout.")
 
         // For each element in the layout, enable the vertex
         // attribute array at the element's index and give it
-        // the data it wants
+        // the data it wants.
         const auto& layout = vertexBuffer->getLayout();
         for (uint32_t index = 0; const auto& element: layout)
         {
             glEnableVertexAttribArray(index);
             glVertexAttribPointer(index,
                                   element.count(),
-                                  dataTypeToGLType(*element.types.begin()),
+                                  dataTypeToGLType(element.type),
                                   element.normalized ? GL_TRUE : GL_FALSE,
-                                  layout.getStride(),
+                                  layout.stride,
                                   (const void*)element.offset);
             index++;
         }

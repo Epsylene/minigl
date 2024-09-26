@@ -9,23 +9,16 @@
 
 namespace minigl
 {
-    /// @brief DataType
-    ///
-    /// @details This is a helper class, used to build the
-    /// BufferElement objects. Each DataType represents an
-    /// abstract type (float, int, bool, etc) which is then
-    /// provided to OpenGL as a number of bytes.
-    ///
-    /// @see BufferLayout
-    enum class DataType: uint8_t
+    /// Buffer data type abstraction
+    enum class DataType
     {
-            None = 0,
-            Float, Float2, Float3, Float4,
-            Int, Int2, Int3, Int4,
-            Mat2, Mat4
+        None = 0,
+        Float, Float2, Float3, Float4,
+        Int, Int2, Int3, Int4,
+        Mat2, Mat4
     };
 
-    /// @brief Get the DataType type size in bytes
+    /// Get the DataType type size in bytes
     static uint32_t dataTypeSize(DataType type)
     {
         switch (type)
@@ -50,6 +43,7 @@ namespace minigl
         return -1;
     }
 
+    /// Get the OpenGL data type from the DataType
     static GLenum dataTypeToGLType(DataType type)
     {
         switch (type)
@@ -74,135 +68,92 @@ namespace minigl
         return -1;
     }
 
-    /// @brief OpenGL vertex buffer element abstraction
-    ///
-    /// @details This is a helper class, used to build the BufferLayout
-    /// objects. Each BufferElement represents a group of
-    /// tightly packed, same-type data in the vertex buffer (for
-    /// example, a group of four floats or one of three
-    /// integers).
-    ///
-    /// @see BufferLayout
+    /// Group of tightly packed data in the vertex buffer at a
+    /// given offset, corresponding to an attribute.
     struct BufferElement
     {
+        /// Name of the attribute (for debug purposes)
         std::string name;
-        std::vector<DataType> types;
-        uint32_t arrayNb = 1;
+        /// Type of the data in the element
+        DataType type;
+        /// Offset of the element in the buffer
         uint32_t offset = 0;
+        /// Size of the element in bytes
         size_t size;
+        /// If true, values stored in an integer format will be
+        /// normalized to a value in the range [-1, 1] (signed)
+        /// or [0, 1] (unsigned).
         bool normalized;
 
         BufferElement() = default;
 
         BufferElement(DataType type, const std::string& name, bool normalized = false):
-            name(name), types({type}), size(dataTypeSize(type)), normalized(normalized) {}
+            name(name), type(type), size(dataTypeSize(type)), normalized(normalized) {}
 
-        /// @brief Vertex buffer element constructor
-        ///
-        /// @param types The buffer element types
-        /// @param name The buffer element name
-        /// @param normalized Normalize fixed-point data
-        /// values (default to false)
-        BufferElement(const std::vector<DataType>& types, const std::string& name, size_t arrayNb = 1):
-            name(name), types(types), size(0), normalized(false), arrayNb(arrayNb)
-        {
-            for (auto& type: types)
-            {
-                size += dataTypeSize(type);
-            }
-
-            size *= arrayNb;
-        }
-
-        /// @brief Number of elements in the underlying data
-        /// type of the vertex buffer element
-        ///
-        /// @see DataType
+        /// Number of components of the underlying data type of
+        /// the vertex buffer element
         uint32_t count() const
         {
-            if(types.size() == 1)
-                switch (*types.begin())
-                {
-                    case DataType::Float: return 1;
-                    case DataType::Float2: return 2;
-                    case DataType::Float3: return 3;
-                    case DataType::Float4: return 4;
+            switch (type)
+            {
+                case DataType::Float: return 1;
+                case DataType::Float2: return 2;
+                case DataType::Float3: return 3;
+                case DataType::Float4: return 4;
 
-                    case DataType::Int: return 1;
-                    case DataType::Int2: return 2;
-                    case DataType::Int3: return 3;
-                    case DataType::Int4: return 4;
+                case DataType::Int: return 1;
+                case DataType::Int2: return 2;
+                case DataType::Int3: return 3;
+                case DataType::Int4: return 4;
 
-                    case DataType::None: break;
-                }
+                case DataType::None: break;
+            }
 
             MGL_ASSERT(false, "Unknown shader or data type not supported.");
             return -1;
         }
     };
 
-    /// @brief Vertex buffer layout abstraction class
-    ///
-    /// @details This class intends to present the vertex buffer
-    /// layout in a simple and easy-to-understand fashion,
-    /// asking to provide an initializer list of BufferElement
-    /// objects, which comprise a DataType and a string with the
-    /// name of the element group (for example, "position" or
-    /// "color").
-    ///
-    /// @see BufferElement, DataType
-    class BufferLayout
+    /// Vertex buffer layout abstraction: a buffer is
+    /// structured as a list of BufferElement objects, each of
+    /// which correspond to a buffer attribute.
+    struct BufferLayout
     {
-        private:
+        /// Attributes of the vertex buffer
+        std::vector<BufferElement> elements;
+        /// Distance between consecutive attribute components.
+        uint32_t stride;
 
-            std::vector<BufferElement> elements;
-            uint32_t stride;
+        BufferLayout() = default;
 
-        public:
+        /// A buffer layout is a list of same-type data groups,
+        /// which are given an explanatory name.
+        BufferLayout(const std::initializer_list<BufferElement>& elements): elements(elements)
+        {
+            uint32_t offset = 0;
+            stride = 0;
 
-            BufferLayout() = default;
-
-            /// @brief Get the vertex buffer elements
-            inline const std::vector<BufferElement>& getElements() const { return elements; }
-
-            /// @brief BufferLayout constructor
-            ///
-            /// @details A buffer layout is a list of same-type
-            /// data groups, which are given an explanatory
-            /// name.
-            ///
-            /// @param elements The list of BufferElement objects
-            /// @see BufferElement
-            BufferLayout(const std::initializer_list<BufferElement>& elements): elements(elements)
+            for (auto& e: this->elements)
             {
-                uint32_t offset = 0;
-                stride = 0;
-
-                for (auto& e: this->elements)
-                {
-                    // Offset is where an element group starts, stride
-                    // the distance to the next same element group.
-                    e.offset = offset;
-                    stride += e.size;
-                    offset += e.size;
-                }
+                // Offset is where an element group starts, stride
+                // the distance to the next same element group.
+                e.offset = offset;
+                stride += e.size;
+                offset += e.size;
             }
+        }
 
-            /// @brief Get the distance between the elements of the
-            ///  vertex buffer
-            inline uint32_t getStride() const { return stride; }
+        std::vector<BufferElement>::iterator begin() { return elements.begin(); }
+        std::vector<BufferElement>::const_iterator begin() const { return elements.begin(); }
+        std::vector<BufferElement>::iterator end() { return elements.end(); }
+        std::vector<BufferElement>::const_iterator end() const { return elements.end(); }
 
-            std::vector<BufferElement>::iterator begin() { return elements.begin(); }
-            std::vector<BufferElement>::const_iterator begin() const { return elements.begin(); }
-            std::vector<BufferElement>::iterator end() { return elements.end(); }
-            std::vector<BufferElement>::const_iterator end() const { return elements.end(); }
-
-            size_t size() const { return elements.size(); };
+        bool empty() const { return elements.empty(); }
+        size_t size() const { return elements.size(); };
     };
 
     /// Vertex struct: a vertex is comprised of a position, a
-    /// normal, a texture coordinate, and a color (white by
-    /// default).
+    /// normal, a texture coordinate, and a color.
     struct Vertex
     {
         Vec3 pos;
@@ -211,8 +162,8 @@ namespace minigl
         Color color;
     };
 
-    /// @brief How the data of the mesh is supposed to be used
-    /// during rendering
+    /// How the data of the mesh is supposed to be used during
+    /// rendering
     enum class DataUsage
     {
         /// Loaded and then unchanged. Most common usage.
@@ -223,13 +174,11 @@ namespace minigl
         Stream = GL_STREAM_DRAW,
     };
 
-    /// @brief Vertex buffer abstraction class
-    ///
-    /// @details The VBO (Vertex Buffer Object) is a buffer
-    /// containing the data for a set of vertices. Binding the
-    /// vertex buffer to OpenGL allows sending large batches of
-    /// data all at once to the graphics card, that will be kept
-    /// in the GPU memory, where they can be accessed faster.
+    /// The VBO (Vertex Buffer Object) is a buffer containing
+    /// data for a set of vertices. Binding the vertex buffer
+    /// to OpenGL allows sending large batches of data all at
+    /// once to the graphics card, that will be kept in the GPU
+    /// memory, where they can be accessed faster.
     class VertexBuffer
     {
         private:
@@ -239,67 +188,52 @@ namespace minigl
 
         public:
 
-            /// @brief Creates a vertex buffer from an array of floats
-            ///
-            /// @details The vertex buffer is created and bound
-            /// to OpenGL, with usage set to `GL_STATIC_DRAW`
-            /// (modified once, drawn multiple times).
+            /// Creates a vertex buffer from an array of
+            /// floats. The vertex buffer is created and bound
+            /// to OpenGL, with usage set to `Static` by
+            /// default (see `DataUsage`).
             ///
             /// @param vertices The array of vertices
             /// @param size The array size in bytes (`sizeof()`)
             VertexBuffer(float* vertices, size_t size, DataUsage usage = DataUsage::Static);
 
-            /// @brief Create a vertex buffer from an array of vertices
-            ///
-            /// @details The vertex buffer is created and bound
-            /// to OpenGL, with usage set to `GL_STATIC_DRAW`
-            /// (modified once, drawn multiple times). Its
-            /// layout is set to [pos, normal, texCoords].
-            ///
-            /// @param vertices The array of vertices
-            /// @see Vertex struct
+            /// Create a vertex buffer from an array of
+            /// vertices. The vertex buffer is created and
+            /// bound to OpenGL, with usage set to `Static` by
+            /// default (see `DataUsage`). Its layout is set to
+            /// [pos, normal, tex, color].
             explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::Static);
 
-            /// @brief VertexBuffer destructor
-            /// 
-            /// @details Calls glDelete() over the vertex
+            /// Destructor. Calls `glDelete()` over the vertex
             /// buffer.
             virtual ~VertexBuffer();
 
             void bind() const;
             void unbind() const;
 
-            /// @brief Update the vertices of the vertex
-            /// buffer.
+            /// Update the vertices of the vertex buffer.
             void update_vertices(const std::vector<Vertex>& vertices);
 
-            /// @brief Get the vertex buffer layout
-            /// @see BufferLayout
             virtual const BufferLayout& getLayout() const { return layout; }
-
-            /// @brief Set the vertex buffer layout
-            /// @see BufferLayout
             virtual void setLayout(const BufferLayout& layout) { this->layout = layout; }
     };
 
-    /// @brief Index buffer abstraction class
-    ///
-    /// @details Meshes are formed of triangles. A single VBO
-    /// for a given mesh is supposed to contain data for each
-    /// vertex of each triangle, but this approach is not
-    /// efficient: vertices shared by triangles are repeated
-    /// several times. To avoid this overlap, index buffers
-    /// provide as their name suggests a list of indices for
-    /// each triangle vertex. Take for example the rectangle,
-    /// which is comprised of two triangles. Instead of writing
-    /// a VBO with two triangles sharing vertices on one side,
-    /// we are providing a buffer containing only the actual
-    /// vertices, and an index buffer looking like {0, 1, 3, 1,
-    /// 2, 3}: with this buffer, OpenGL knows which vertex in
-    /// the VBO (the position listed by the index) correspond
-    /// to the current triangle vertex; thus, a vertex shared
-    /// by two triangles is given the same index twice, and the
-    /// VBO contents match the mesh data.
+    /// Meshes are formed of triangles. A single VBO for a
+    /// given mesh is supposed to contain data for each vertex
+    /// of each triangle, but this approach is not efficient:
+    /// vertices shared by triangles are repeated several
+    /// times. To avoid this overlap, index buffers provide as
+    /// their name suggests a list of indices for each triangle
+    /// vertex. Take for example the rectangle, which is
+    /// comprised of two triangles. Instead of writing a VBO
+    /// with two triangles sharing vertices on one side, we are
+    /// providing a buffer containing only the actual vertices,
+    /// and an index buffer looking like {0, 1, 3, 1, 2, 3}:
+    /// with this buffer, OpenGL knows which vertex in the VBO
+    /// (the position listed by the index) correspond to the
+    /// current triangle vertex; thus, a vertex shared by two
+    /// triangles is given the same index twice, and the VBO
+    /// contents match the mesh data.
     class IndexBuffer
     {
         private:
@@ -309,61 +243,48 @@ namespace minigl
 
         public:
 
-            /// @brief Index buffer constructor
-            /// 
-            /// @details The index buffer is created and bound
-            /// to OpenGL, with usage set to GL_STATIC_DRAW
-            /// (modified once, drawn multiple times).
-            ///
-            /// @param indices The vertex indices array
-            /// @param count The array number of elements
+            /// The index buffer is created and bound to
+            /// OpenGL, with usage set to `Static` by default
+            /// (see `DataUsage`).
             IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage = DataUsage::Static);
 
+            /// Create an index buffer from a vector of
+            /// indices. The index buffer is created and bound
+            /// to OpenGL, with usage set to `Static` by
+            /// default (see `DataUsage`).
             explicit IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage = DataUsage::Static);
 
-            /// @brief Index Buffer destructor
+            /// Destructor. Calls `glDelete()` over the index
+            /// buffer.
             virtual ~IndexBuffer();
 
-            /// @brief Bind the index buffer
             void bind() const;
-
-            /// @brief Unbind the index buffer
             void unbind() const;
 
-            /// @brief Get the index buffer array size (in
-            /// number of elements)
             inline uint32_t getCount() const { return count; }
     };
 
-    /// @brief Vertex array abstraction class
-    ///
-    /// @details The VAO (Vertex Array Object) is a buffer
-    /// containing attribute calls to a VBO; that is, if the
-    /// vertex buffer structure is `(pos|tex|normal)`, the VAO
-    /// will provide function calls to the GPU to access first
-    /// the `pos` attributes, then `tex`, then `normal`,
-    /// without having to check with the CPU each time. Core
-    /// OpenGL requires binding a VAO to draw vertex data.
-    /// Apart from that, the class binds any provided index
-    /// buffer attached to the vertex data.
+    /// The VAO (Vertex Array Object) is a buffer containing
+    /// attribute calls to a VBO; that is, if the vertex buffer
+    /// structure is `(pos|tex|normal)`, the VAO will provide
+    /// function calls to the GPU to access first the `pos`
+    /// attributes, then `tex`, then `normal`, without having
+    /// to check with the CPU each time. Core OpenGL requires
+    /// binding a VAO to draw vertex data. Apart from that, the
+    /// class attaches an index buffer to the VBO, and provides
+    /// functions to update the vertices of the VBO.
     class VertexArray
     {
         public:
 
-            uint32_t vtxArrID;
-
-            /// @brief Creates an OpenGL vertex array.
             VertexArray();
-
-            /// @brief Creates an OpenGL vertex array from a vertex
-            ///     buffer and an index buffer.
             VertexArray(const Ref<VertexBuffer>& vb, const Ref<IndexBuffer>& ib);
 
             void bind() const;
             void unbind() const;
 
-            /// @brief Update the vertices of the vertex buffer
-            /// at the given index.
+            /// Update the vertices of the vertex buffer at the
+            /// given index.
             void updateVertices(size_t buffer_idx, const std::vector<Vertex>& vertices);
 
             void addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
@@ -373,6 +294,7 @@ namespace minigl
 
         private:
 
+            uint32_t vtxArrID;
             std::vector<Ref<VertexBuffer>> vertexBuffers;
             Ref<IndexBuffer> indexBuffer;
     };
