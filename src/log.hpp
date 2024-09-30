@@ -6,13 +6,13 @@
 
 namespace minigl
 {
+    template<typename T>
+    constexpr void print(T&& arg) {
+        fmt::println("{}", std::forward<T>(arg));
+    }
+
     template<typename... Ts>
     constexpr void print(fmt::format_string<Ts...> str, Ts&&... args) {
-        fmt::print(str, std::forward<Ts>(args)...);
-    }
-    
-    template<typename... Ts>
-    constexpr void println(fmt::format_string<Ts...> str, Ts&&... args) {
         fmt::println(str, std::forward<Ts>(args)...);
     }
 
