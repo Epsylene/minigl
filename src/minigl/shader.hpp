@@ -14,33 +14,26 @@ namespace minigl
         GEOMETRY = GL_GEOMETRY_SHADER
     };
 
-    /// @brief Shader abstraction class
+    /// Shader abstraction class, in order to easily load and
+    /// execute GLSL programs.
     class Shader
     {
         public:
 
-            /// @brief Create a shader from the GLSL file at
+            /// Create a shader from the GLSL file at
             /// `filepath`
             explicit Shader(const std::string& filepath);
 
-            /// @brief Create a shader from a vertex and
-            /// fragment source
-            /// 
-            /// @param vertexSrc Vertex shader source code
-            /// @param fragmentSrc Fragment shader source code
+            /// Create a shader from a vertex and fragment
+            /// source
             Shader(const std::string& vertexSrc,
                    const std::string& fragmentSrc);
             
-            /// @brief Shader destructor
-            ///
-            /// @details Calls glDeleteProgram() on 'textureID`.
+            /// Destructor: calls `glDeleteProgram()`.
             virtual ~Shader();
 
             void bind() const;
             void unbind() const;
-
-            template<typename T>
-            void upload(const std::string& name, T data);
 
             void upload(const std::string& name, bool val);
             void upload(const std::string& name, uint32_t val);
@@ -56,15 +49,17 @@ namespace minigl
 
             uint32_t shaderID;
 
-            /// @brief Reads the file in `filepath` and returns
-            ///     the result
+            /// Reads the file in `filepath` and returns the
+            /// result
             std::string readFile(const std::string& filepath);
 
-            /// @brief Extracts the shaders sources from the file and
-            ///     puts them in an unordered map, which is returned
+            /// Extracts the shaders sources from the file and
+            /// puts them in an unordered map, which is
+            /// returned
             std::unordered_map<GLenum, std::string> preprocess(const std::string& source);
 
-            /// @brief Compile the map's shaders
+            /// Compiles the sources from the preprocessing
+            /// stage
             void compile(const std::unordered_map<GLenum, std::string>& shaderSources);
     };
 }
