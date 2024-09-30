@@ -39,7 +39,10 @@ namespace minigl
         /// @param height The rendering viewport's height
         static void set_viewport(uint32_t x, uint32_t y, uint32_t width, uint32_t height);
 
-        /// Draw a set of vertices
+        /// Enable or disable wireframe rendering
+        static void wireframe(bool enabled);
+
+        /// Draw a set of indexed vertices
         ///
         /// @param vertexArray The VA attached to the
         ///     vertices

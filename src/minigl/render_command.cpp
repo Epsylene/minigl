@@ -30,6 +30,12 @@ namespace minigl
         glViewport(x, y, width, height);
     }
 
+    void RenderCommand::wireframe(bool enabled)
+    {
+        enabled ? glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
+                : glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+    }
+
     void RenderCommand::draw_indexed(const Ref<VertexArray>& vertexArray,
                                     Primitives drawPrimitive)
     {
