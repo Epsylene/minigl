@@ -10,7 +10,8 @@ namespace minigl
     {
         TRIANGLES = GL_TRIANGLES,
         POINTS = GL_POINTS,
-        LINES = GL_LINES
+        LINES = GL_LINES,
+        LINE_STRIP = GL_LINE_STRIP,
     };
 
     /// Render commands: functionality to execute several
