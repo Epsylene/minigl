@@ -7,6 +7,9 @@ using minigl::Box;
 using minigl::ref;
 using minigl::box;
 
+using minigl::print;
+using minigl::println;
+
 #include "app/input/input.hpp"
 #include "app/window.hpp"
 #include "app/app.hpp"
