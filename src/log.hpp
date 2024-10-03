@@ -16,6 +16,11 @@ namespace minigl
         fmt::print(str, std::forward<Ts>(args)...);
     }
 
+    template<typename T>
+    constexpr void println(T&& arg) {
+        fmt::print("{}\n", std::forward<T>(arg));
+    }
+
     template<typename... Ts>
     constexpr void println(fmt::format_string<Ts...> str, Ts&&... args) {
         fmt::println(str, std::forward<Ts>(args)...);
@@ -24,18 +29,18 @@ namespace minigl
     template<typename... Ts>
     constexpr void trace(fmt::format_string<Ts...> str, Ts&&... args) {
         fmt::print(fmt::fg(fmt::color::gray), str, std::forward<Ts>(args)...);
-        fmt::println("");
+        fmt::print("\n");
     }
 
     template<typename... Ts>
     constexpr void info(fmt::format_string<Ts...> str, Ts&&... args) {
         fmt::print(fmt::fg(fmt::color::green), str, std::forward<Ts>(args)...);
-        fmt::println("");
+        fmt::print("\n");
     }
 
     template<typename... Ts>
     constexpr void error(fmt::format_string<Ts...> str, Ts&&... args) {
         fmt::print(fmt::fg(fmt::color::red), str, std::forward<Ts>(args)...);
-        fmt::println("");
+        fmt::print("\n");
     }
 }
