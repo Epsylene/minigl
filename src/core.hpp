@@ -7,6 +7,9 @@
 /// program
 #define MGL_ASSERT(x, msg, ...) { if(!(x)) { error("ERROR: " msg, ##__VA_ARGS__); assert(false); } }
 
+/// Debug macro to print the value of a variable
+#define dbg(x) { println(#x " = {}", x); }
+
 namespace minigl
 {
     template<typename T> using Box = std::unique_ptr<T>;
