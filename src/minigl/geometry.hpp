@@ -14,6 +14,8 @@ namespace minigl
     using Mat3 = glm::mat3;
     using Mat4 = glm::mat4;
 
+    constexpr double pi = 3.14159265358979323846;
+
     Mat4 translate(const Vec3& offset);
     Mat4 rotate(const Vec3& axis, float angle);
     Vec3 rotate(const Vec3& vec, const Vec3& axis, float angle);
