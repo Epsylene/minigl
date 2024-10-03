@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fmt/format.h>
 #include <glm/glm.hpp>
 
 namespace minigl
@@ -35,3 +36,21 @@ namespace minigl
     float dot(const Vec3& a, const Vec3& b);
     float length(const Vec3& vec);
 }
+
+// Vec3 formatting
+template<typename T>
+class fmt::formatter<minigl::Vector<T,3>>
+{
+    public:
+
+        constexpr auto parse(format_parse_context& ctx)
+        {
+            return ctx.begin();
+        }
+
+        template<typename FormatContext>
+        auto format(const minigl::Vector<T,3>& vec, FormatContext& ctx) const
+        {
+            return format_to(ctx.out(), "({}, {}, {})", vec.x, vec.y, vec.z);
+        }
+};
