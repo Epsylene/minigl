@@ -9,11 +9,11 @@ namespace minigl
     Texture::Texture(int width, int height, TextureFormat format): width(width), height(height)
     {
         // Create a 2D texture handle with the retrieved ID.
-        glCreateTextures(GL_TEXTURE_2D, 1, &texture);
+        glCreateTextures(GL_TEXTURE_2D, 1, &id);
 
         // Allocate storage for width x height pixels in RGB8
         // format and 1 mip level.
-        glTextureStorage2D(texture, 1, (GLenum)format, width, height);
+        glTextureStorage2D(id, 1, (GLenum)format, width, height);
 
         // Set the min and mag filters to linear (perform
         // linear interpolation when the texels are smaller or
@@ -26,9 +26,6 @@ namespace minigl
         // range).
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-
-        // Bind the texture to OpenGL.
-        glBindTexture(GL_TEXTURE_2D, texture);
     }
 
     Texture::Texture(const std::string& path)
@@ -59,24 +56,24 @@ namespace minigl
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
         // Generate and bind the texture to OpenGL.
-        glCreateTextures(GL_TEXTURE_2D, 1, &texture);
+        glCreateTextures(GL_TEXTURE_2D, 1, &id);
         
         // Tell how many mipmaps levels there are, the internal
         // format of the texture (that is, how it shall be
         // stored in GPU), its width and its height.
-        glTextureStorage2D(texture, 1, internalFormat, width, height);
+        glTextureStorage2D(id, 1, internalFormat, width, height);
 
         // Magnification and minification filter, that is,
         // which algorithms are used to make our texture bigger
         // or smaller.
-        glTextureParameteri(texture, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTextureParameteri(texture, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+        glTextureParameteri(id, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTextureParameteri(id, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
         // Specify the texture sub-image that will be used: the
         // pixel data, its format (memory layout), and a type.
         // The pixel data will be converted from 'dataformat'
         // to 'internalformat' in order to be used by OpenGL.
-        glTextureSubImage2D(texture, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
+        glTextureSubImage2D(id, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
 
         glBindTexture(GL_TEXTURE_2D, 0);
         stbi_image_free(data);
@@ -86,6 +83,6 @@ namespace minigl
 
     void Texture::bind() const
     {
-        glBindTexture(GL_TEXTURE_2D, texture);
+        glBindTexture(GL_TEXTURE_2D, id);
     }
 }

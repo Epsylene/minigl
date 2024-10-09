@@ -6,26 +6,22 @@ namespace minigl
     enum class TextureFormat
     {
         COLOR = GL_RGB8,
-        DEPTH = GL_DEPTH_COMPONENT,
+        DEPTH = GL_DEPTH_COMPONENT32F,
     };
 
-    class Texture
+    struct Texture
     {
-        public:
+        /// Create a blank texture of specified width and
+        /// height.
+        Texture(int width, int height, TextureFormat type);
+        
+        /// Create a texture from the image at the
+        /// specified path.
+        Texture(const std::string& path);
 
-            /// Create a blank texture of specified width and
-            /// height.
-            Texture(int width, int height, TextureFormat type);
-            
-            /// Create a texture from the image at the
-            /// specified path.
-            Texture(const std::string& path);
+        void bind() const;
 
-            void bind() const;
-
-        private:
-
-            unsigned int texture;
-            int width, height;
+        GLuint id;
+        int width, height;
     };
 }
