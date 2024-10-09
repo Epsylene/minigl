@@ -14,6 +14,12 @@ namespace minigl
         LINE_STRIP = GL_LINE_STRIP,
     };
 
+    enum ClearBit: GLenum
+    {
+        COLOR = GL_COLOR_BUFFER_BIT,
+        DEPTH = GL_DEPTH_BUFFER_BIT,
+    };
+
     /// Render commands: functionality to execute several
     /// OpenGL render commands, like clearing the window or
     /// drawing an indexed vertex array.
@@ -21,7 +27,7 @@ namespace minigl
     {
         /// Clear the window. Clears the color and depth
         /// buffers.
-        static void clear();
+        static void clear(GLenum flags = ClearBit::COLOR | ClearBit::DEPTH);
 
         /// Set the background clear color
         static void set_clear_color(const Color& color);
