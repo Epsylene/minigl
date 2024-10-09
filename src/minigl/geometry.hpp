@@ -1,5 +1,6 @@
 #pragma once
 
+#include <fmt/format.h>
 #include <glm/glm.hpp>
 
 namespace minigl
