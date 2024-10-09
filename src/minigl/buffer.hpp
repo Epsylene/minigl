@@ -4,6 +4,7 @@
 #include "mglpch.hpp"
 #include "geometry.hpp"
 #include "color.hpp"
+#include "texture.hpp"
 
 #include <glad/glad.h>
 
@@ -297,5 +298,24 @@ namespace minigl
             uint32_t vtxArrID;
             std::vector<Ref<VertexBuffer>> vertexBuffers;
             Ref<IndexBuffer> indexBuffer;
+    };
+
+    class FrameBuffer
+    {
+        public:
+
+            FrameBuffer(uint32_t width, uint32_t height);
+            virtual ~FrameBuffer();
+
+            void attach_color_texture(const Ref<Texture>& texture);
+            void attach_depth_texture(const Ref<Texture>& texture);
+
+            void bind() const;
+
+        private:
+
+            uint32_t fboID;
+            Ref<Texture> colorAttachment;
+            Ref<Texture> depthAttachment;
     };
 }
