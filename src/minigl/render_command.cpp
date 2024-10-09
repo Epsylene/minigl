@@ -39,7 +39,7 @@ namespace minigl
     void RenderCommand::draw_indexed(const Ref<VertexArray>& vertexArray,
                                     Primitives drawPrimitive)
     {
-        glDrawElements((int)drawPrimitive,
+        glDrawElements((GLenum)drawPrimitive,
                        vertexArray->getIndexBuffer()->getCount(),
                        GL_UNSIGNED_INT,
                        nullptr);
