@@ -6,7 +6,13 @@
 
 namespace minigl
 {
-    /// Generic camera object class
+    /// Generic camera object
+    ///
+    /// This class represents a camera in a 3D scene. It holds
+    /// state for its position, direction and up vector, as
+    /// well as the view and projection matrices. Controls and
+    /// actual computation of the view-proj matrix are left to
+    /// derived classes.
     class Camera
     {
         public:
@@ -34,6 +40,25 @@ namespace minigl
 
             Vec3 pos, direction, up;
             virtual void compute_viewProj() = 0;
+    };
+
+    /// Generic orthographic camera
+    class OrthoCamera: public Camera
+    {
+        public:
+
+            /// Default orthographic camera with a 10x10
+            /// viewing area, near plane at 0.1 and far plane
+            /// at 100.
+            OrthoCamera();
+            OrthoCamera(float left, float right, float bottom, float top, float near, float far);
+
+            void onUpdate(Ref<Input> input, float dt) override {}
+
+        protected:
+
+            float left, right, bottom, top, near, far;
+            void compute_viewProj() override;
     };
 
     /// Generic perspective camera class
