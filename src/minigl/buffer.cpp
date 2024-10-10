@@ -163,11 +163,9 @@ namespace minigl
         this->unbind();
     }
 
-    FrameBuffer::FrameBuffer(uint32_t width, uint32_t height)
+    FrameBuffer::FrameBuffer()
     {
         glCreateFramebuffers(1, &fboID);
-        glDrawBuffer(GL_NONE);
-        glReadBuffer(GL_NONE);
     }
 
     FrameBuffer::~FrameBuffer()
@@ -187,11 +185,22 @@ namespace minigl
     {
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
         glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_texture->id, 0);
+        
+        if (!colorAttachment) {
+            glDrawBuffer(GL_NONE);
+            glReadBuffer(GL_NONE);
+        }
+        
         depthAttachment = depth_texture;
     }
 
     void FrameBuffer::bind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, fboID);
+    }
+
+    void FrameBuffer::unbind() const
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 }
