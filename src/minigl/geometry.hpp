@@ -12,6 +12,9 @@ namespace minigl
     using Vec3 = glm::vec3;
     using Vec4 = glm::vec4;
 
+    template<typename T, int N>
+    using Matrix = glm::mat<N, N, T>;
+
     using Mat3 = glm::mat3;
     using Mat4 = glm::mat4;
 
