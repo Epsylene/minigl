@@ -2,9 +2,9 @@
 
 namespace minigl
 {
-    void RenderCommand::clear()
+    void RenderCommand::clear(GLenum flags)
     {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glClear(flags);
     }
 
     void RenderCommand::set_clear_color(const Color& color)

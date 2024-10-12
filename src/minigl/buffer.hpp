@@ -304,13 +304,14 @@ namespace minigl
     {
         public:
 
-            FrameBuffer(uint32_t width, uint32_t height);
+            FrameBuffer();
             virtual ~FrameBuffer();
 
             void attach_color_texture(const Ref<Texture>& texture);
             void attach_depth_texture(const Ref<Texture>& texture);
 
             void bind() const;
+            void unbind() const;
 
         private:
 

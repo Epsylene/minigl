@@ -25,6 +25,7 @@ namespace minigl
     Vec3 rotate(const Vec3& vec, const Vec3& axis, float angle);
 
     Mat4 perspective(float fov, float aspect, float near, float far);
+    Mat4 ortho(float left, float right, float bottom, float top, float near, float far);
     Mat4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up);
 
     Mat4 scale(float factor);

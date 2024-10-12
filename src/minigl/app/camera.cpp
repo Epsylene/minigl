@@ -5,29 +5,13 @@
 
 namespace minigl
 {
-    Camera::Camera(): Camera(60.f, 16.f/9.f, 0.3f, 10.f)
+    Camera::Camera(): pos(0.f, 0.f, 3.f), direction(0.f, 0.f, -1.f), up(0.f, 1.f, 0.f)
     {}
-
-    Camera::Camera(float fov, float aspect, float near, float far):
-        pos(0.f, 0.f, 3.f), direction(0.f, 0.f, -1.f), up(0.f, 1.f, 0.f)
-    {
-        proj = perspective(radians(fov), aspect, near, far);
-    }
 
     void Camera::setPosition(const Vec3& pos)
     {
         this->pos = pos;
         compute_viewProj();
-    }
-
-    const Vec3& Camera::getPosition() const
-    {
-        return pos;
-    }
-
-    const Vec3& Camera::getDirection() const
-    {
-        return direction;
     }
 
     void Camera::setDirection(const Vec3& dir)
@@ -36,7 +20,36 @@ namespace minigl
         compute_viewProj();
     }
 
-    void Camera::change_projection(float fov, float aspect, float near, float far)
+    OrthoCamera::OrthoCamera(): OrthoCamera(-5.f, 5.f, -5.f, 5.f, 0.1f, 100.f)
+    {}
+
+    OrthoCamera::OrthoCamera(float left, float right, float bottom, float top, float near, float far)
+    {
+        this->left = left;
+        this->right = right;
+        this->bottom = bottom;
+        this->top = top;
+        this->near = near;
+        this->far = far;
+
+        proj = ortho(left, right, bottom, top, near, far);
+    }
+
+    void OrthoCamera::compute_viewProj()
+    {
+        view = lookAt(pos, pos + direction, up);
+        viewProj = proj * view;
+    }
+
+    PerspectiveCamera::PerspectiveCamera(): PerspectiveCamera(60.f, 16.f/9.f, 0.3f, 100.f)
+    {}
+
+    PerspectiveCamera::PerspectiveCamera(float fov, float aspect, float near, float far)
+    {
+        proj = perspective(radians(fov), aspect, near, far);
+    }
+
+    void PerspectiveCamera::change_projection(float fov, float aspect, float near, float far)
     {
         proj = perspective(fov, aspect, near, far);
         compute_viewProj();
@@ -94,7 +107,6 @@ namespace minigl
         if(input->isKeyPressed(GLS_KEY_F))
             pos.y -= movSpeed * dt;
 
-        
         // Look around with the mouse
         if(input->isMouseButtonPressed(GLS_MOUSE_BUTTON_LEFT))
         {

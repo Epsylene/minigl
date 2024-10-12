@@ -26,6 +26,11 @@ namespace minigl
         return glm::perspective(fov, aspect, near, far);
     }
 
+    Mat4 ortho(float left, float right, float bottom, float top, float near, float far)
+    {
+        return glm::ortho(left, right, bottom, top, near, far);
+    }
+
     Mat4 lookAt(const Vec3& eye, const Vec3& center, const Vec3& up)
     {
         return glm::lookAt(eye, center, up);
