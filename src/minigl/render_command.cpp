@@ -44,4 +44,15 @@ namespace minigl
                        GL_UNSIGNED_INT,
                        nullptr);
     }
+
+    void RenderCommand::draw_instanced(const Ref<VertexArray>& vertexArray,
+                                      uint32_t count,
+                                      Primitives drawPrimitive)
+    {
+        glDrawElementsInstanced((GLenum)drawPrimitive,
+                                vertexArray->getIndexBuffer()->getCount(),
+                                GL_UNSIGNED_INT,
+                                nullptr,
+                                count);
+    }
 }

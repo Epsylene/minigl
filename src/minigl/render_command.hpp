@@ -56,5 +56,7 @@ namespace minigl
         /// @param drawPrimitive The rendering
         ///     primitive (triangles, points, etc)
         static void draw_indexed(const Ref<VertexArray>& vertexArray, Primitives drawPrimitive = Primitives::TRIANGLES);
+
+        static void draw_instanced(const Ref<VertexArray>& vertexArray, uint32_t count, Primitives drawPrimitive = Primitives::TRIANGLES);
     };
 }
