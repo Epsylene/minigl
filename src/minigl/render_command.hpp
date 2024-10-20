@@ -38,6 +38,9 @@ namespace minigl
         /// Enable or disable depth clamping
         static void set_depth_clamp(bool enabled);
 
+        /// Enable or disable face culling
+        static void set_face_culling(bool enabled);
+
         /// Set the rendering viewport
         ///
         /// @param x, y Coordinates of the top-left corner of the

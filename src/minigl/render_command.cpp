@@ -24,6 +24,12 @@ namespace minigl
                 : glDisable(GL_DEPTH_CLAMP);
     }
 
+    void RenderCommand::set_face_culling(bool enabled)
+    {
+        enabled ? glEnable(GL_CULL_FACE)
+                : glDisable(GL_CULL_FACE);
+    }
+
     void RenderCommand::set_viewport(uint32_t x, uint32_t y, uint32_t width,
                                     uint32_t height)
     {
