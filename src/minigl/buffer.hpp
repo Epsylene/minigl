@@ -185,6 +185,7 @@ namespace minigl
         private:
 
             uint32_t bufferID;
+            uint32_t count;
             BufferLayout layout;
 
         public:
@@ -211,6 +212,8 @@ namespace minigl
 
             void bind() const;
             void unbind() const;
+
+            uint32_t getCount() const { return count; }
 
             /// Update the vertices of the vertex buffer.
             void update_vertices(const std::vector<Vertex>& vertices);

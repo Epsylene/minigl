@@ -9,6 +9,12 @@ namespace minigl
         glCreateBuffers(1, &bufferID);
         glBindBuffer(GL_ARRAY_BUFFER, bufferID);
         glBufferData(GL_ARRAY_BUFFER, size, vertices, (GLenum)usage);
+
+        count = size / sizeof(float);
+        layout = {{{DataType::Float3, "a_pos"},
+                   {DataType::Float3, "a_normal"},
+                   {DataType::Float2, "a_tex"},
+                   {DataType::Float4, "a_color"}}};
     }
 
     VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage)
@@ -17,6 +23,7 @@ namespace minigl
         glBindBuffer(GL_ARRAY_BUFFER, bufferID);
         glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], (GLenum)usage);
 
+        count = vertices.size();
         layout = {{{DataType::Float3, "a_pos"},
                    {DataType::Float3, "a_normal"},
                    {DataType::Float2, "a_tex"},
