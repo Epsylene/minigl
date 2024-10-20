@@ -81,8 +81,9 @@ namespace minigl
         trace("Created texture from image at path '{}'", path);
     }
 
-    void Texture::bind() const
+    void Texture::bind(uint32_t unit) const
     {
+        glActiveTexture(GL_TEXTURE0 + unit);
         glBindTexture(GL_TEXTURE_2D, id);
     }
 }

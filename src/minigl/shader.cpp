@@ -226,4 +226,10 @@ namespace minigl
         GLint location = glGetUniformLocation(shaderID, name.c_str());
         glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
     }
+
+    void Shader::texture(const std::string& name, Ref<Texture> texture, uint32_t slot)
+    {
+        GLint location = glGetUniformLocation(shaderID, name.c_str());
+        glUniform1i(location, slot);
+    }
 }
