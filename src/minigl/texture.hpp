@@ -19,7 +19,7 @@ namespace minigl
         /// specified path.
         Texture(const std::string& path);
 
-        void bind(uint32_t unit) const;
+        void bind(uint32_t unit = 0) const;
 
         GLuint id;
         int width, height;
