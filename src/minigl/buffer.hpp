@@ -287,19 +287,18 @@ namespace minigl
             void bind() const;
             void unbind() const;
 
-            /// Update the vertices of the vertex buffer at the
-            /// given index.
-            void updateVertices(size_t buffer_idx, const std::vector<Vertex>& vertices);
+            /// Update the vertices of the vertex buffer.
+            void updateVertices(const std::vector<Vertex>& vertices);
 
-            void addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
+            void setVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
             void setIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
-            const std::vector<Ref<VertexBuffer>>& getVertexBuffers() const { return vertexBuffers; }
+            const Ref<VertexBuffer>& getVertexBuffers() const { return vertexBuffer; }
             const Ref<IndexBuffer>& getIndexBuffer() const { return indexBuffer; }
 
         private:
 
             uint32_t vtxArrID;
-            std::vector<Ref<VertexBuffer>> vertexBuffers;
+            Ref<VertexBuffer> vertexBuffer;
             Ref<IndexBuffer> indexBuffer;
     };
 

@@ -94,43 +94,35 @@ namespace minigl
     {
         glCreateVertexArrays(1, &vtxArrID);
 
-        addVertexBuffer(vb);
+        setVertexBuffer(vb);
         setIndexBuffer(ib);
     }
 
     void VertexArray::bind() const
     {
         glBindVertexArray(vtxArrID);
-
-        for (auto& vb: vertexBuffers)
+        for (int i = 0; i < vertexBuffer->getLayout().size(); ++i)
         {
-            for (int i = 0; i < vb->getLayout().size(); ++i)
-            {
-                glEnableVertexAttribArray(i);
-            }
+            glEnableVertexAttribArray(i);
         }
     }
 
     void VertexArray::unbind() const
     {
-        for (auto& vb: vertexBuffers)
+        for (int i = 0; i < vertexBuffer->getLayout().size(); ++i)
         {
-            for (int i = 0; i < vb->getLayout().size(); ++i)
-            {
-                glDisableVertexAttribArray(i);
-            }
+            glDisableVertexAttribArray(i);
         }
-
         glBindVertexArray(0);
     }
 
-    void VertexArray::updateVertices(size_t buffer_idx, const std::vector<Vertex>& vertices)
+    void VertexArray::updateVertices(const std::vector<Vertex>& vertices)
     {
         glBindVertexArray(vtxArrID);
-        vertexBuffers[buffer_idx]->update_vertices(vertices);
+        vertexBuffer->update_vertices(vertices);
     }
 
-    void VertexArray::addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
+    void VertexArray::setVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
     {
         glBindVertexArray(vtxArrID);
         vertexBuffer->bind();
@@ -153,7 +145,7 @@ namespace minigl
             index++;
         }
 
-        vertexBuffers.push_back(vertexBuffer);
+        this->vertexBuffer = vertexBuffer;
 
         for (int i = 0; i < layout.size(); ++i)
         {
