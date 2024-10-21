@@ -127,8 +127,6 @@ namespace minigl
         glBindVertexArray(vtxArrID);
         vertexBuffer->bind();
 
-        MGL_ASSERT(!vertexBuffer->getLayout().empty(), "Vertex buffer has no layout.")
-
         // For each element in the layout, enable the vertex
         // attribute array at the element's index and give it
         // the data it wants.
@@ -142,6 +140,7 @@ namespace minigl
                                   element.normalized ? GL_TRUE : GL_FALSE,
                                   layout.stride,
                                   (const void*)element.offset);
+            glVertexAttribDivisor(index, 0);
             index++;
         }
 

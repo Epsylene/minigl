@@ -85,11 +85,18 @@ namespace minigl
         /// normalized to a value in the range [-1, 1] (signed)
         /// or [0, 1] (unsigned).
         bool normalized;
+        /// When using indirect rendering, the divisor
+        /// specifies the instancing rate of the buffer
+        /// element: if `divisor` is 0, the element is applied
+        /// once per vertex; if it is 1, the element is applied
+        /// once per instance; if it is 2, once every two
+        /// instances, etc.
+        uint32_t divisor = 0;
 
         BufferElement() = default;
 
-        BufferElement(DataType type, const std::string& name, bool normalized = false):
-            name(name), type(type), size(dataTypeSize(type)), normalized(normalized) {}
+        BufferElement(DataType type, const std::string& name, bool normalized = false, uint32_t divisor = 0):
+            name(name), type(type), size(dataTypeSize(type)), normalized(normalized), divisor(divisor) {}
 
         /// Number of components of the underlying data type of
         /// the vertex buffer element
@@ -153,6 +160,10 @@ namespace minigl
         size_t size() const { return elements.size(); };
     };
 
+    /// Generic buffer of vertices with a custom layout
+    template<typename vertex_t>
+    using Buffer = std::vector<vertex_t>;
+
     /// Vertex struct: a vertex is comprised of a position, a
     /// normal, a texture coordinate, and a color.
     struct Vertex
@@ -203,8 +214,20 @@ namespace minigl
             /// vertices. The vertex buffer is created and
             /// bound to OpenGL, with usage set to `Static` by
             /// default (see `DataUsage`). Its layout is set to
-            /// [pos, normal, tex, color].
+            /// `[pos, normal, tex, color]`.
             explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::Static);
+
+            /// Create a vertex buffer from a buffer of
+            /// vertices with a custom layout.
+            template<typename vertex_t>
+            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::Static) {
+                glCreateBuffers(1, &bufferID);
+                glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+                glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex_t), &vertices[0], (GLenum)usage);
+
+                count = vertices.size();
+                this->layout = layout;
+            }
 
             /// Destructor. Calls `glDelete()` over the vertex
             /// buffer.
