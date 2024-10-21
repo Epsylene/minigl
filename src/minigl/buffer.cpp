@@ -38,10 +38,36 @@ namespace minigl
     void VertexBuffer::bind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, bufferID);
+        for (int i = 0; i < layout.size(); ++i)
+        {
+            glEnableVertexAttribArray(i);
+        }
+    }
+
+    void VertexBuffer::set_attributes(uint32_t location) const
+    {
+        // For each element in the layout, enable the vertex
+        // attribute array at the element's index and give it
+        // the data it wants.
+        for (uint32_t index = location; const auto& element: layout)
+        {
+            glVertexAttribPointer(index,
+                                  element.count(),
+                                  dataTypeToGLType(element.type),
+                                  element.normalized ? GL_TRUE : GL_FALSE,
+                                  layout.stride,
+                                  (const void*)element.offset);
+            glVertexAttribDivisor(index, 0);
+            index++;
+        }
     }
 
     void VertexBuffer::unbind() const
     {
+        for (int i = 0; i < layout.size(); ++i)
+        {
+            glDisableVertexAttribArray(i);
+        }
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -93,26 +119,27 @@ namespace minigl
     VertexArray::VertexArray(const Ref<VertexBuffer>& vb, const Ref<IndexBuffer>& ib)
     {
         glCreateVertexArrays(1, &vtxArrID);
+        glBindVertexArray(vtxArrID);
 
-        setVertexBuffer(vb);
-        setIndexBuffer(ib);
+        vb->bind();
+        vb->set_attributes();
+        vertexBuffer = vb;
+
+        ib->bind();
+        indexBuffer = ib;
+
+        glBindVertexArray(0);
     }
 
     void VertexArray::bind() const
     {
         glBindVertexArray(vtxArrID);
-        for (int i = 0; i < vertexBuffer->getLayout().size(); ++i)
-        {
-            glEnableVertexAttribArray(i);
-        }
+        vertexBuffer->bind();
     }
 
     void VertexArray::unbind() const
     {
-        for (int i = 0; i < vertexBuffer->getLayout().size(); ++i)
-        {
-            glDisableVertexAttribArray(i);
-        }
+        vertexBuffer->unbind();
         glBindVertexArray(0);
     }
 
@@ -120,45 +147,6 @@ namespace minigl
     {
         glBindVertexArray(vtxArrID);
         vertexBuffer->update_vertices(vertices);
-    }
-
-    void VertexArray::setVertexBuffer(const Ref<VertexBuffer>& vertexBuffer)
-    {
-        glBindVertexArray(vtxArrID);
-        vertexBuffer->bind();
-
-        // For each element in the layout, enable the vertex
-        // attribute array at the element's index and give it
-        // the data it wants.
-        const auto& layout = vertexBuffer->getLayout();
-        for (uint32_t index = 0; const auto& element: layout)
-        {
-            glEnableVertexAttribArray(index);
-            glVertexAttribPointer(index,
-                                  element.count(),
-                                  dataTypeToGLType(element.type),
-                                  element.normalized ? GL_TRUE : GL_FALSE,
-                                  layout.stride,
-                                  (const void*)element.offset);
-            glVertexAttribDivisor(index, 0);
-            index++;
-        }
-
-        this->vertexBuffer = vertexBuffer;
-
-        for (int i = 0; i < layout.size(); ++i)
-        {
-            glDisableVertexAttribArray(i);
-        }
-    }
-
-    void VertexArray::setIndexBuffer(const Ref<IndexBuffer>& indexBuffer)
-    {
-        this->bind();
-        indexBuffer->bind();
-
-        this->indexBuffer = indexBuffer;
-        this->unbind();
     }
 
     FrameBuffer::FrameBuffer()

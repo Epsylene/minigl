@@ -236,6 +236,13 @@ namespace minigl
             void bind() const;
             void unbind() const;
 
+            /// Set the attribute pointers of the vertex
+            /// buffer. Each attribute is given an index to be
+            /// accessed from the shader, with the first value
+            /// given by the parameter `location` (default is
+            /// 0).
+            void set_attributes(uint32_t location = 0) const;
+
             uint32_t getCount() const { return count; }
 
             /// Update the vertices of the vertex buffer.
@@ -310,13 +317,10 @@ namespace minigl
             void bind() const;
             void unbind() const;
 
+            inline uint32_t getCount() const { return indexBuffer->getCount(); }
+
             /// Update the vertices of the vertex buffer.
             void updateVertices(const std::vector<Vertex>& vertices);
-
-            void setVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
-            void setIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
-            const Ref<VertexBuffer>& getVertexBuffers() const { return vertexBuffer; }
-            const Ref<IndexBuffer>& getIndexBuffer() const { return indexBuffer; }
 
         private:
 
