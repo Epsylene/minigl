@@ -48,7 +48,7 @@ namespace minigl
             void upload(const std::string& name, const Mat3& matrix);
             void upload(const std::string& name, const Mat4& matrix);
 
-            void texture(const std::string& name, Ref<Texture> texture, uint32_t slot);
+            void texture(const std::string& name, Ref<Texture> texture, uint32_t slot = 0);
 
         private:
 
