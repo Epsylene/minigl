@@ -4,11 +4,15 @@ namespace minigl
 {
     //----------- VERTEX BUFFER -----------//
 
-    VertexBuffer::VertexBuffer(float* vertices, size_t size, DataUsage usage)
+    void VertexBuffer::create_buffer(const void* data, size_t size, DataUsage usage)
     {
         glCreateBuffers(1, &bufferID);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-        glBufferData(GL_ARRAY_BUFFER, size, vertices, (GLenum)usage);
+        glNamedBufferStorage(bufferID, size, data, GL_DYNAMIC_STORAGE_BIT);
+    }
+
+    VertexBuffer::VertexBuffer(float* vertices, size_t size, DataUsage usage)
+    {
+        create_buffer(vertices, size, usage);
 
         count = size / sizeof(float);
         layout = {{{DataType::Float3, "a_pos"},
@@ -19,9 +23,7 @@ namespace minigl
 
     VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage)
     {
-        glCreateBuffers(1, &bufferID);
-        glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-        glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), &vertices[0], (GLenum)usage);
+        create_buffer(vertices.data(), vertices.size() * sizeof(Vertex), usage);
 
         count = vertices.size();
         layout = {{{DataType::Float3, "a_pos"},
@@ -38,36 +40,10 @@ namespace minigl
     void VertexBuffer::bind() const
     {
         glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-        for (int i = 0; i < layout.size(); ++i)
-        {
-            glEnableVertexAttribArray(i);
-        }
-    }
-
-    void VertexBuffer::set_attributes(uint32_t location) const
-    {
-        // For each element in the layout, enable the vertex
-        // attribute array at the element's index and give it
-        // the data it wants.
-        for (uint32_t index = location; const auto& element: layout)
-        {
-            glVertexAttribPointer(index,
-                                  element.count(),
-                                  dataTypeToGLType(element.type),
-                                  element.normalized ? GL_TRUE : GL_FALSE,
-                                  layout.stride,
-                                  (const void*)element.offset);
-            glVertexAttribDivisor(index, 0);
-            index++;
-        }
     }
 
     void VertexBuffer::unbind() const
     {
-        for (int i = 0; i < layout.size(); ++i)
-        {
-            glDisableVertexAttribArray(i);
-        }
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -82,8 +58,7 @@ namespace minigl
     IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage): count(count)
     {
         glCreateBuffers(1, &idxBufferID);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxBufferID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), indices, (GLenum)usage);
+        glNamedBufferStorage(idxBufferID, count * sizeof(uint32_t), indices, (GLenum)usage);
     }
 
     IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage): count(indices.size())
@@ -119,14 +94,9 @@ namespace minigl
     VertexArray::VertexArray(const Ref<VertexBuffer>& vb, const Ref<IndexBuffer>& ib)
     {
         glCreateVertexArrays(1, &vtxArrID);
-        glBindVertexArray(vtxArrID);
 
-        vb->bind();
-        vb->set_attributes();
-        vertexBuffer = vb;
-
-        ib->bind();
-        indexBuffer = ib;
+        add_vertex_buffer(vb);
+        set_index_buffer(ib);
 
         glBindVertexArray(0);
     }
@@ -134,19 +104,87 @@ namespace minigl
     void VertexArray::bind() const
     {
         glBindVertexArray(vtxArrID);
-        vertexBuffer->bind();
+        for (auto& vb: vertexBuffers)
+        {
+            vb->bind();
+        }
     }
 
     void VertexArray::unbind() const
     {
-        vertexBuffer->unbind();
+        for (auto& vb: vertexBuffers)
+        {
+            vb->unbind();
+        }
         glBindVertexArray(0);
     }
 
-    void VertexArray::updateVertices(const std::vector<Vertex>& vertices)
+    void VertexArray::add_vertex_buffer(const Ref<VertexBuffer>& vb)
+    {
+        int binding = 0;
+        for (auto& vertexBuffer: vertexBuffers)
+        {
+            binding += vertexBuffer->attribute_count();
+        }
+
+        // The vertex array is provided the ID of the new
+        // vertex buffer, which is bound at the index
+        // corresponding to the next possible location after
+        // the previous buffers (for example, 2 if a pos|normal
+        // buffer is already present), and the stride of the
+        // internal layout of the new buffer.
+        glVertexArrayVertexBuffer(vtxArrID, binding, vb->bufferID, 0, vb->layout.stride);
+
+        // For each element in the layout:
+        const auto& layout = vb->layout; 
+        for (uint32_t attribute = binding; const auto& element: layout)
+        {
+            // - Enable the attribute
+            glEnableVertexArrayAttrib(vtxArrID, attribute);
+            
+            // - Set its format (size, type, normalization,
+            //   offset)
+            glVertexArrayAttribFormat(
+                vtxArrID,
+                attribute,
+                element.count(),
+                dataTypeToGLType(element.type),
+                element.normalized ? GL_TRUE : GL_FALSE,
+                element.offset
+            );
+
+            // - Set the binding divisor for instanced/indirect
+            //   rendering
+            glVertexArrayBindingDivisor(
+                vtxArrID,
+                attribute,
+                element.divisor
+            );
+
+            // - Bind the attribute to the currently bound
+            //   vertex buffer
+            glVertexArrayAttribBinding(
+                vtxArrID, 
+                attribute, 
+                binding
+            );
+
+            attribute++;
+        }
+
+        vertexBuffers.push_back(vb);
+    }
+
+    void VertexArray::set_index_buffer(const Ref<IndexBuffer>& ib)
+    {
+        glVertexArrayElementBuffer(vtxArrID, ib->idxBufferID);
+        indexBuffer = ib;
+    }
+
+    void VertexArray::updateVertices(size_t index, const std::vector<Vertex>& vertices)
     {
         glBindVertexArray(vtxArrID);
-        vertexBuffer->update_vertices(vertices);
+        vertexBuffers[index]->update_vertices(vertices);
     }
 
     FrameBuffer::FrameBuffer()

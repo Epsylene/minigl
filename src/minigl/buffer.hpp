@@ -193,11 +193,13 @@ namespace minigl
     /// memory, where they can be accessed faster.
     class VertexBuffer
     {
-        private:
+        public:
 
             uint32_t bufferID;
             uint32_t count;
             BufferLayout layout;
+
+            void create_buffer(const void* data, size_t size, DataUsage usage);
 
         public:
 
@@ -221,10 +223,7 @@ namespace minigl
             /// vertices with a custom layout.
             template<typename vertex_t>
             VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::Static) {
-                glCreateBuffers(1, &bufferID);
-                glBindBuffer(GL_ARRAY_BUFFER, bufferID);
-                glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(vertex_t), &vertices[0], (GLenum)usage);
-
+                create_buffer(vertices.data(), vertices.size() * sizeof(vertex_t), usage);
                 count = vertices.size();
                 this->layout = layout;
             }
@@ -236,14 +235,8 @@ namespace minigl
             void bind() const;
             void unbind() const;
 
-            /// Set the attribute pointers of the vertex
-            /// buffer. Each attribute is given an index to be
-            /// accessed from the shader, with the first value
-            /// given by the parameter `location` (default is
-            /// 0).
-            void set_attributes(uint32_t location = 0) const;
-
-            uint32_t getCount() const { return count; }
+            uint32_t vertex_count() const { return count; }
+            uint32_t attribute_count() const { return layout.size(); }
 
             /// Update the vertices of the vertex buffer.
             void update_vertices(const std::vector<Vertex>& vertices);
@@ -270,7 +263,7 @@ namespace minigl
     /// contents match the mesh data.
     class IndexBuffer
     {
-        private:
+        public:
 
             uint32_t idxBufferID;
             uint32_t count;
@@ -317,15 +310,18 @@ namespace minigl
             void bind() const;
             void unbind() const;
 
+            void add_vertex_buffer(const Ref<VertexBuffer>& vb);
+            void set_index_buffer(const Ref<IndexBuffer>& ib);
+
             inline uint32_t getCount() const { return indexBuffer->getCount(); }
 
             /// Update the vertices of the vertex buffer.
-            void updateVertices(const std::vector<Vertex>& vertices);
+            void updateVertices(size_t index, const std::vector<Vertex>& vertices);
 
         private:
 
             uint32_t vtxArrID;
-            Ref<VertexBuffer> vertexBuffer;
+            std::vector<Ref<VertexBuffer>> vertexBuffers;
             Ref<IndexBuffer> indexBuffer;
     };
 
