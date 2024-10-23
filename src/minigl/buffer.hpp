@@ -95,7 +95,7 @@ namespace minigl
 
         BufferElement() = default;
 
-        BufferElement(DataType type, const std::string& name, bool normalized = false, uint32_t divisor = 0):
+        BufferElement(DataType type, const std::string& name, uint32_t divisor = 0, bool normalized = false):
             name(name), type(type), size(dataTypeSize(type)), normalized(normalized), divisor(divisor) {}
 
         /// Number of components of the underlying data type of

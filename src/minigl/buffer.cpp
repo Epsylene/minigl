@@ -157,7 +157,7 @@ namespace minigl
             //   rendering
             glVertexArrayBindingDivisor(
                 vtxArrID,
-                attribute,
+                binding,
                 element.divisor
             );
 
