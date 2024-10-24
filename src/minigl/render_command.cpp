@@ -61,4 +61,15 @@ namespace minigl
                                 nullptr,
                                 count);
     }
+
+    void RenderCommand::draw_indirect(const Ref<VertexArray>& vertexArray,
+                                    uint32_t count,
+                                    Primitives drawPrimitive)
+    {
+        glMultiDrawElementsIndirect((GLenum)drawPrimitive,
+                                    GL_UNSIGNED_INT,
+                                    nullptr,
+                                    count,
+                                    0);
+    }
 }

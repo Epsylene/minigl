@@ -61,5 +61,7 @@ namespace minigl
         static void draw_indexed(const Ref<VertexArray>& vertexArray, Primitives drawPrimitive = Primitives::TRIANGLES);
 
         static void draw_instanced(const Ref<VertexArray>& vertexArray, uint32_t count, Primitives drawPrimitive = Primitives::TRIANGLES);
+
+        static void draw_indirect(const Ref<VertexArray>& vertexArray, uint32_t count, Primitives drawPrimitive = Primitives::TRIANGLES);
     };
 }

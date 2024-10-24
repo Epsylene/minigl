@@ -187,6 +187,8 @@ namespace minigl
         vertexBuffers[index]->update_vertices(vertices);
     }
 
+    //----------- FRAMEBUFFER -----------//
+
     FrameBuffer::FrameBuffer()
     {
         glCreateFramebuffers(1, &fboID);
@@ -226,5 +228,18 @@ namespace minigl
     void FrameBuffer::unbind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    //----------- INDIRECT BUFFER -----------//
+
+    IndirectBuffer::IndirectBuffer(const std::vector<DrawIndirectCommand>& commands)
+    {
+        glCreateBuffers(1, &indirectBufferID);
+        glNamedBufferStorage(indirectBufferID, commands.size() * sizeof(DrawIndirectCommand), commands.data(), 0);
+    }
+
+    void IndirectBuffer::bind() const
+    {
+        glBindBuffer(GL_DRAW_INDIRECT_BUFFER, indirectBufferID);
     }
 }

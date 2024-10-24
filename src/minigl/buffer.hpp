@@ -344,4 +344,26 @@ namespace minigl
             Ref<Texture> colorAttachment;
             Ref<Texture> depthAttachment;
     };
+
+    struct DrawIndirectCommand
+    {
+        uint32_t index_count;
+        uint32_t instance_count;
+        uint32_t first_index;
+        uint32_t base_vertex;
+        uint32_t base_instance;
+    };
+
+    class IndirectBuffer
+    {
+        public:
+
+            IndirectBuffer(const std::vector<DrawIndirectCommand>& commands);
+
+            void bind() const;
+
+        private:
+
+            uint32_t indirectBufferID;
+    };
 }
