@@ -7,9 +7,9 @@ namespace minigl
     const Color Color::Red {1.f, 0.f, 0.f};
     const Color Color::Green {0.f, 1.f, 0.f};
     const Color Color::Blue {0.f, 0.f, 1.f};
-    const Color Color::Yellow {0.f, 1.f, 1.f};
+    const Color Color::Cyan {0.f, 1.f, 1.f};
     const Color Color::Magenta {1.f, 0.f, 1.f};
-    const Color Color::Brown {1.f, 1.f, 0.f};
+    const Color Color::Yellow {1.f, 1.f, 0.f};
 
     Color::Color(float factor): r(factor), g(factor), b(factor), a(1.f)
     {}

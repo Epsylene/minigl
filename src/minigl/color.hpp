@@ -14,9 +14,9 @@ namespace minigl
         static const Color Red;
         static const Color Green;
         static const Color Blue;
-        static const Color Yellow;
+        static const Color Cyan;
         static const Color Magenta;
-        static const Color Brown;
+        static const Color Yellow;
 
         Color() = default;
         Color(float factor);
