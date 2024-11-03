@@ -1,8 +1,9 @@
 #pragma once
 
 #include "geometry.hpp"
-#include <string>
+#include "texture.hpp"
 
+#include <string>
 #include <glad/glad.h>
 
 namespace minigl
@@ -19,6 +20,8 @@ namespace minigl
     class Shader
     {
         public:
+
+            Shader() = default;
 
             /// Create a shader from the GLSL file at
             /// `filepath`
@@ -44,6 +47,8 @@ namespace minigl
             void upload(const std::string& name, const Vec4& val);
             void upload(const std::string& name, const Mat3& matrix);
             void upload(const std::string& name, const Mat4& matrix);
+
+            void texture(const std::string& name, Ref<Texture> texture, uint32_t slot = 0);
 
         private:
 

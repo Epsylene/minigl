@@ -38,6 +38,9 @@ namespace minigl
         /// Enable or disable depth clamping
         static void set_depth_clamp(bool enabled);
 
+        /// Enable or disable face culling
+        static void set_face_culling(bool enabled);
+
         /// Set the rendering viewport
         ///
         /// @param x, y Coordinates of the top-left corner of the
@@ -56,5 +59,9 @@ namespace minigl
         /// @param drawPrimitive The rendering
         ///     primitive (triangles, points, etc)
         static void draw_indexed(const Ref<VertexArray>& vertexArray, Primitives drawPrimitive = Primitives::TRIANGLES);
+
+        static void draw_instanced(const Ref<VertexArray>& vertexArray, uint32_t count, Primitives drawPrimitive = Primitives::TRIANGLES);
+
+        static void draw_indirect(const Ref<VertexArray>& vertexArray, uint32_t count, Primitives drawPrimitive = Primitives::TRIANGLES);
     };
 }

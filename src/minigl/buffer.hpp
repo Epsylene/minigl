@@ -85,11 +85,18 @@ namespace minigl
         /// normalized to a value in the range [-1, 1] (signed)
         /// or [0, 1] (unsigned).
         bool normalized;
+        /// When using indirect rendering, the divisor
+        /// specifies the instancing rate of the buffer
+        /// element: if `divisor` is 0, the element is applied
+        /// once per vertex; if it is 1, the element is applied
+        /// once per instance; if it is 2, once every two
+        /// instances, etc.
+        uint32_t divisor = 0;
 
         BufferElement() = default;
 
-        BufferElement(DataType type, const std::string& name, bool normalized = false):
-            name(name), type(type), size(dataTypeSize(type)), normalized(normalized) {}
+        BufferElement(DataType type, const std::string& name, uint32_t divisor = 0, bool normalized = false):
+            name(name), type(type), size(dataTypeSize(type)), normalized(normalized), divisor(divisor) {}
 
         /// Number of components of the underlying data type of
         /// the vertex buffer element
@@ -153,6 +160,10 @@ namespace minigl
         size_t size() const { return elements.size(); };
     };
 
+    /// Generic buffer of vertices with a custom layout
+    template<typename vertex_t>
+    using Buffer = std::vector<vertex_t>;
+
     /// Vertex struct: a vertex is comprised of a position, a
     /// normal, a texture coordinate, and a color.
     struct Vertex
@@ -182,10 +193,13 @@ namespace minigl
     /// memory, where they can be accessed faster.
     class VertexBuffer
     {
-        private:
+        public:
 
             uint32_t bufferID;
+            uint32_t count;
             BufferLayout layout;
+
+            void create_buffer(const void* data, size_t size, DataUsage usage);
 
         public:
 
@@ -202,8 +216,17 @@ namespace minigl
             /// vertices. The vertex buffer is created and
             /// bound to OpenGL, with usage set to `Static` by
             /// default (see `DataUsage`). Its layout is set to
-            /// [pos, normal, tex, color].
+            /// `[pos, normal, tex, color]`.
             explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::Static);
+
+            /// Create a vertex buffer from a buffer of
+            /// vertices with a custom layout.
+            template<typename vertex_t>
+            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::Static) {
+                create_buffer(vertices.data(), vertices.size() * sizeof(vertex_t), usage);
+                count = vertices.size();
+                this->layout = layout;
+            }
 
             /// Destructor. Calls `glDelete()` over the vertex
             /// buffer.
@@ -211,6 +234,9 @@ namespace minigl
 
             void bind() const;
             void unbind() const;
+
+            uint32_t vertex_count() const { return count; }
+            uint32_t attribute_count() const { return layout.size(); }
 
             /// Update the vertices of the vertex buffer.
             void update_vertices(const std::vector<Vertex>& vertices);
@@ -237,7 +263,7 @@ namespace minigl
     /// contents match the mesh data.
     class IndexBuffer
     {
-        private:
+        public:
 
             uint32_t idxBufferID;
             uint32_t count;
@@ -284,14 +310,13 @@ namespace minigl
             void bind() const;
             void unbind() const;
 
-            /// Update the vertices of the vertex buffer at the
-            /// given index.
-            void updateVertices(size_t buffer_idx, const std::vector<Vertex>& vertices);
+            void add_vertex_buffer(const Ref<VertexBuffer>& vb);
+            void set_index_buffer(const Ref<IndexBuffer>& ib);
 
-            void addVertexBuffer(const Ref<VertexBuffer>& vertexBuffer);
-            void setIndexBuffer(const Ref<IndexBuffer>& indexBuffer);
-            const std::vector<Ref<VertexBuffer>>& getVertexBuffers() const { return vertexBuffers; }
-            const Ref<IndexBuffer>& getIndexBuffer() const { return indexBuffer; }
+            inline uint32_t getCount() const { return indexBuffer->getCount(); }
+
+            /// Update the vertices of the vertex buffer.
+            void updateVertices(size_t index, const std::vector<Vertex>& vertices);
 
         private:
 
@@ -318,5 +343,27 @@ namespace minigl
             uint32_t fboID;
             Ref<Texture> colorAttachment;
             Ref<Texture> depthAttachment;
+    };
+
+    struct DrawIndirectCommand
+    {
+        uint32_t index_count;
+        uint32_t instance_count;
+        uint32_t first_index;
+        uint32_t base_vertex;
+        uint32_t base_instance;
+    };
+
+    class IndirectBuffer
+    {
+        public:
+
+            IndirectBuffer(const std::vector<DrawIndirectCommand>& commands);
+
+            void bind() const;
+
+        private:
+
+            uint32_t indirectBufferID;
     };
 }

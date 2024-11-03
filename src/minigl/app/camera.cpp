@@ -116,7 +116,7 @@ namespace minigl
             pitch += yOffset * rotSpeed * dt;
             yaw += xOffset * rotSpeed * dt;
 
-            // pitch = glm::clamp(pitch, -89.f, 89.f);
+            pitch = glm::clamp(pitch, -89.f, 89.f);
             set_rotation(pitch, yaw, roll);
         }
         input->lastMousePos = input->getMousePos();

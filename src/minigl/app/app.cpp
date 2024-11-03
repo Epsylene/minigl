@@ -16,6 +16,7 @@ namespace minigl
         // Enable depth testing and depth clamping
         RenderCommand::set_depth_test(true);
         RenderCommand::set_depth_clamp(true);
+        RenderCommand::set_face_culling(true);
     }
 
     void App::onWindowClose()

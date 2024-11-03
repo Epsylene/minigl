@@ -24,6 +24,12 @@ namespace minigl
                 : glDisable(GL_DEPTH_CLAMP);
     }
 
+    void RenderCommand::set_face_culling(bool enabled)
+    {
+        enabled ? glEnable(GL_CULL_FACE)
+                : glDisable(GL_CULL_FACE);
+    }
+
     void RenderCommand::set_viewport(uint32_t x, uint32_t y, uint32_t width,
                                     uint32_t height)
     {
@@ -40,8 +46,30 @@ namespace minigl
                                     Primitives drawPrimitive)
     {
         glDrawElements((GLenum)drawPrimitive,
-                       vertexArray->getIndexBuffer()->getCount(),
+                       vertexArray->getCount(),
                        GL_UNSIGNED_INT,
                        nullptr);
+    }
+
+    void RenderCommand::draw_instanced(const Ref<VertexArray>& vertexArray,
+                                      uint32_t count,
+                                      Primitives drawPrimitive)
+    {
+        glDrawElementsInstanced((GLenum)drawPrimitive,
+                                vertexArray->getCount(),
+                                GL_UNSIGNED_INT,
+                                nullptr,
+                                count);
+    }
+
+    void RenderCommand::draw_indirect(const Ref<VertexArray>& vertexArray,
+                                    uint32_t count,
+                                    Primitives drawPrimitive)
+    {
+        glMultiDrawElementsIndirect((GLenum)drawPrimitive,
+                                    GL_UNSIGNED_INT,
+                                    nullptr,
+                                    count,
+                                    0);
     }
 }
