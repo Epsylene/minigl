@@ -38,4 +38,10 @@ namespace minigl
         fmt::print(fmt::fg(fmt::color::red), str, std::forward<Ts>(args)...);
         fmt::println("");
     }
+
+    template<typename... Ts>
+    constexpr void warn(fmt::format_string<Ts...> str, Ts&&... args) {
+        fmt::print(fmt::fg(fmt::color::yellow), str, std::forward<Ts>(args)...);
+        fmt::println("");
+    }
 }
