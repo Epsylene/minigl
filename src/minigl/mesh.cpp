@@ -1,5 +1,7 @@
 #include "mesh.hpp"
-#include <rapidobj/rapidobj.hpp>
+
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
 
 namespace minigl
 {
@@ -14,40 +16,54 @@ namespace minigl
 
     Mesh::Mesh(const std::string& path, DataUsage usage)
     {
-        auto result = rapidobj::ParseFile(path);
-        MGL_ASSERT(!result.error, "Failed to parse file.");
+        tinyobj::ObjReader reader {};
+        if (!reader.ParseFromFile(path))
+            MGL_ASSERT(false, "Failed to parse file '{}'", path);
+        if (!reader.Error().empty())
+            MGL_ASSERT(false, "TinyObjLoader error: {}", reader.Error());
+        if (!reader.Warning().empty())
+            warn("TinyObjLoader warning: {}", reader.Warning());
         
-        auto success = rapidobj::Triangulate(result);
-        MGL_ASSERT(success, "Failed to triangulate mesh.");
+        auto& attrib = reader.GetAttrib();
+        auto& shapes = reader.GetShapes();
 
-        auto vtx_nb = result.attributes.positions.size()/3;
-        vertices.resize(vtx_nb);
+        vertices.reserve(attrib.vertices.size()/3);
+        indices.reserve(vertices.size()*6);
+        
+        for (auto& shape: shapes) {
+            size_t index_offset = 0;
+            for (auto& fv: shape.mesh.num_face_vertices) {
+                for (size_t v = 0; v < fv; v++) {
+                    tinyobj::index_t idx = shape.mesh.indices[index_offset + v];
+                    
+                    Vertex vertex {};
+                    vertex.pos = {
+                        attrib.vertices[3*idx.vertex_index+0],
+                        attrib.vertices[3*idx.vertex_index+1],
+                        attrib.vertices[3*idx.vertex_index+2]
+                    };
 
-        auto& pos = result.attributes.positions;
-        auto& normals = result.attributes.normals;
-        auto& tex = result.attributes.texcoords;
-        auto& color = result.attributes.colors;
+                    if (idx.normal_index >= 0) {
+                        vertex.normal = {
+                            attrib.normals[3*idx.normal_index+0],
+                            attrib.normals[3*idx.normal_index+1],
+                            attrib.normals[3*idx.normal_index+2]
+                        };
+                    }
 
-        for (int i = 0; i < vtx_nb; i++) {
-            vertices[i].pos = {pos[3*i], pos[3*i+1], pos[3*i+2]};
-            
-            if (!normals.empty()) 
-                vertices[i].normal = {normals[3*i], normals[3*i+1], normals[3*i+2]};
+                    if (idx.texcoord_index >= 0) {
+                        vertex.tex = {
+                            attrib.texcoords[2*idx.texcoord_index+0],
+                            attrib.texcoords[2*idx.texcoord_index+1]
+                        };
+                    }
 
-            if (!tex.empty())
-                vertices[i].tex = {tex[2*i], tex[2*i+1]};
-
-            if (!color.empty())
-                vertices[i].color = {color[3*i], color[3*i+1], color[3*i+2]};
+                    vertices.push_back(vertex);
+                    indices.push_back(indices.size());
+                }
+                index_offset += fv;
+            }
         }
-
-        // Average of 6 neighbors per vertex, so around 6*(nb
-        // of vertices) indices for the whole mesh.
-        indices.reserve(vtx_nb*6);
-
-        for (auto& shape: result.shapes)
-            for (auto& idx: shape.mesh.indices)
-                indices.push_back(idx.position_index);
         
         auto vb = std::make_shared<VertexBuffer>(vertices, usage);
         auto ib = std::make_shared<IndexBuffer>(indices, usage);

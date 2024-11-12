@@ -54,11 +54,11 @@ target_include_directories(${PROJECT_NAME} PUBLIC ${MGL_INCLUDE})
 add_subdirectory(lib/glfw)
 add_subdirectory(lib/glad)
 add_subdirectory(lib/glm)
-add_subdirectory(lib/rapidobj)
+add_subdirectory(lib/tinyobj)
 add_subdirectory(lib/fmt)
 add_subdirectory(lib/stb_image)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm rapidobj fmt stb_image)
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw ${GLFW_LIBRARIES} opengl32 glad glm fmt stb_image tinyobjloader)
 target_link_libraries(${PROJECT_NAME} PUBLIC -Wl,-static -static-libgcc -static-libstdc++ -lstdc++fs)
 
 # Avoid clashes between GLFW and Glad
