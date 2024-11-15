@@ -242,4 +242,18 @@ namespace minigl
     {
         glBindBuffer(GL_DRAW_INDIRECT_BUFFER, indirectBufferID);
     }
+
+    //----------- UNIFORM BUFFER -----------//
+
+    void UniformBuffer::create_buffer(const void* data, size_t size, uint32_t binding_point, DataUsage usage)
+    {
+        glCreateBuffers(1, &uboID);
+        glNamedBufferStorage(uboID, size, data, 0);
+        glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, uboID);
+    }
+
+    void UniformBuffer::bind() const
+    {
+        glBindBuffer(GL_UNIFORM_BUFFER, uboID);
+    }
 }

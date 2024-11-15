@@ -372,4 +372,28 @@ namespace minigl
 
             uint32_t indirectBufferID;
     };
+
+    class UniformBuffer
+    {
+        public:
+
+            template<typename buffer_t>
+            UniformBuffer(const buffer_t& buffer, uint32_t binding_point, DataUsage usage = DataUsage::StaticDraw)
+            {
+                create_buffer(&buffer, sizeof(buffer_t), binding_point, usage);
+            }
+
+            template<typename buffer_t>
+            UniformBuffer(const std::vector<buffer_t>& buffer, uint32_t binding_point, DataUsage usage = DataUsage::StaticDraw)
+            {
+                create_buffer(buffer.data(), buffer.size() * sizeof(buffer_t), binding_point, usage);
+            }
+
+            void bind() const;
+
+        public:
+
+            uint32_t uboID;
+            void create_buffer(const void* data, size_t size, uint32_t binding_point, DataUsage usage);
+    };
 }
