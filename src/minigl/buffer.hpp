@@ -178,12 +178,18 @@ namespace minigl
     /// rendering
     enum class DataUsage
     {
-        /// Loaded and then unchanged. Most common usage.
-        Static = GL_STATIC_DRAW,
-        /// Loaded and then occasionaly modified.
-        Dynamic = GL_DYNAMIC_DRAW,
-        /// Modified repeatedly (every frame).
-        Stream = GL_STREAM_DRAW,
+        /// Loaded and then unchanged. Draw access.
+        StaticDraw = GL_STATIC_DRAW,
+        /// Loaded and then unchanged. Read access.
+        StaticRead = GL_STATIC_READ,
+        /// Loaded and then occasionaly modified. Draw access.
+        DynamicDraw = GL_DYNAMIC_DRAW,
+        /// Loaded and then occasionaly modified. Read access.
+        DynamicRead = GL_DYNAMIC_READ,
+        /// Modified every frame. Draw access.
+        StreamDraw = GL_STREAM_DRAW,
+        /// Modified every frame. Read access.
+        StreamRead = GL_STREAM_READ
     };
 
     /// The VBO (Vertex Buffer Object) is a buffer containing
@@ -205,24 +211,24 @@ namespace minigl
 
             /// Creates a vertex buffer from an array of
             /// floats. The vertex buffer is created and bound
-            /// to OpenGL, with usage set to `Static` by
+            /// to OpenGL, with usage set to `StaticDraw` by
             /// default (see `DataUsage`).
             ///
             /// @param vertices The array of vertices
             /// @param size The array size in bytes (`sizeof()`)
-            VertexBuffer(float* vertices, size_t size, DataUsage usage = DataUsage::Static);
+            VertexBuffer(float* vertices, size_t size, DataUsage usage = DataUsage::StaticDraw);
 
             /// Create a vertex buffer from an array of
             /// vertices. The vertex buffer is created and
-            /// bound to OpenGL, with usage set to `Static` by
+            /// bound to OpenGL, with usage set to `StaticDraw` by
             /// default (see `DataUsage`). Its layout is set to
             /// `[pos, normal, tex, color]`.
-            explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::Static);
+            explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::StaticDraw);
 
             /// Create a vertex buffer from a buffer of
             /// vertices with a custom layout.
             template<typename vertex_t>
-            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::Static) {
+            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::StaticDraw) {
                 create_buffer(vertices.data(), vertices.size() * sizeof(vertex_t), usage);
                 count = vertices.size();
                 this->layout = layout;
@@ -271,15 +277,15 @@ namespace minigl
         public:
 
             /// The index buffer is created and bound to
-            /// OpenGL, with usage set to `Static` by default
+            /// OpenGL, with usage set to `StaticDraw` by default
             /// (see `DataUsage`).
-            IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage = DataUsage::Static);
+            IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage = DataUsage::StaticDraw);
 
             /// Create an index buffer from a vector of
             /// indices. The index buffer is created and bound
-            /// to OpenGL, with usage set to `Static` by
+            /// to OpenGL, with usage set to `StaticDraw` by
             /// default (see `DataUsage`).
-            explicit IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage = DataUsage::Static);
+            explicit IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage = DataUsage::StaticDraw);
 
             /// Destructor. Calls `glDelete()` over the index
             /// buffer.
