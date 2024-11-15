@@ -7,7 +7,7 @@ namespace minigl
     void VertexBuffer::create_buffer(const void* data, size_t size, DataUsage usage)
     {
         glCreateBuffers(1, &bufferID);
-        glNamedBufferStorage(bufferID, size, data, GL_DYNAMIC_STORAGE_BIT);
+        glNamedBufferStorage(bufferID, size, data, (GLenum)usage);
     }
 
     VertexBuffer::VertexBuffer(float* vertices, size_t size, DataUsage usage)
@@ -64,8 +64,7 @@ namespace minigl
     IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage): count(indices.size())
     {
         glCreateBuffers(1, &idxBufferID);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idxBufferID);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices.size() * sizeof(uint32_t), &indices[0], (GLenum)usage);
+        glNamedBufferStorage(idxBufferID, indices.size() * sizeof(uint32_t), indices.data(), (GLenum)usage);
     }
 
     IndexBuffer::~IndexBuffer()
@@ -232,10 +231,10 @@ namespace minigl
 
     //----------- INDIRECT BUFFER -----------//
 
-    IndirectBuffer::IndirectBuffer(const std::vector<DrawIndirectCommand>& commands)
+    IndirectBuffer::IndirectBuffer(const std::vector<DrawIndirectCommand>& commands, DataUsage usage)
     {
         glCreateBuffers(1, &indirectBufferID);
-        glNamedBufferStorage(indirectBufferID, commands.size() * sizeof(DrawIndirectCommand), commands.data(), 0);
+        glNamedBufferStorage(indirectBufferID, commands.size() * sizeof(DrawIndirectCommand), commands.data(), (GLenum)usage);
     }
 
     void IndirectBuffer::bind() const
@@ -248,7 +247,7 @@ namespace minigl
     void UniformBuffer::create_buffer(const void* data, size_t size, uint32_t binding_point, DataUsage usage)
     {
         glCreateBuffers(1, &uboID);
-        glNamedBufferStorage(uboID, size, data, 0);
+        glNamedBufferStorage(uboID, size, data, (GLenum)usage);
         glBindBufferBase(GL_UNIFORM_BUFFER, binding_point, uboID);
     }
 

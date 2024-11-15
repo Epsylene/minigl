@@ -21,9 +21,9 @@ namespace minigl
         /// created, but not bound.
         Mesh(const std::vector<Vertex>& vertices, 
             const std::vector<uint32_t>& indices,
-            DataUsage usage = DataUsage::StaticDraw);
+            DataUsage usage = DataUsage::Static);
 
         /// Load a mesh from an OBJ file at the given path.
-        Mesh(const std::string& path, DataUsage usage = DataUsage::StaticDraw);
+        Mesh(const std::string& path, DataUsage usage = DataUsage::Static);
     };
 }

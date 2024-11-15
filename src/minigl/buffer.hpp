@@ -178,18 +178,11 @@ namespace minigl
     /// rendering
     enum class DataUsage
     {
-        /// Loaded and then unchanged. Draw access.
-        StaticDraw = GL_STATIC_DRAW,
-        /// Loaded and then unchanged. Read access.
-        StaticRead = GL_STATIC_READ,
-        /// Loaded and then occasionaly modified. Draw access.
-        DynamicDraw = GL_DYNAMIC_DRAW,
-        /// Loaded and then occasionaly modified. Read access.
-        DynamicRead = GL_DYNAMIC_READ,
-        /// Modified every frame. Draw access.
-        StreamDraw = GL_STREAM_DRAW,
-        /// Modified every frame. Read access.
-        StreamRead = GL_STREAM_READ
+        /// No flags. Default for buffers sent once to the GPU
+        /// and not modified afterwards.
+        Static = GL_NONE,
+        /// Dynamics buffers that are modified frequently.
+        Dynamic = GL_DYNAMIC_STORAGE_BIT,
     };
 
     /// The VBO (Vertex Buffer Object) is a buffer containing
@@ -216,19 +209,19 @@ namespace minigl
             ///
             /// @param vertices The array of vertices
             /// @param size The array size in bytes (`sizeof()`)
-            VertexBuffer(float* vertices, size_t size, DataUsage usage = DataUsage::StaticDraw);
+            VertexBuffer(float* vertices, size_t size, DataUsage usage = DataUsage::Static);
 
             /// Create a vertex buffer from an array of
             /// vertices. The vertex buffer is created and
             /// bound to OpenGL, with usage set to `StaticDraw` by
             /// default (see `DataUsage`). Its layout is set to
             /// `[pos, normal, tex, color]`.
-            explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::StaticDraw);
+            explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::Static);
 
             /// Create a vertex buffer from a buffer of
             /// vertices with a custom layout.
             template<typename vertex_t>
-            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::StaticDraw) {
+            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::Static) {
                 create_buffer(vertices.data(), vertices.size() * sizeof(vertex_t), usage);
                 count = vertices.size();
                 this->layout = layout;
@@ -279,13 +272,13 @@ namespace minigl
             /// The index buffer is created and bound to
             /// OpenGL, with usage set to `StaticDraw` by default
             /// (see `DataUsage`).
-            IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage = DataUsage::StaticDraw);
+            IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage = DataUsage::Static);
 
             /// Create an index buffer from a vector of
             /// indices. The index buffer is created and bound
             /// to OpenGL, with usage set to `StaticDraw` by
             /// default (see `DataUsage`).
-            explicit IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage = DataUsage::StaticDraw);
+            explicit IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage = DataUsage::Static);
 
             /// Destructor. Calls `glDelete()` over the index
             /// buffer.
@@ -364,7 +357,7 @@ namespace minigl
     {
         public:
 
-            IndirectBuffer(const std::vector<DrawIndirectCommand>& commands);
+            IndirectBuffer(const std::vector<DrawIndirectCommand>& commands, DataUsage usage = DataUsage::Static);
 
             void bind() const;
 
@@ -378,13 +371,13 @@ namespace minigl
         public:
 
             template<typename buffer_t>
-            UniformBuffer(const buffer_t& buffer, uint32_t binding_point, DataUsage usage = DataUsage::StaticDraw)
+            UniformBuffer(const buffer_t& buffer, uint32_t binding_point, DataUsage usage = DataUsage::Static)
             {
                 create_buffer(&buffer, sizeof(buffer_t), binding_point, usage);
             }
 
             template<typename buffer_t>
-            UniformBuffer(const std::vector<buffer_t>& buffer, uint32_t binding_point, DataUsage usage = DataUsage::StaticDraw)
+            UniformBuffer(const std::vector<buffer_t>& buffer, uint32_t binding_point, DataUsage usage = DataUsage::Static)
             {
                 create_buffer(buffer.data(), buffer.size() * sizeof(buffer_t), binding_point, usage);
             }
