@@ -127,9 +127,12 @@ namespace minigl
             /// recomputed automatically.
             void setDirection(const Vec3& dir) override;
 
+            void setSpeedFactor(float factor);
+
         private:
 
             float pitch = 0.f, yaw = -90.f, roll = 0.f;
+            float speed_factor = 1.f;
             
             void set_rotation(float pitch, float yaw, float roll);
             

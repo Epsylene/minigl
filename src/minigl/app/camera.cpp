@@ -91,6 +91,8 @@ namespace minigl
         float movSpeed = shift ? 0.1f : 5.f;
         float rotSpeed = shift ? 50.f : 200.f;
 
+        movSpeed *= speed_factor;
+
         // Move around
         if(input->isKeyPressed(GLS_KEY_W))
             pos += dir * movSpeed * float(dt);
@@ -129,6 +131,11 @@ namespace minigl
         direction = dir;
         compute_yaw_pitch();
         compute_viewProj();
+    }
+
+    void FreeCamera::setSpeedFactor(float factor)
+    {
+        speed_factor = factor;
     }
 
     void FreeCamera::compute_yaw_pitch()
