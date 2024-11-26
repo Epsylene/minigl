@@ -21,7 +21,6 @@ class ShadowsApp: public App3D
             depth_map = ref<Texture>(1024, 1024, TextureFormat::DEPTH);
             shadow_map = ref<FrameBuffer>();
             shadow_map->attach_depth_texture(depth_map);
-            shadow_map->unbind();
 
             suzanne = ref<Mesh>("res/suzanne.obj");
             scene_shader = ref<Shader>("res/shadows.glsl");
