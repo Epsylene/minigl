@@ -344,12 +344,27 @@ namespace minigl
             Ref<Texture> depthAttachment;
     };
 
+    /// Command for indirect drawing of a given object. The
+    /// "multi draw indirect" command (called with
+    /// `RenderCommand::draw_indirect()`) takes a set of draw
+    /// commands and issues them all at once, allowing the
+    /// instanced draw of multiple different objects in a
+    /// single draw call.
     struct DrawIndirectCommand
     {
+        /// Number of indices to draw
         uint32_t index_count;
+        /// Number of instances to draw of the current object
         uint32_t instance_count;
+        /// Location of the first index of the current object
+        /// (different from 0 if a single buffer is used for
+        /// multiple objects)
         uint32_t first_index;
+        /// Location of the first vertex of the current object
+        /// (different from 0 if a single buffer is used for
+        /// multiple objects)
         uint32_t base_vertex;
+        /// Current instance of the object.
         uint32_t base_instance;
     };
 
