@@ -72,4 +72,15 @@ namespace minigl
                                     count,
                                     0);
     }
+
+    void RenderCommand::dispatch_compute(uint32_t numGroupsX, uint32_t numGroupsY,
+                                       uint32_t numGroupsZ)
+    {
+        glDispatchCompute(numGroupsX, numGroupsY, numGroupsZ);
+    }
+
+    void RenderCommand::memory_barrier()
+    {
+        glMemoryBarrier(GL_ALL_BARRIER_BITS);
+    }
 }

@@ -63,5 +63,15 @@ namespace minigl
         static void draw_instanced(const Ref<VertexArray>& vertexArray, uint32_t count, Primitives drawPrimitive = Primitives::TRIANGLES);
 
         static void draw_indirect(const Ref<VertexArray>& vertexArray, uint32_t count, Primitives drawPrimitive = Primitives::TRIANGLES);
+
+        /// Launch a set of (numGroupsX, numGroupsY,
+        /// numGroupsZ) compute work groups in each dimension.
+        static void dispatch_compute(uint32_t numGroupsX, uint32_t numGroupsY, uint32_t numGroupsZ);
+
+        /// Set a barrier to synchronize memory accesses
+        /// relative to all possible shader operations. That
+        /// is, block accesses until all operations are
+        /// completed.
+        static void memory_barrier();
     };
 }

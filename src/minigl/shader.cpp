@@ -10,6 +10,7 @@ namespace minigl
             case ShaderType::VERTEX: return "VERTEX";
             case ShaderType::FRAGMENT: return "FRAGMENT";
             case ShaderType::GEOMETRY: return "GEOMETRY";
+            case ShaderType::COMPUTE: return "COMPUTE";
         }
 
         return "UNKNOWN";
@@ -74,7 +75,7 @@ namespace minigl
 
         auto add_define = [&shader_sources](std::string source, ShaderType type)
         {            
-            std::string version = "#version 420 core\n";
+            std::string version = "#version 430 core\n";
             std::string define = "#define " + to_string(type) + "\n";
          
             // Only add the shader to the sources if it is
@@ -89,6 +90,7 @@ namespace minigl
         add_define(source, ShaderType::VERTEX);
         add_define(source, ShaderType::FRAGMENT);
         add_define(source, ShaderType::GEOMETRY);
+        add_define(source, ShaderType::COMPUTE);
 
         return shader_sources;
     }

@@ -5,8 +5,16 @@ namespace minigl
 {
     enum class TextureFormat
     {
-        COLOR = GL_RGB8,
+        COLOR_RGB = GL_RGB8,
+        COLOR_RGBA = GL_RGBA32F,
         DEPTH = GL_DEPTH_COMPONENT32F,
+    };
+
+    enum class ImageAccess
+    {
+        READ_ONLY = GL_READ_ONLY,
+        WRITE_ONLY = GL_WRITE_ONLY,
+        READ_WRITE = GL_READ_WRITE,
     };
 
     struct Texture
@@ -20,8 +28,10 @@ namespace minigl
         Texture(const std::string& path);
 
         void bind(uint32_t unit = 0) const;
+        void bind_image(uint32_t unit, ImageAccess access) const;
 
         GLuint id;
         int width, height;
+        TextureFormat format;
     };
 }

@@ -6,13 +6,14 @@
 
 namespace minigl
 {
-    Texture::Texture(int width, int height, TextureFormat format): width(width), height(height)
+    Texture::Texture(int width, int height, TextureFormat format):
+        width(width), height(height), format(format)
     {
         // Create a 2D texture handle with the retrieved ID.
         glCreateTextures(GL_TEXTURE_2D, 1, &id);
 
-        // Allocate storage for width x height pixels in RGB8
-        // format and 1 mip level.
+        // Allocate storage for width x height pixels in the
+        // given format and with 1 mip level.
         glTextureStorage2D(id, 1, (GLenum)format, width, height);
 
         // Set the min and mag filters to linear (perform
@@ -85,5 +86,13 @@ namespace minigl
     {
         glActiveTexture(GL_TEXTURE0 + unit);
         glBindTexture(GL_TEXTURE_2D, id);
+    }
+
+    void Texture::bind_image(uint32_t unit, ImageAccess access) const
+    {
+        // The format could actually be different from the
+        // texture format, as long as it is compatible (see
+        // https://docs.gl/gl4/glBindImageTexture#description).
+        glBindImageTexture(unit, id, 0, GL_FALSE, 0, (GLenum)access, (GLenum)format);
     }
 }

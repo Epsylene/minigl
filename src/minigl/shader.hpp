@@ -12,7 +12,8 @@ namespace minigl
     {
         VERTEX = GL_VERTEX_SHADER,
         FRAGMENT = GL_FRAGMENT_SHADER,
-        GEOMETRY = GL_GEOMETRY_SHADER
+        GEOMETRY = GL_GEOMETRY_SHADER,
+        COMPUTE = GL_COMPUTE_SHADER,
     };
 
     /// Shader abstraction class, in order to easily load and
