@@ -19,7 +19,7 @@ void main()
 #ifdef FRAGMENT
 layout(location = 0) out vec4 color;
 
-uniform sampler2D u_texture;
+layout(binding = 0) uniform sampler2D u_texture;
 
 in vec3 v_pos;
 in vec2 v_tex;
