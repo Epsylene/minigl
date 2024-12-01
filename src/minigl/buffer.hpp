@@ -331,8 +331,8 @@ namespace minigl
             FrameBuffer();
             virtual ~FrameBuffer();
 
-            void attach_color_texture(const Ref<Texture>& texture);
-            void attach_depth_texture(const Ref<Texture>& texture);
+            void add_color_attachment(const Ref<Texture>& texture);
+            void set_depth_attachment(const Ref<Texture>& texture);
 
             void bind() const;
             void unbind() const;
@@ -340,7 +340,7 @@ namespace minigl
         private:
 
             uint32_t fboID;
-            Ref<Texture> colorAttachment;
+            std::vector<Ref<Texture>> colorAttachments;
             Ref<Texture> depthAttachment;
     };
 

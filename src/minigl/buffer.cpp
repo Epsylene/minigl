@@ -196,24 +196,17 @@ namespace minigl
         glDeleteFramebuffers(1, &fboID);
     }
 
-    void FrameBuffer::attach_color_texture(const Ref<Texture>& color_texture)
+    void FrameBuffer::add_color_attachment(const Ref<Texture>& color_texture)
     {
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-        glDrawBuffer(GL_COLOR_ATTACHMENT0);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_texture->id, 0);
-        colorAttachment = color_texture;
+        auto index = colorAttachments.size();
+        glNamedFramebufferDrawBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
+        glNamedFramebufferTexture(fboID, GL_COLOR_ATTACHMENT0 + index, color_texture->id, 0);
+        colorAttachments.push_back(color_texture);
     }
 
-    void FrameBuffer::attach_depth_texture(const Ref<Texture>& depth_texture)
+    void FrameBuffer::set_depth_attachment(const Ref<Texture>& depth_texture)
     {
-        glBindFramebuffer(GL_FRAMEBUFFER, fboID);
-        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_texture->id, 0);
-        
-        if (!colorAttachment) {
-            glDrawBuffer(GL_NONE);
-            glReadBuffer(GL_NONE);
-        }
-        
+        glNamedFramebufferTexture(fboID, GL_DEPTH_ATTACHMENT, depth_texture->id, 0);
         depthAttachment = depth_texture;
     }
 
