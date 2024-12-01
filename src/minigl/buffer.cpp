@@ -96,8 +96,6 @@ namespace minigl
 
         add_vertex_buffer(vb);
         set_index_buffer(ib);
-
-        glBindVertexArray(0);
     }
 
     void VertexArray::bind() const
