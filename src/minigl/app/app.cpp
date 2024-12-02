@@ -5,13 +5,52 @@
 
 namespace minigl
 {
+    void debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
+    {
+        auto const src_str = [source]() {
+            switch (source)
+            {
+                case GL_DEBUG_SOURCE_API: return "API";
+                case GL_DEBUG_SOURCE_WINDOW_SYSTEM: return "WINDOW SYSTEM";
+                case GL_DEBUG_SOURCE_SHADER_COMPILER: return "SHADER COMPILER";
+                case GL_DEBUG_SOURCE_THIRD_PARTY: return "THIRD PARTY";
+                case GL_DEBUG_SOURCE_APPLICATION: return "APPLICATION";
+                case GL_DEBUG_SOURCE_OTHER: return "OTHER";
+            }
+        }();
+
+        auto const type_str = [type]() {
+            switch (type)
+            {
+                case GL_DEBUG_TYPE_ERROR: return "ERROR";
+                case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: return "DEPRECATED_BEHAVIOR";
+                case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR: return "UNDEFINED_BEHAVIOR";
+                case GL_DEBUG_TYPE_PORTABILITY: return "PORTABILITY";
+                case GL_DEBUG_TYPE_PERFORMANCE: return "PERFORMANCE";
+                case GL_DEBUG_TYPE_MARKER: return "MARKER";
+                case GL_DEBUG_TYPE_OTHER: return "OTHER";
+            }
+        }();
+
+        switch (severity) {
+            case GL_DEBUG_SEVERITY_NOTIFICATION: trace("[{}][{}] ({}): {}", src_str, type_str, id, message); break;
+            case GL_DEBUG_SEVERITY_LOW: info("[{}][{}] ({}): {}", src_str, type_str, id, message); break;
+            case GL_DEBUG_SEVERITY_MEDIUM: warn("[{}][{}] ({}): {}", src_str, type_str, id, message); break;
+            case GL_DEBUG_SEVERITY_HIGH: error("[{}][{}] ({}): {}", src_str, type_str, id, message); break;
+        }
+    }
+
     App::App(const int width, const int height)
     {
         window = box<Window>(width, height);
         input = box<Input>(window->get_native_window());
 
         // Set the GLFW callbacks
-        set_callbacks();
+        set_glfw_callbacks();
+
+        // Set the debug callback
+        glEnable(GL_DEBUG_OUTPUT);
+        glDebugMessageCallback(debug_callback, nullptr);
 
         // Enable depth testing and depth clamping
         RenderCommand::set_depth_test(true);
@@ -59,7 +98,7 @@ namespace minigl
         }
     }
 
-    void App::set_callbacks()
+    void App::set_glfw_callbacks()
     {
         // App pointer for the callbacks
         glfwSetWindowUserPointer(window->get_native_window(), this);

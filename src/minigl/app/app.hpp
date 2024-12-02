@@ -28,7 +28,7 @@ namespace minigl
             void onWindowClose();
             void onWindowResize(int new_width, int new_height);
 
-            void set_callbacks();
+            void set_glfw_callbacks();
 
             Box<Window> window;
             bool running = true, minimized = false;
