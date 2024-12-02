@@ -51,6 +51,10 @@ namespace minigl
             /// viewing area, near plane at 0.1 and far plane
             /// at 100.
             OrthoCamera();
+
+            /// Orthographic camera with a `(left,bottom)` to
+            /// `(right,top)` viewing area and `near` and `far`
+            /// planes.
             OrthoCamera(float left, float right, float bottom, float top, float near, float far);
 
             void onUpdate(Ref<Input> input, float dt) override {}
