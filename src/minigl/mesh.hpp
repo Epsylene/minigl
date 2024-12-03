@@ -23,7 +23,8 @@ namespace minigl
             const std::vector<uint32_t>& indices,
             DataUsage usage = DataUsage::Static);
 
-        /// Load a mesh from an OBJ file at the given path.
+        /// Load a mesh from an OBJ file at the given path. A
+        /// vertex array is created, but not bound.
         Mesh(const std::string& path, DataUsage usage = DataUsage::Static);
     };
 }
