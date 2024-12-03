@@ -16,6 +16,16 @@ namespace minigl
 
     Mesh::Mesh(const std::string& path, DataUsage usage)
     {
+        load_mesh(path, vertices, indices);
+        
+        auto vb = std::make_shared<VertexBuffer>(vertices, usage);
+        auto ib = std::make_shared<IndexBuffer>(indices, usage);
+        vertexArray = std::make_shared<VertexArray>(vb, ib);
+
+        trace("Imported mesh from file '{}'", path);
+    }
+
+    void load_mesh(const std::string& path, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices) {
         tinyobj::ObjReader reader {};
         if (!reader.ParseFromFile(path))
             MGL_ASSERT(false, "Failed to parse file '{}'", path);
@@ -64,11 +74,5 @@ namespace minigl
                 index_offset += fv;
             }
         }
-        
-        auto vb = std::make_shared<VertexBuffer>(vertices, usage);
-        auto ib = std::make_shared<IndexBuffer>(indices, usage);
-        vertexArray = std::make_shared<VertexArray>(vb, ib);
-
-        trace("Imported mesh from file '{}'", path);
     }
 }

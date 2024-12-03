@@ -27,4 +27,6 @@ namespace minigl
         /// vertex array is created, but not bound.
         Mesh(const std::string& path, DataUsage usage = DataUsage::Static);
     };
+
+    void load_mesh(const std::string& path, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
 }
