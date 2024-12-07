@@ -176,13 +176,20 @@ namespace minigl
 
     /// How the data of the mesh is supposed to be used during
     /// rendering
-    enum class DataUsage
+    enum DataUsage
     {
         /// No flags. Default for buffers sent once to the GPU
         /// and not modified afterwards.
         Static = GL_NONE,
-        /// Dynamics buffers that are modified frequently.
+        /// Dynamic buffers that are modified frequently.
         Dynamic = GL_DYNAMIC_STORAGE_BIT,
+        /// Maps the buffer for persistent reading from the CPU.
+        MapRead = GL_MAP_READ_BIT | GL_MAP_PERSISTENT_BIT,
+        /// Maps the buffer for persistent writing from the CPU.
+        MapWrite = GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT,
+        /// Maps the buffer for persistent reading and writing
+        /// from the CPU.
+        MapReadWrite = GL_MAP_READ_BIT | GL_MAP_WRITE_BIT | GL_MAP_PERSISTENT_BIT,
     };
 
     /// The VBO (Vertex Buffer Object) is a buffer containing
@@ -312,7 +319,8 @@ namespace minigl
             void add_vertex_buffer(const Ref<VertexBuffer>& vb);
             void set_index_buffer(const Ref<IndexBuffer>& ib);
 
-            inline uint32_t getCount() const { return indexBuffer->getCount(); }
+            /// Get the number of indices in the index buffer.
+            inline uint32_t index_count() const { return indexBuffer->getCount(); }
 
             /// Update the vertices of the vertex buffer.
             void updateVertices(size_t index, const std::vector<Vertex>& vertices);
@@ -344,13 +352,13 @@ namespace minigl
             Ref<Texture> depthAttachment;
     };
 
-    /// Command for indirect drawing of a given object. The
-    /// "multi draw indirect" command (called with
+    /// Command for drawing a given set of vertices. The "multi
+    /// draw indirect" command (called with
     /// `RenderCommand::draw_indirect()`) takes a set of draw
     /// commands and issues them all at once, allowing the
     /// instanced draw of multiple different objects in a
     /// single draw call.
-    struct DrawIndirectCommand
+    struct DrawCommand
     {
         /// Number of indices to draw
         uint32_t index_count;
@@ -372,13 +380,29 @@ namespace minigl
     {
         public:
 
-            IndirectBuffer(const std::vector<DrawIndirectCommand>& commands, DataUsage usage = DataUsage::Static);
+            IndirectBuffer(const std::vector<DrawCommand>& commands, DataUsage usage = DataUsage::Static);
+            virtual ~IndirectBuffer();
 
             void bind() const;
 
-        private:
+            /// If the buffer is mapped, write the command at
+            /// the given index. If it is not mapped, the
+            /// behavior is undefined.
+            void write(size_t index, const DrawCommand& command);
+
+            /// If the buffer is mapped, read the command at
+            /// the given index. If it is not mapped, the
+            /// behavior is undefined.
+            const DrawCommand& read(size_t index) const;
+
+            /// Re-send a mapped buffer to the GPU.
+            void flush();
+
+        public:
 
             uint32_t indirectBufferID;
+            DrawCommand* mappedBuffer;
+            uint32_t size;
     };
 
     class UniformBuffer

@@ -222,15 +222,42 @@ namespace minigl
 
     //----------- INDIRECT BUFFER -----------//
 
-    IndirectBuffer::IndirectBuffer(const std::vector<DrawIndirectCommand>& commands, DataUsage usage)
+    IndirectBuffer::IndirectBuffer(const std::vector<DrawCommand>& commands, DataUsage usage)
     {
         glCreateBuffers(1, &indirectBufferID);
-        glNamedBufferStorage(indirectBufferID, commands.size() * sizeof(DrawIndirectCommand), commands.data(), (GLenum)usage);
+        
+        size = commands.size() * sizeof(DrawCommand);
+        glNamedBufferStorage(indirectBufferID, size, commands.data(), (GLenum)usage);
+
+        if (usage & DataUsage::MapRead || usage & DataUsage::MapWrite)
+            mappedBuffer = (DrawCommand*)glMapNamedBufferRange(indirectBufferID, 0, size, (GLenum)usage);
+    }
+
+    IndirectBuffer::~IndirectBuffer()
+    {
+        mappedBuffer = nullptr;
+        glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+        glDeleteBuffers(1, &indirectBufferID);
     }
 
     void IndirectBuffer::bind() const
     {
         glBindBuffer(GL_DRAW_INDIRECT_BUFFER, indirectBufferID);
+    }
+
+    void IndirectBuffer::write(size_t index, const DrawCommand& command)
+    {
+        mappedBuffer[index] = command;
+    }
+    
+    const DrawCommand& IndirectBuffer::read(size_t index) const
+    {
+        return mappedBuffer[index];
+    }
+
+    void IndirectBuffer::flush()
+    {
+        glFlushMappedNamedBufferRange(indirectBufferID, 0, size);
     }
 
     //----------- UNIFORM BUFFER -----------//

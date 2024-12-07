@@ -46,7 +46,7 @@ namespace minigl
                                     Primitives drawPrimitive)
     {
         glDrawElements((GLenum)drawPrimitive,
-                       vertexArray->getCount(),
+                       vertexArray->index_count(),
                        GL_UNSIGNED_INT,
                        nullptr);
     }
@@ -56,7 +56,7 @@ namespace minigl
                                       Primitives drawPrimitive)
     {
         glDrawElementsInstanced((GLenum)drawPrimitive,
-                                vertexArray->getCount(),
+                                vertexArray->index_count(),
                                 GL_UNSIGNED_INT,
                                 nullptr,
                                 count);
