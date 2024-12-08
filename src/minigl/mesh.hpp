@@ -21,11 +21,11 @@ namespace minigl
         /// created, but not bound.
         Mesh(const std::vector<Vertex>& vertices, 
             const std::vector<uint32_t>& indices,
-            DataUsage usage = DataUsage::Static);
+            DataAccess usage = DataAccess::Static);
 
         /// Load a mesh from an OBJ file at the given path. A
         /// vertex array is created, but not bound.
-        Mesh(const std::string& path, DataUsage usage = DataUsage::Static);
+        Mesh(const std::string& path, DataAccess usage = DataAccess::Static);
     };
 
     void load_mesh(const std::string& path, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);

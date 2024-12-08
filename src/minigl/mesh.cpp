@@ -5,7 +5,7 @@
 
 namespace minigl
 {
-    Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, DataUsage usage):
+    Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, DataAccess usage):
         vertices(vertices), indices(indices)
     {
         auto vb = std::make_shared<VertexBuffer>(vertices, usage);
@@ -14,7 +14,7 @@ namespace minigl
         vertexArray = std::make_shared<VertexArray>(vb, ib);
     }
 
-    Mesh::Mesh(const std::string& path, DataUsage usage)
+    Mesh::Mesh(const std::string& path, DataAccess usage)
     {
         load_mesh(path, vertices, indices);
         

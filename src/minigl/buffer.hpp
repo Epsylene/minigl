@@ -176,7 +176,7 @@ namespace minigl
 
     /// How the data of the mesh is supposed to be used during
     /// rendering
-    enum DataUsage
+    enum DataAccess
     {
         /// No flags. Default for buffers sent once to the GPU
         /// and not modified afterwards.
@@ -205,7 +205,7 @@ namespace minigl
             uint32_t count;
             BufferLayout layout;
 
-            void create_buffer(const void* data, size_t size, DataUsage usage);
+            void create_buffer(const void* data, size_t size, DataAccess usage);
 
         public:
 
@@ -216,19 +216,19 @@ namespace minigl
             ///
             /// @param vertices The array of vertices
             /// @param size The array size in bytes (`sizeof()`)
-            VertexBuffer(float* vertices, size_t size, DataUsage usage = DataUsage::Static);
+            VertexBuffer(float* vertices, size_t size, DataAccess usage = DataAccess::Static);
 
             /// Create a vertex buffer from an array of
             /// vertices. The vertex buffer is created and
             /// bound to OpenGL, with usage set to `StaticDraw` by
             /// default (see `DataUsage`). Its layout is set to
             /// `[pos, normal, tex, color]`.
-            explicit VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage = DataUsage::Static);
+            explicit VertexBuffer(const std::vector<Vertex>& vertices, DataAccess usage = DataAccess::Static);
 
             /// Create a vertex buffer from a buffer of
             /// vertices with a custom layout.
             template<typename vertex_t>
-            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataUsage usage = DataUsage::Static) {
+            VertexBuffer(const Buffer<vertex_t>& vertices, const BufferLayout& layout, DataAccess usage = DataAccess::Static) {
                 create_buffer(vertices.data(), vertices.size() * sizeof(vertex_t), usage);
                 count = vertices.size();
                 this->layout = layout;
@@ -279,13 +279,13 @@ namespace minigl
             /// The index buffer is created and bound to
             /// OpenGL, with usage set to `StaticDraw` by default
             /// (see `DataUsage`).
-            IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage = DataUsage::Static);
+            IndexBuffer(const uint32_t* indices, size_t count, DataAccess usage = DataAccess::Static);
 
             /// Create an index buffer from a vector of
             /// indices. The index buffer is created and bound
             /// to OpenGL, with usage set to `StaticDraw` by
             /// default (see `DataUsage`).
-            explicit IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage = DataUsage::Static);
+            explicit IndexBuffer(const std::vector<uint32_t>& indices, DataAccess usage = DataAccess::Static);
 
             /// Destructor. Calls `glDelete()` over the index
             /// buffer.
@@ -380,7 +380,7 @@ namespace minigl
     {
         public:
 
-            IndirectBuffer(const std::vector<DrawCommand>& commands, DataUsage usage = DataUsage::Static);
+            IndirectBuffer(const std::vector<DrawCommand>& commands, DataAccess usage = DataAccess::Static);
             virtual ~IndirectBuffer();
 
             void bind() const;
@@ -410,13 +410,13 @@ namespace minigl
         public:
 
             template<typename buffer_t>
-            UniformBuffer(const buffer_t& buffer, uint32_t binding_point, DataUsage usage = DataUsage::Static)
+            UniformBuffer(const buffer_t& buffer, uint32_t binding_point, DataAccess usage = DataAccess::Static)
             {
                 create_buffer(&buffer, sizeof(buffer_t), binding_point, usage);
             }
 
             template<typename buffer_t>
-            UniformBuffer(const std::vector<buffer_t>& buffer, uint32_t binding_point, DataUsage usage = DataUsage::Static)
+            UniformBuffer(const std::vector<buffer_t>& buffer, uint32_t binding_point, DataAccess usage = DataAccess::Static)
             {
                 create_buffer(buffer.data(), buffer.size() * sizeof(buffer_t), binding_point, usage);
             }
@@ -426,6 +426,6 @@ namespace minigl
         public:
 
             uint32_t uboID;
-            void create_buffer(const void* data, size_t size, uint32_t binding_point, DataUsage usage);
+            void create_buffer(const void* data, size_t size, uint32_t binding_point, DataAccess usage);
     };
 }

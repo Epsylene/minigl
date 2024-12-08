@@ -4,13 +4,13 @@ namespace minigl
 {
     //----------- VERTEX BUFFER -----------//
 
-    void VertexBuffer::create_buffer(const void* data, size_t size, DataUsage usage)
+    void VertexBuffer::create_buffer(const void* data, size_t size, DataAccess usage)
     {
         glCreateBuffers(1, &bufferID);
         glNamedBufferStorage(bufferID, size, data, (GLenum)usage);
     }
 
-    VertexBuffer::VertexBuffer(float* vertices, size_t size, DataUsage usage)
+    VertexBuffer::VertexBuffer(float* vertices, size_t size, DataAccess usage)
     {
         create_buffer(vertices, size, usage);
 
@@ -21,7 +21,7 @@ namespace minigl
                    {DataType::Float4, "a_color"}}};
     }
 
-    VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, DataUsage usage)
+    VertexBuffer::VertexBuffer(const std::vector<Vertex>& vertices, DataAccess usage)
     {
         create_buffer(vertices.data(), vertices.size() * sizeof(Vertex), usage);
 
@@ -55,13 +55,13 @@ namespace minigl
 
     //----------- INDEX BUFFER -----------//
 
-    IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count, DataUsage usage): count(count)
+    IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count, DataAccess usage): count(count)
     {
         glCreateBuffers(1, &idxBufferID);
         glNamedBufferStorage(idxBufferID, count * sizeof(uint32_t), indices, (GLenum)usage);
     }
 
-    IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices, DataUsage usage): count(indices.size())
+    IndexBuffer::IndexBuffer(const std::vector<uint32_t>& indices, DataAccess usage): count(indices.size())
     {
         glCreateBuffers(1, &idxBufferID);
         glNamedBufferStorage(idxBufferID, indices.size() * sizeof(uint32_t), indices.data(), (GLenum)usage);
@@ -222,14 +222,14 @@ namespace minigl
 
     //----------- INDIRECT BUFFER -----------//
 
-    IndirectBuffer::IndirectBuffer(const std::vector<DrawCommand>& commands, DataUsage usage)
+    IndirectBuffer::IndirectBuffer(const std::vector<DrawCommand>& commands, DataAccess usage)
     {
         glCreateBuffers(1, &indirectBufferID);
         
         size = commands.size() * sizeof(DrawCommand);
         glNamedBufferStorage(indirectBufferID, size, commands.data(), (GLenum)usage);
 
-        if (usage & DataUsage::MapRead || usage & DataUsage::MapWrite)
+        if (usage & DataAccess::MapRead || usage & DataAccess::MapWrite)
             mappedBuffer = (DrawCommand*)glMapNamedBufferRange(indirectBufferID, 0, size, (GLenum)usage);
     }
 
@@ -262,7 +262,7 @@ namespace minigl
 
     //----------- UNIFORM BUFFER -----------//
 
-    void UniformBuffer::create_buffer(const void* data, size_t size, uint32_t binding_point, DataUsage usage)
+    void UniformBuffer::create_buffer(const void* data, size_t size, uint32_t binding_point, DataAccess usage)
     {
         glCreateBuffers(1, &uboID);
         glNamedBufferStorage(uboID, size, data, (GLenum)usage);
