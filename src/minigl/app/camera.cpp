@@ -51,7 +51,7 @@ namespace minigl
 
     void PerspectiveCamera::change_projection(float fov, float aspect, float near, float far)
     {
-        proj = perspective(fov, aspect, near, far);
+        proj = perspective(radians(fov), aspect, near, far);
         compute_viewProj();
     }
 
