@@ -1,4 +1,4 @@
-#include "render_command.hpp"
+#include "commands.hpp"
 
 namespace minigl
 {

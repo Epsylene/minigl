@@ -18,7 +18,7 @@ using minigl::println;
 #include "geometry.hpp"
 #include "color.hpp"
 
-#include "render_command.hpp"
+#include "commands.hpp"
 #include "buffer.hpp"
 #include "shader.hpp"
 

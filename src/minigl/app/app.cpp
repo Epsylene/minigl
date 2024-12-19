@@ -1,5 +1,5 @@
 #include "app.hpp"
-#include "minigl/render_command.hpp"
+#include "minigl/commands.hpp"
 
 #include <glad/glad.h>
 

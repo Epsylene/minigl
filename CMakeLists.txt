@@ -11,8 +11,8 @@ set(SOURCES
     src/log.hpp
     src/minigl/minigl.hpp
 
-    src/minigl/render_command.cpp
-    src/minigl/render_command.hpp
+    src/minigl/commands.cpp
+    src/minigl/commands.hpp
     src/minigl/buffer.cpp
     src/minigl/buffer.hpp
     src/minigl/shader.cpp
