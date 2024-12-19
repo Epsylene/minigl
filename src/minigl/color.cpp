@@ -95,4 +95,9 @@ namespace minigl
     {
         return { color.r * factor, color.g * factor, color.b * factor, color.a };
     }
+
+    Color operator/(const Color& color, float factor)
+    {
+        return { color.r / factor, color.g / factor, color.b / factor, color.a };
+    }
 }
