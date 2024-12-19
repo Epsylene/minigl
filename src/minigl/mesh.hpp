@@ -5,6 +5,14 @@
 
 namespace minigl
 {
+    struct Material
+    {
+        Color albedo;
+        float metallic;
+        float roughness;
+        float anisotropy;
+    };
+
     /// A mesh is a collection of vertices and indices put
     /// together in a vertex array.
     struct Mesh
@@ -29,4 +37,5 @@ namespace minigl
     };
 
     void load_mesh(const std::string& path, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices);
+    void load_mesh(const std::string& path, std::vector<Vertex>& vertices, std::vector<uint32_t>& indices, std::vector<Material>& materials);
 }
