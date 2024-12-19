@@ -2,6 +2,24 @@
 
 namespace minigl
 {
+    void Fence::wait()
+    {
+        // Reset the fence if it is signaled
+        fence = 0;
+
+        // Check once making sure to flush the command queue,
+        // then loop until the fence is signaled.
+        GLenum wait_return = glClientWaitSync(fence, GL_SYNC_FLUSH_COMMANDS_BIT, 0);
+        while (wait_return == GL_ALREADY_SIGNALED || wait_return == GL_CONDITION_SATISFIED) {
+            wait_return = glClientWaitSync(fence, 0, 0);
+        }
+    }
+
+    void Fence::reset()
+    {
+        fence = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
+    }
+
     void RenderCommand::clear(GLenum flags)
     {
         glClear(flags);

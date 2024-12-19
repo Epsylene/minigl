@@ -20,6 +20,18 @@ namespace minigl
         DEPTH = GL_DEPTH_BUFFER_BIT,
     };
 
+    class Fence
+    {
+        public:
+
+            void wait();
+            void reset();
+
+        private:
+
+            GLsync fence;
+    };
+
     /// Render commands: functionality to execute several
     /// OpenGL render commands, like clearing the window or
     /// drawing an indexed vertex array.
