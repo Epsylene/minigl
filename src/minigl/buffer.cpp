@@ -236,7 +236,7 @@ namespace minigl
     IndirectBuffer::~IndirectBuffer()
     {
         mappedBuffer = nullptr;
-        glBindBuffer(GL_DRAW_INDIRECT_BUFFER, 0);
+        glUnmapBuffer(indirectBufferID);
         glDeleteBuffers(1, &indirectBufferID);
     }
 
