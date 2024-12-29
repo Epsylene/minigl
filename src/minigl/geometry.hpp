@@ -39,6 +39,8 @@ namespace minigl
 
     float dot(const Vec3& a, const Vec3& b);
     float length(const Vec3& vec);
+
+    bool allclose(const Vec3& a, float b, float epsilon=1e-6);
 }
 
 // Vec3 formatting

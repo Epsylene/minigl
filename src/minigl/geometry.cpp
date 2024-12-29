@@ -3,6 +3,7 @@
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/rotate_vector.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <glm/vector_relational.hpp>
 
 namespace minigl
 {
@@ -74,5 +75,10 @@ namespace minigl
     float length(const Vec3& vec)
     {
         return glm::length(vec);
+    }
+
+    bool allclose(const Vec3& a, float b, float epsilon)
+    {
+        return glm::all(glm::epsilonEqual(a, Vec3{b}, epsilon));
     }
 }
