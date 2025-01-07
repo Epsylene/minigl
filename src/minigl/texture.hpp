@@ -3,13 +3,20 @@
 
 namespace minigl
 {
+    /// Format of the texture as stored on the GPU. This
+    /// corresponds to OpenGL's `internalFormat`.
     enum class TextureFormat
     {
+        /// 8-bit 3-channel color.
         COLOR_RGB = GL_RGB8,
+        /// 32-bit floating point 4-channel color.
         COLOR_RGBA = GL_RGBA32F,
+        /// 32-bit floating point depth.
         DEPTH = GL_DEPTH_COMPONENT32F,
     };
 
+    /// Type of access to the image when reading/writing in a
+    /// shader.
     enum class ImageAccess
     {
         READ_ONLY = GL_READ_ONLY,
@@ -28,6 +35,9 @@ namespace minigl
         Texture(const std::string& path);
 
         void bind(uint32_t unit = 0) const;
+
+        /// Bind the texture image for reading/writing in a
+        /// shader.
         void bind_image(uint32_t unit, ImageAccess access) const;
 
         GLuint id;
