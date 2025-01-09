@@ -339,17 +339,31 @@ namespace minigl
             FrameBuffer();
             virtual ~FrameBuffer();
 
-            void add_color_attachment(const Ref<Texture>& texture);
+            void add_color_attachment_read(const Ref<Texture>& texture);
+            void add_color_attachment_write(const Ref<Texture>& texture);
             void set_depth_attachment(const Ref<Texture>& texture);
 
             void bind() const;
             void unbind() const;
+            void bind_read() const;
+            void bind_write();
 
         private:
 
             uint32_t fboID;
             std::vector<Ref<Texture>> colorAttachments;
             Ref<Texture> depthAttachment;
+    };
+
+    class DefaultFrameBuffer
+    {
+        public:
+
+            DefaultFrameBuffer() = delete;
+
+            static void bind();
+            static void bind_read();
+            static void bind_write();
     };
 
     /// Command for drawing a given set of vertices. The "multi

@@ -196,10 +196,18 @@ namespace minigl
         glDeleteFramebuffers(1, &fboID);
     }
 
-    void FrameBuffer::add_color_attachment(const Ref<Texture>& color_texture)
+    void FrameBuffer::add_color_attachment_write(const Ref<Texture>& color_texture)
     {
         auto index = colorAttachments.size();
         glNamedFramebufferDrawBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
+        glNamedFramebufferTexture(fboID, GL_COLOR_ATTACHMENT0 + index, color_texture->id, 0);
+        colorAttachments.push_back(color_texture);
+    }
+
+    void FrameBuffer::add_color_attachment_read(const Ref<Texture>& color_texture)
+    {
+        auto index = colorAttachments.size();
+        glNamedFramebufferReadBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
         glNamedFramebufferTexture(fboID, GL_COLOR_ATTACHMENT0 + index, color_texture->id, 0);
         colorAttachments.push_back(color_texture);
     }
@@ -218,6 +226,31 @@ namespace minigl
     void FrameBuffer::unbind() const
     {
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void FrameBuffer::bind_read() const
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, fboID);
+    }
+
+    void FrameBuffer::bind_write()
+    {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboID);
+    }
+
+    void DefaultFrameBuffer::bind()
+    {
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void DefaultFrameBuffer::bind_read()
+    {
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+    }
+
+    void DefaultFrameBuffer::bind_write()
+    {
+        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     }
 
     //----------- INDIRECT BUFFER -----------//
