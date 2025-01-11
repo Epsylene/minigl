@@ -332,6 +332,13 @@ namespace minigl
             Ref<IndexBuffer> indexBuffer;
     };
 
+    enum BufferBit: GLenum
+    {
+        COLOR = GL_COLOR_BUFFER_BIT,
+        DEPTH = GL_DEPTH_BUFFER_BIT,
+        STENCIL = GL_STENCIL_BUFFER_BIT,
+    };
+
     class FrameBuffer
     {
         public:
@@ -348,11 +355,18 @@ namespace minigl
             void bind_read() const;
             void bind_write();
 
+            std::pair<uint32_t, uint32_t> size() const;
+
+            void blit(const Ref<FrameBuffer>& dst, BufferBit buffer);
+            void blit_to_default(BufferBit buffer, uint32_t default_w, uint32_t default_h);
+            void blit_from_default(BufferBit buffer, uint32_t default_w, uint32_t default_h);
+
         private:
 
             uint32_t fboID;
             std::vector<Ref<Texture>> colorAttachments;
             Ref<Texture> depthAttachment;
+            int width, height;
     };
 
     class DefaultFrameBuffer

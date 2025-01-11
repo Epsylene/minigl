@@ -201,6 +201,14 @@ namespace minigl
         auto index = colorAttachments.size();
         glNamedFramebufferDrawBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
         glNamedFramebufferTexture(fboID, GL_COLOR_ATTACHMENT0 + index, color_texture->id, 0);
+        
+        // From
+        // https://www.khronos.org/opengl/wiki/Framebuffer_Object:
+        // "The effective size of the FBO is the intersection
+        // of all of the sizes of the bound images (ie: the
+        // smallest in each dimension)."
+        width = glm::min(width, color_texture->width);
+        height = glm::min(height, color_texture->height);
         colorAttachments.push_back(color_texture);
     }
 
@@ -209,13 +217,34 @@ namespace minigl
         auto index = colorAttachments.size();
         glNamedFramebufferReadBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
         glNamedFramebufferTexture(fboID, GL_COLOR_ATTACHMENT0 + index, color_texture->id, 0);
+        
+        // From
+        // https://www.khronos.org/opengl/wiki/Framebuffer_Object:
+        // "The effective size of the FBO is the intersection
+        // of all of the sizes of the bound images (ie: the
+        // smallest in each dimension)."
+        width = glm::min(width, color_texture->width);
+        height = glm::min(height, color_texture->height);
         colorAttachments.push_back(color_texture);
     }
 
     void FrameBuffer::set_depth_attachment(const Ref<Texture>& depth_texture)
     {
         glNamedFramebufferTexture(fboID, GL_DEPTH_ATTACHMENT, depth_texture->id, 0);
+        
+        // From
+        // https://www.khronos.org/opengl/wiki/Framebuffer_Object:
+        // "The effective size of the FBO is the intersection
+        // of all of the sizes of the bound images (ie: the
+        // smallest in each dimension)."
+        width = glm::min(width, depth_texture->width);
+        height = glm::min(height, depth_texture->height);
         depthAttachment = depth_texture;
+    }
+
+    std::pair<uint32_t, uint32_t> FrameBuffer::size() const
+    {
+        return {width, height};
     }
 
     void FrameBuffer::bind() const
@@ -236,6 +265,22 @@ namespace minigl
     void FrameBuffer::bind_write()
     {
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboID);
+    }
+
+    void FrameBuffer::blit(const Ref<FrameBuffer>& dst, BufferBit buffer)
+    {
+        auto [dst_width, dst_height] = dst->size();
+        glBlitNamedFramebuffer(fboID, dst->fboID, 0, 0, width, height, 0, 0, dst_width, dst_height, (GLbitfield)buffer, GL_NEAREST);
+    }
+
+    void FrameBuffer::blit_to_default(BufferBit buffer, uint32_t default_w, uint32_t default_h)
+    {
+        glBlitNamedFramebuffer(fboID, 0, 0, 0, width, height, 0, 0, default_w, default_h, (GLbitfield)buffer, GL_NEAREST);
+    }
+
+    void FrameBuffer::blit_from_default(BufferBit buffer, uint32_t default_w, uint32_t default_h)
+    {
+        glBlitNamedFramebuffer(0, fboID, 0, 0, default_w, default_h, 0, 0, width, height, (GLbitfield)buffer, GL_NEAREST);
     }
 
     void DefaultFrameBuffer::bind()

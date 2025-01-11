@@ -14,12 +14,6 @@ namespace minigl
         LINE_STRIP = GL_LINE_STRIP,
     };
 
-    enum ClearBit: GLenum
-    {
-        COLOR = GL_COLOR_BUFFER_BIT,
-        DEPTH = GL_DEPTH_BUFFER_BIT,
-    };
-
     class Fence
     {
         public:
@@ -39,7 +33,7 @@ namespace minigl
     {
         /// Clear the window. Clears the color and depth
         /// buffers.
-        static void clear(GLenum flags = ClearBit::COLOR | ClearBit::DEPTH);
+        static void clear(GLenum flags = BufferBit::COLOR | BufferBit::DEPTH);
 
         /// Set the background clear color
         static void set_clear_color(const Color& color);
