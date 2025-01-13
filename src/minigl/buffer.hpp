@@ -347,13 +347,13 @@ namespace minigl
             virtual ~FrameBuffer();
 
             void add_color_attachment_read(const Ref<Texture>& texture);
-            void add_color_attachment_write(const Ref<Texture>& texture);
+            void add_color_attachment_draw(const Ref<Texture>& texture);
             void set_depth_attachment(const Ref<Texture>& texture);
 
             void bind() const;
             void unbind() const;
             void bind_read() const;
-            void bind_write();
+            void bind_draw();
 
             std::pair<uint32_t, uint32_t> size() const;
 
@@ -377,7 +377,7 @@ namespace minigl
 
             static void bind();
             static void bind_read();
-            static void bind_write();
+            static void bind_draw();
     };
 
     /// Command for drawing a given set of vertices. The "multi

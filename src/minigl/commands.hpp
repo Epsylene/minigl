@@ -31,8 +31,8 @@ namespace minigl
     /// drawing an indexed vertex array.
     struct RenderCommand
     {
-        /// Clear the window. Clears the color and depth
-        /// buffers.
+        /// Clear the window. Clears by default the color and
+        /// depth buffers.
         static void clear(GLenum flags = BufferBit::COLOR | BufferBit::DEPTH);
 
         /// Set the background clear color

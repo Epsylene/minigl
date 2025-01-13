@@ -196,7 +196,7 @@ namespace minigl
         glDeleteFramebuffers(1, &fboID);
     }
 
-    void FrameBuffer::add_color_attachment_write(const Ref<Texture>& color_texture)
+    void FrameBuffer::add_color_attachment_draw(const Ref<Texture>& color_texture)
     {
         auto index = colorAttachments.size();
         glNamedFramebufferDrawBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
@@ -262,7 +262,7 @@ namespace minigl
         glBindFramebuffer(GL_READ_FRAMEBUFFER, fboID);
     }
 
-    void FrameBuffer::bind_write()
+    void FrameBuffer::bind_draw()
     {
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboID);
     }
@@ -293,7 +293,7 @@ namespace minigl
         glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
     }
 
-    void DefaultFrameBuffer::bind_write()
+    void DefaultFrameBuffer::bind_draw()
     {
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
     }

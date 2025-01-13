@@ -139,7 +139,7 @@ namespace minigl
         glLinkProgram(shaderID);
 
         int isLinked = 0;
-        glGetProgramiv(shaderID, GL_LINK_STATUS, (int *)&isLinked);
+        glGetProgramiv(shaderID, GL_LINK_STATUS, (int*)&isLinked);
         if (isLinked == GL_FALSE)
         {
             int maxLength = 0;
