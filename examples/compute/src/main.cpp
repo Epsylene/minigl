@@ -66,13 +66,13 @@ class Compute: public App {
         void render() override
         {
             // Compute shader
-            compute_shader->bind();
+            compute_shader->use();
             RenderCommand::dispatch_compute(w/16, w/16, 1);
             RenderCommand::memory_barrier();
 
             // Display
             RenderCommand::clear();
-            quad_shader->bind();
+            quad_shader->use();
             image->bind();
             quad->bind();
             RenderCommand::draw_indexed(quad);

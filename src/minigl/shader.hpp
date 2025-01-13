@@ -36,7 +36,7 @@ namespace minigl
             /// Destructor: calls `glDeleteProgram()`.
             virtual ~Shader();
 
-            void bind() const;
+            void use() const;
             void unbind() const;
 
             void upload(const std::string& name, bool val);

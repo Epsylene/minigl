@@ -16,7 +16,7 @@ class InstancesApp: public App3D
         }
 
         void render() override {
-            shader->bind();
+            shader->use();
             shader->upload("u_viewProj", camera.viewProj);
 
             mesh->vertexArray->bind();

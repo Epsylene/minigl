@@ -35,12 +35,12 @@ class ShadowsApp: public App3D
 
         void render() override {
             // First pass: render the depth map
-            depth_shader->bind();
+            depth_shader->use();
             depth_shader->upload("u_lightSpace", light->viewProj);
 
             RenderCommand::set_viewport(0, 0, 1024, 1024);
             shadow_map->bind();
-            RenderCommand::clear(GL_DEPTH_BUFFER_BIT);
+            RenderCommand::clear(BufferBit::DEPTH);
             render_objects();
             shadow_map->unbind();
 
@@ -48,7 +48,7 @@ class ShadowsApp: public App3D
             RenderCommand::set_viewport(0, 0, 800, 600);
             RenderCommand::clear();
 
-            scene_shader->bind();
+            scene_shader->use();
             scene_shader->upload("u_viewProj", camera.viewProj);
             scene_shader->upload("u_lightSpace", light->viewProj);
             scene_shader->upload("u_lightPos", light->getPosition());

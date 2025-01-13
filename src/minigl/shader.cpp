@@ -165,7 +165,7 @@ namespace minigl
         }
     }
 
-    void Shader::bind() const
+    void Shader::use() const
     {
         glUseProgram(shaderID);
     }
