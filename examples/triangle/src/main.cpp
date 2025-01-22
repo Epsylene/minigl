@@ -4,6 +4,7 @@ using namespace minigl;
 
 class Triangle: public App {
     public:
+    
         Triangle(): App(800, 600) 
         {
             // Vertices
@@ -28,10 +29,11 @@ class Triangle: public App {
         void render() override {
             // Draw the triangle
             tri_va->bind();
-            RenderCommand::draw_indexed(tri_va, Primitives::TRIANGLES);
+            RenderCommand::draw_indexed(tri_va);
         }
 
     private:
+
         Ref<VertexArray> tri_va;
         Ref<Shader> shader;
 };

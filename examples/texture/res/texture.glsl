@@ -9,7 +9,7 @@ out vec2 v_tex;
 
 void main()
 {
-    gl_Position = u_viewProj * vec4(a_position, 1.0);
+    gl_Position = vec4(a_position, 1.0);
     
     v_pos = a_position;
     v_tex = a_tex;
