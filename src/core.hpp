@@ -7,8 +7,14 @@
 /// program
 #define MGL_ASSERT(x, msg, ...) { if(!(x)) { error("ERROR: " msg, ##__VA_ARGS__); assert(false); } }
 
+// https://stackoverflow.com/a/8814003/7483388
+#define dbg_1(x) { print(#x " = {}\n", x); }
+#define dbg_2(x, y) { print(#x " = {}, " #y " = {}\n", x, y); }
+#define dbg_3(x, y, z) { print(#x " = {}, " #y " = {}, " #z " = {}\n", x, y, z); }
+
+#define dbg_n(n, x, y, z, func, ...) func
 /// Debug macro to print the value of a variable
-#define dbg(x) { print(#x " = {}\n", x); }
+#define dbg(...) dbg_n(, ##__VA_ARGS__, dbg_3(__VA_ARGS__), dbg_2(__VA_ARGS__), dbg_1(__VA_ARGS__))
 
 namespace minigl
 {
