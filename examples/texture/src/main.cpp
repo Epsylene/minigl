@@ -2,17 +2,17 @@
 
 using namespace minigl;
 
-class TextureApp: public App3D
+class TextureApp: public App
 {
     public:
 
-        TextureApp(): App3D(800, 600)
+        TextureApp(): App(800, 600)
         {
             std::vector<Vertex> vertices {
-                {.pos = {-0.5f, -0.5f, 0.0f}, .tex = {0.0f, 0.0f}},
-                {.pos = { 0.5f, -0.5f, 0.0f}, .tex = {1.0f, 0.0f}},
-                {.pos = { 0.5f,  0.5f, 0.0f}, .tex = {1.0f, 1.0f}},
-                {.pos = {-0.5f,  0.5f, 0.0f}, .tex = {0.0f, 1.0f}}
+                {.pos = {-0.5f, -0.75f, 0.0f}, .tex = {0.0f, 0.0f}},
+                {.pos = { 0.5f, -0.75f, 0.0f}, .tex = {1.0f, 0.0f}},
+                {.pos = { 0.5f,  0.75f, 0.0f}, .tex = {1.0f, 1.0f}},
+                {.pos = {-0.5f,  0.75f, 0.0f}, .tex = {0.0f, 1.0f}}
             };
 
             std::vector<unsigned int> indices {
@@ -23,9 +23,6 @@ class TextureApp: public App3D
             quad = ref<Mesh>(vertices, indices);
             texture = ref<Texture>("res/texture.png");
             shader = ref<Shader>("res/texture.glsl");
-
-            // Position camera
-            camera.setPosition({0.0f, 0.0f, 1.5f});
         }
 
         void render() override {
