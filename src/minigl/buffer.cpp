@@ -189,6 +189,9 @@ namespace minigl
     FrameBuffer::FrameBuffer()
     {
         glCreateFramebuffers(1, &fboID);
+
+        width = std::numeric_limits<int>::max();
+        height = std::numeric_limits<int>::max();
     }
 
     FrameBuffer::~FrameBuffer()
