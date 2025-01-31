@@ -34,7 +34,7 @@ namespace minigl
         /// specified path.
         Texture(const std::string& path);
 
-        void bind(uint32_t unit = 0) const;
+        void bind(uint32_t unit) const;
 
         /// Bind the texture image for reading/writing in a
         /// shader.

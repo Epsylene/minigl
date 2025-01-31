@@ -53,7 +53,7 @@ class ShadowsApp: public App3D
             scene_shader->upload("u_lightSpace", light->viewProj);
             scene_shader->upload("u_lightPos", light->getPosition());
 
-            depth_map->bind();
+            depth_map->bind(0);
             render_objects();
             scene_shader->unbind();
         }

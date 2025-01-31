@@ -27,9 +27,7 @@ class TextureApp: public App
 
         void render() override {
             shader->use();
-            shader->upload("u_viewProj", camera.viewProj);
-
-            texture->bind();
+            texture->bind(0);
             quad->vertexArray->bind();
             RenderCommand::draw_indexed(quad->vertexArray);
         }

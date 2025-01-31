@@ -73,7 +73,7 @@ class Compute: public App {
             // Display
             RenderCommand::clear();
             quad_shader->use();
-            image->bind();
+            image->bind(0);
             quad->bind();
             RenderCommand::draw_indexed(quad);
         }

@@ -75,8 +75,6 @@ namespace minigl
         // The pixel data will be converted from 'dataformat'
         // to 'internalformat' in order to be used by OpenGL.
         glTextureSubImage2D(id, 0, 0, 0, width, height, dataFormat, GL_UNSIGNED_BYTE, data);
-
-        glBindTexture(GL_TEXTURE_2D, 0);
         stbi_image_free(data);
 
         trace("Created texture from image at path '{}'", path);
@@ -84,8 +82,7 @@ namespace minigl
 
     void Texture::bind(uint32_t unit) const
     {
-        glActiveTexture(GL_TEXTURE0 + unit);
-        glBindTexture(GL_TEXTURE_2D, id);
+        glBindTextureUnit(unit, id);
     }
 
     void Texture::bind_image(uint32_t unit, ImageAccess access) const

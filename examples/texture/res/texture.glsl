@@ -2,8 +2,6 @@
 layout(location = 0) in vec3 a_position;
 layout(location = 2) in vec2 a_tex;
 
-uniform mat4 u_viewProj;
-
 out vec3 v_pos;
 out vec2 v_tex;
 
