@@ -20,9 +20,9 @@ namespace minigl
         fence = glFenceSync(GL_SYNC_GPU_COMMANDS_COMPLETE, 0);
     }
 
-    void RenderCommand::clear(GLenum flags)
+    void RenderCommand::clear(GLenum bits)
     {
-        glClear(flags);
+        glClear(bits);
     }
 
     void RenderCommand::set_clear_color(const Color& color)

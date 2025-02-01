@@ -199,43 +199,37 @@ namespace minigl
         glDeleteFramebuffers(1, &fboID);
     }
 
-    void FrameBuffer::add_color_attachment_draw(const Ref<Texture>& color_texture)
+    void FrameBuffer::set_color_attachment_read(size_t index)
     {
-        auto index = colorAttachments.size();
-        glNamedFramebufferDrawBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
-        glNamedFramebufferTexture(fboID, GL_COLOR_ATTACHMENT0 + index, color_texture->id, 0);
-        
-        // From
-        // https://www.khronos.org/opengl/wiki/Framebuffer_Object:
-        // "The effective size of the FBO is the intersection
-        // of all of the sizes of the bound images (ie: the
-        // smallest in each dimension)."
-        width = glm::min(width, color_texture->width);
-        height = glm::min(height, color_texture->height);
-        colorAttachments.push_back(color_texture);
+        glNamedFramebufferReadBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
     }
 
-    void FrameBuffer::add_color_attachment_read(const Ref<Texture>& color_texture)
+    void FrameBuffer::set_color_attachments_draw(const std::vector<Ref<Texture>>& color_textures)
     {
-        auto index = colorAttachments.size();
-        glNamedFramebufferReadBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
-        glNamedFramebufferTexture(fboID, GL_COLOR_ATTACHMENT0 + index, color_texture->id, 0);
-        
-        // From
-        // https://www.khronos.org/opengl/wiki/Framebuffer_Object:
-        // "The effective size of the FBO is the intersection
-        // of all of the sizes of the bound images (ie: the
-        // smallest in each dimension)."
-        width = glm::min(width, color_texture->width);
-        height = glm::min(height, color_texture->height);
-        colorAttachments.push_back(color_texture);
+        std::vector<GLenum> attachments {};
+        for (size_t i = 0; i < color_textures.size(); i++) {
+            // Set the texture for each color attachment
+            GLenum attachment = GL_COLOR_ATTACHMENT0 + i;
+            glNamedFramebufferTexture(fboID, attachment, color_textures[i]->id, 0);
+
+            // https://www.khronos.org/opengl/wiki/Framebuffer_Object:
+            // "The effective size of the FBO is the
+            // intersection of all of the sizes of the bound
+            // images (ie: the smallest in each dimension)."
+            width = glm::min(width, color_textures[i]->width);
+            height = glm::min(height, color_textures[i]->height);
+
+            attachments.push_back(attachment);
+        }
+
+        // Set the draw buffers
+        glNamedFramebufferDrawBuffers(fboID, attachments.size(), attachments.data());
     }
 
     void FrameBuffer::set_depth_attachment(const Ref<Texture>& depth_texture)
     {
         glNamedFramebufferTexture(fboID, GL_DEPTH_ATTACHMENT, depth_texture->id, 0);
         
-        // From
         // https://www.khronos.org/opengl/wiki/Framebuffer_Object:
         // "The effective size of the FBO is the intersection
         // of all of the sizes of the bound images (ie: the
