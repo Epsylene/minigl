@@ -199,7 +199,7 @@ namespace minigl
         glDeleteFramebuffers(1, &fboID);
     }
 
-    void FrameBuffer::set_color_attachment_read(size_t index)
+    void FrameBuffer::read_color_attachment(size_t index)
     {
         glNamedFramebufferReadBuffer(fboID, GL_COLOR_ATTACHMENT0 + index);
     }
@@ -270,9 +270,9 @@ namespace minigl
         glBlitNamedFramebuffer(fboID, dst->fboID, 0, 0, width, height, 0, 0, dst_width, dst_height, (GLbitfield)buffer, GL_NEAREST);
     }
 
-    void FrameBuffer::blit_to_default(BufferBit buffer, uint32_t default_w, uint32_t default_h)
+    void FrameBuffer::blit_to_default(BufferBit buffer, uint32_t default_fbo_w, uint32_t default_fbo_h)
     {
-        glBlitNamedFramebuffer(fboID, 0, 0, 0, width, height, 0, 0, default_w, default_h, (GLbitfield)buffer, GL_NEAREST);
+        glBlitNamedFramebuffer(fboID, 0, 0, 0, width, height, 0, 0, default_fbo_w, default_fbo_h, (GLbitfield)buffer, GL_NEAREST);
     }
 
     void FrameBuffer::blit_from_default(BufferBit buffer, uint32_t default_w, uint32_t default_h)
