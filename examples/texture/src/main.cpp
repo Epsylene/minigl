@@ -15,7 +15,7 @@ class TextureApp: public App
                 {.pos = {-0.5f,  0.75f, 0.0f}, .tex = {0.0f, 1.0f}}
             };
 
-            std::vector<unsigned int> indices {
+            std::vector<uint32_t> indices {
                 0, 1, 2,
                 2, 3, 0
             };

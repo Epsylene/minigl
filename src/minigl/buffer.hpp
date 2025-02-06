@@ -457,4 +457,65 @@ namespace minigl
             uint32_t uboID;
             void create_buffer(const void* data, size_t size, uint32_t binding_point, DataAccess usage);
     };
+
+    template<typename buffer_t>
+    class ShaderStorageBuffer
+    {
+        public:
+
+            ShaderStorageBuffer(const buffer_t& buffer, uint32_t binding_point, DataAccess usage = DataAccess::Dynamic)
+            {
+                size = sizeof(buffer_t);
+                create_buffer(&buffer, size, binding_point, usage);
+            }
+
+            ShaderStorageBuffer(const std::vector<buffer_t>& buffer, uint32_t binding_point, DataAccess usage = DataAccess::Dynamic)
+            {
+                size = buffer.size() * sizeof(buffer_t);
+                create_buffer(buffer.data(), size, binding_point, usage);
+            }
+
+            void bind() const
+            {
+                glBindBuffer(GL_SHADER_STORAGE_BUFFER, ssboID);
+            }
+
+            /// If the buffer is mapped, write the buffer at
+            /// the given index. If it is not mapped, the
+            /// behavior is undefined.
+            void write(size_t index, const buffer_t& buffer)
+            {
+                mappedBuffer[index] = buffer;
+            }
+
+            /// If the buffer is mapped, read the buffer at the
+            /// given index. If it is not mapped, the behavior
+            /// is undefined.
+            const buffer_t& read(size_t index) const
+            {
+                return mappedBuffer[index];
+            }
+
+            /// Re-send a mapped buffer to the GPU.
+            void flush()
+            {
+                glFlushMappedNamedBufferRange(ssboID, 0, size);
+            }
+
+        private:
+
+            uint32_t ssboID;
+            buffer_t* mappedBuffer;
+            uint32_t size;
+
+            void create_buffer(const void* data, size_t size, uint32_t binding_point, DataAccess usage)
+            {
+                glCreateBuffers(1, &ssboID);
+                glNamedBufferStorage(ssboID, size, data, (GLenum)usage);
+                glBindBufferBase(GL_SHADER_STORAGE_BUFFER, binding_point, ssboID);
+
+                if (usage & DataAccess::MapRead || usage & DataAccess::MapWrite)
+                    mappedBuffer = (buffer_t*)glMapNamedBufferRange(ssboID, 0, size, (GLenum)usage);
+            }
+    };
 }
