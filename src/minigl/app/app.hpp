@@ -18,6 +18,9 @@ namespace minigl
             virtual void onUpdate(float dt) {};
             virtual void render() {};
 
+            /// Time since the application started, in seconds.
+            static float time();
+
         protected:
         
             Ref<Input> input;

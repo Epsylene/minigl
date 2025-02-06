@@ -98,6 +98,11 @@ namespace minigl
         }
     }
 
+    float App::time()
+    {
+        return glfwGetTime();
+    }
+
     void App::set_glfw_callbacks()
     {
         // App pointer for the callbacks
