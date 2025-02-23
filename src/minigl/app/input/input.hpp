@@ -5,7 +5,7 @@
 
 namespace minigl
 {
-    /// @brief Input class
+    /// Input class
     /// 
     /// This class handles all key and mouse inputs; however,
     /// it is not an event system class. Rather, it provides
@@ -15,32 +15,31 @@ namespace minigl
     {
         public:
 
-            /// @brief Input data comes from GLFW, and as such
+            /// Input data comes from GLFW, and as such
             /// is tied to a given GLFW window.
             Input(GLFWwindow* window):
                 window(window) {}
 
-            /// @brief Is the key pressed ?
+            /// Is the key pressed ?
             bool isKeyPressed(int keyCode) const;
 
-            /// @brief Is the mouse button pressed ?
+            /// Is the mouse button pressed ?
             bool isMouseButtonPressed(int button) const;
 
-            /// @brief Get the mouse X position
+            /// Get the mouse X position
             float getMouseX() const;
 
-            /// @brief Get the mouse Y position
+            /// Get the mouse Y position
             float getMouseY() const;
 
-            /// @brief Get the mouse position, in window coordinates
+            /// Get the mouse position, in window coordinates
             Vec2 getMousePos() const;
 
-            /// @brief Get the mouse position, in screen coordinates
+            /// Get the mouse position, in screen coordinates
             Vec2 getMouseScreenPos() const;
 
-            /// @brief Check whether the mouse is in a certain area
-            ///
-            /// The area is defined by the rectangle that has
+            /// Check whether the mouse is in a certain area:
+            /// the area is defined by the rectangle that has
             /// `p0` and `p1` as bottom-left and upper-right
             /// vertices, respectively.
             ///
