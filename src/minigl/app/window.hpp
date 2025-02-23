@@ -14,6 +14,11 @@ namespace minigl
             Window(const int width, const int height);
             GLFWwindow* get_native_window() { return window; }
             
+            ~Window() {
+                glfwDestroyWindow(window);
+                glfwTerminate();
+            }
+            
             void set_viewport(const int width, const int height) {
                 this->width = width;
                 this->height = height;
