@@ -30,7 +30,7 @@ set(SOURCES
     
     src/minigl/app/app.hpp
     src/minigl/app/app.cpp
-    src/minigl/app/app_3d.hpp
+    src/minigl/app/app3d.hpp
     
     src/minigl/app/window.hpp
     src/minigl/app/window.cpp

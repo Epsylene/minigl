@@ -28,69 +28,52 @@ void print_workgroup_capabilities() {
     info("  {}\n", workgroup_invocations);
 }
 
-class Compute: public App {
-    public:
-
-        Compute(const int width, const int height):
-            App(width, height)
-        {
-            print_workgroup_capabilities();
-
-            auto vb = ref<VertexBuffer>(
-                Buffer<float> {
-                    -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
-                     1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
-                     1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
-                    -1.0f,  1.0f, 0.0f, 0.0f, 1.0f
-                },
-                BufferLayout {
-                    {DataType::Float3, "a_pos"},
-                    {DataType::Float2, "a_tex"}
-                }
-            );
-
-            auto ib = ref<IndexBuffer>(
-                Buffer<uint32_t> {0, 1, 2, 2, 3, 0}
-            );
-
-            quad = ref<VertexArray>(vb, ib);
-            
-            quad_shader = ref<Shader>("res/quad.glsl");
-            compute_shader = ref<Shader>("res/compute.glsl");
-
-            w = 512; h = 512;
-            image = ref<Texture>(w, h, TextureFormat::COLOR_RGBA);
-            image->bind_image(0, ImageAccess::READ_WRITE);
-        }
-
-        void render() override
-        {
-            // Compute shader
-            compute_shader->use();
-            RenderCommand::dispatch_compute(w/16, w/16, 1);
-            RenderCommand::memory_barrier();
-
-            // Display
-            RenderCommand::clear();
-            quad_shader->use();
-            image->bind(0);
-            quad->bind();
-            RenderCommand::draw_indexed(quad);
-        }
-
-    private:
-
-        Ref<Shader> compute_shader;
-        Ref<Shader> quad_shader;
-        Ref<VertexArray> quad;
-        Ref<Texture> image;
-        uint32_t w, h;
-};
-
 int main()
 {
-    Compute app {800, 600};
-    app.run();
+    App app {"Compute", 800, 600};
+    print_workgroup_capabilities();
+
+    auto vb = ref<VertexBuffer>(
+        Buffer<float> {
+            -1.0f, -1.0f, 0.0f, 0.0f, 0.0f,
+            1.0f, -1.0f, 0.0f, 1.0f, 0.0f,
+            1.0f,  1.0f, 0.0f, 1.0f, 1.0f,
+            -1.0f,  1.0f, 0.0f, 0.0f, 1.0f
+        },
+        BufferLayout {
+            {DataType::Float3, "a_pos"},
+            {DataType::Float2, "a_tex"}
+        }
+    );
+
+    auto ib = ref<IndexBuffer>(
+        Buffer<uint32_t> {0, 1, 2, 2, 3, 0}
+    );
+
+    auto quad = ref<VertexArray>(vb, ib);
+    
+    auto quad_shader = ref<Shader>("res/quad.glsl");
+    auto compute_shader = ref<Shader>("res/compute.glsl");
+
+    uint32_t w = 512;
+    uint32_t h = 512;
+    
+    auto image = ref<Texture>(w, h, TextureFormat::COLOR_RGBA);
+    image->bind_image(0, ImageAccess::READ_WRITE);
+    
+    app.run([&](){
+        // Compute shader
+        compute_shader->use();
+        RenderCommand::dispatch_compute(w/16, w/16, 1);
+        RenderCommand::memory_barrier();
+
+        // Display
+        RenderCommand::clear();
+        quad_shader->use();
+        image->bind(0);
+        quad->bind();
+        RenderCommand::draw_indexed(quad);
+    });
 
     return 0;
 }
