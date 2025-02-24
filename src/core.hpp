@@ -14,7 +14,7 @@
 #define dbg_4(x, y, z, w) { print(#x " = {}, " #y " = {}, " #z " = {}, " #w " = {}\n", x, y, z, w); }
 #define dbg_n(n, x, y, z, w, func, ...) func
 
-/// Debug macro to print the value of a variable
+/// Debug macro to print up to 4 variables
 #define dbg(...) dbg_n(, ##__VA_ARGS__, dbg_4(__VA_ARGS__), dbg_3(__VA_ARGS__), dbg_2(__VA_ARGS__), dbg_1(__VA_ARGS__))
 
 /// Debug print and abort

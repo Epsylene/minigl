@@ -47,7 +47,11 @@ namespace mgl
     App::App(std::string name, const int width, const int height)
     {
         window = ref<Window>(name, width, height);
-        event = ref<Event>(window);
+        input = ref<Input>();
+        events = ref<Event>(window, input);
+
+        // Set the default event handler
+        event_handler([](Ref<Input> input, float dt){});
 
         // Set the GLFW callbacks
         set_glfw_callbacks();
@@ -62,26 +66,27 @@ namespace mgl
         // RenderCommand::set_face_culling(true);
     }
 
-    void App::run()
+    void App::run(std::function<void()> loop)
     {
-        while (!event->quit) {
+        while (!events->quit) {
             // Update dt
             auto time = (float)glfwGetTime();
             dt = time - lastFrameTime;
             lastFrameTime = time;
+
+            // Poll events
+            glfwPollEvents();
 
             if(!window->minimized) {
                 // Clear the screen
                 RenderCommand::set_clear_color({0.2f});
                 RenderCommand::clear();
 
-                // Update and draw stuff
-                onUpdate(dt);
-                render();
+                // Draw stuff
+                loop();
             }
 
-            // Poll events and swap buffers
-            glfwPollEvents();
+            // Swap buffers
             glfwSwapBuffers(window->get_native_window());
         }
     }
@@ -99,7 +104,7 @@ namespace mgl
         glfwSetWindowUserPointer(_window, this);
         #define event(callback) \
             auto app = (App*)glfwGetWindowUserPointer(window); \
-            app->event->callback;
+            app->events->callback;
 
         // Window close callback
         glfwSetWindowCloseCallback(_window, [](GLFWwindow* window) {
@@ -113,17 +118,17 @@ namespace mgl
 
         // Key input callback
         glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-            event(onKeyEvent(key, scancode, action, mods));
+            event(onKeyEvent(key, action, app->dt));
         });
 
         // Mouse button callback
         glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int mods) {
-            event(onMouseEvent(button, action, mods));
+            event(onMouseEvent(button, action, app->dt));
         });
 
         // Mouse cursor callback
         glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xpos, double ypos) {
-            event(onCursorEvent(xpos, ypos));
+            event(onCursorEvent(xpos, ypos, app->dt));
         });
     }
 }

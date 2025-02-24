@@ -8,15 +8,15 @@
 
 namespace mgl
 {
+    using EventHandler = std::function<void(Ref<Input>, float)>;
+
     class Event
     {
         public:
 
-            Event(Ref<Window> window):
-                window(window), quit(false)
-            {
-                input = ref<Input>();
-            }
+            Event(Ref<Window> window, Ref<Input> input):
+                window(window), input(input), quit(false)
+            {}
 
             void onWindowClose() {
                 quit = true;
@@ -27,7 +27,7 @@ namespace mgl
                 window->minimized = (new_width == 0 || new_height == 0);
             }
 
-            void onKeyEvent(int key, int scancode, int action, int mods) {
+            void onKeyEvent(int key, int action, float dt) {
                 // Register key press
                 if (action == GLFW_PRESS || action == GLFW_REPEAT)
                     input->active[key] = true;
@@ -37,26 +37,31 @@ namespace mgl
                 // ESC: quit
                 if (input->active[GLFW_KEY_ESCAPE])
                     quit = true;
+
+                handler(input, dt);
             }
 
-            void onMouseEvent(int button, int action, int mods) {
+            void onMouseEvent(int button, int action, float dt) {
                 // Register mouse button press
                 if (action == GLFW_PRESS)
                     input->active[button] = true;
                 else if (action == GLFW_RELEASE)
                     input->active[button] = false;
+
+                handler(input, dt);
             }
 
-            void onCursorEvent(double xpos, double ypos) {
+            void onCursorEvent(double xpos, double ypos, float dt) {
                 input->currentMousePos = {xpos, ypos};
+                handler(input, dt);
             }
 
         public:
 
             Ref<Window> window;
             Ref<Input> input;
-            bool quit;
 
-            std::function<void()> handler;
+            bool quit;
+            EventHandler handler;
     };
 }
