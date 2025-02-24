@@ -16,12 +16,16 @@ namespace mgl
 
     Window::Window(std::string name, const int width, const int height) {
         // Init GLFW
-        if (!glfwInitialized) {
-            MGL_ASSERT(glfwInit(), "Failed to initialize GLFW");
-            
-            glfwSetErrorCallback(glfwErrorCallback);
-            glfwInitialized = true;
+        if (glfwInitialized) {
+            error("Cannot create multiple windows.");
+            return;
         }
+
+        MGL_ASSERT(glfwInit(), "Failed to initialize GLFW");
+        glfwInitialized = true;
+        
+        // GLFW error callback
+        glfwSetErrorCallback(glfwErrorCallback);
 
         // GLFW window
         _window = glfwCreateWindow((int)width, (int)height, name.c_str(), nullptr, nullptr);

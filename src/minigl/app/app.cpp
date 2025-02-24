@@ -46,7 +46,7 @@ namespace mgl
 
     App::App(std::string name, const int width, const int height)
     {
-        window = ref<Window>(width, height);
+        window = ref<Window>(name, width, height);
         event = ref<Event>(window);
 
         // Set the GLFW callbacks
