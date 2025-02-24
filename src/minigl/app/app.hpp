@@ -12,7 +12,7 @@ namespace mgl
     {
         public:
 
-            App(const int width, const int height);
+            App(std::string name, const int width, const int height);
             virtual ~App() = default;
 
             void run();

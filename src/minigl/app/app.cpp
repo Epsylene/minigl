@@ -44,7 +44,7 @@ namespace mgl
         }
     }
 
-    App::App(const int width, const int height)
+    App::App(std::string name, const int width, const int height)
     {
         window = ref<Window>(width, height);
         event = ref<Event>(window);

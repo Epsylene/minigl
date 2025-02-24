@@ -14,7 +14,7 @@ namespace mgl
         error("GLFW error ({}): {}", err, description);
     }
 
-    Window::Window(const int width, const int height) {
+    Window::Window(std::string name, const int width, const int height) {
         // Init GLFW
         if (!glfwInitialized) {
             MGL_ASSERT(glfwInit(), "Failed to initialize GLFW");
@@ -24,7 +24,7 @@ namespace mgl
         }
 
         // GLFW window
-        _window = glfwCreateWindow((int)width, (int)height, "App window", nullptr, nullptr);
+        _window = glfwCreateWindow((int)width, (int)height, name.c_str(), nullptr, nullptr);
         glfwMakeContextCurrent(_window);
 
         // Binds GLAD to GLFW's OpenGL context

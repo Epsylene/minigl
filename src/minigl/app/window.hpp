@@ -7,11 +7,11 @@
 
 namespace mgl
 {
-    class Window 
+    class Window
     {
         public:
 
-            Window(const int width, const int height);
+            Window(std::string name, const int width, const int height);
             GLFWwindow* get_native_window() { return _window; }
             
             ~Window() {
