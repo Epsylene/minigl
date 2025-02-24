@@ -13,7 +13,7 @@ using mgl::println;
 #include "app/input/input.hpp"
 #include "app/window.hpp"
 #include "app/app.hpp"
-#include "app/app_3d.hpp"
+#include "app/app3d.hpp"
 
 #include "geometry.hpp"
 #include "color.hpp"
