@@ -27,7 +27,7 @@ namespace mgl
                 window->minimized = (new_width == 0 || new_height == 0);
             }
 
-            void onKeyEvent(int key, int action, float dt) {
+            void onKeyEvent(int key, int action) {
                 // Register key press
                 if (action == GLFW_PRESS || action == GLFW_REPEAT)
                     input->active[key] = true;
@@ -37,23 +37,18 @@ namespace mgl
                 // ESC: quit
                 if (input->active[GLFW_KEY_ESCAPE])
                     quit = true;
-
-                handler(input, dt);
             }
 
-            void onMouseEvent(int button, int action, float dt) {
+            void onMouseEvent(int button, int action) {
                 // Register mouse button press
                 if (action == GLFW_PRESS)
                     input->active[button] = true;
                 else if (action == GLFW_RELEASE)
                     input->active[button] = false;
-
-                handler(input, dt);
             }
 
-            void onCursorEvent(double xpos, double ypos, float dt) {
+            void onCursorEvent(double xpos, double ypos) {
                 input->currentMousePos = {xpos, ypos};
-                handler(input, dt);
             }
 
         public:
