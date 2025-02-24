@@ -44,7 +44,7 @@ namespace mgl
         }
     }
 
-    App::App(std::string name, const int width, const int height)
+    App::App(std::string name, int width, int height)
     {
         window = ref<Window>(name, width, height);
         input = ref<Input>();
@@ -74,8 +74,9 @@ namespace mgl
             dt = time - lastFrameTime;
             lastFrameTime = time;
 
-            // Poll events
+            // Update input
             glfwPollEvents();
+            events->handler(input, dt);
 
             if(!window->minimized) {
                 // Clear the screen
@@ -118,17 +119,17 @@ namespace mgl
 
         // Key input callback
         glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
-            event(onKeyEvent(key, action, app->dt));
+            event(onKeyEvent(key, action));
         });
 
         // Mouse button callback
         glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int mods) {
-            event(onMouseEvent(button, action, app->dt));
+            event(onMouseEvent(button, action));
         });
 
         // Mouse cursor callback
         glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xpos, double ypos) {
-            event(onCursorEvent(xpos, ypos, app->dt));
+            event(onCursorEvent(xpos, ypos));
         });
     }
 }

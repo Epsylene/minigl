@@ -12,7 +12,7 @@ namespace mgl
     {
         public:
 
-            App(std::string name, const int width, const int height);
+            App(std::string name, int width, int height);
             virtual ~App() = default;
 
             void event_handler(EventHandler handler) {
