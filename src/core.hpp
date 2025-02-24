@@ -20,7 +20,7 @@
 /// Debug print and abort
 #define dbg_abort(...) { dbg(__VA_ARGS__); assert(false); }
 
-namespace minigl
+namespace mgl
 {
     template<typename T> using Box = std::unique_ptr<T>;
     template<typename T> using Ref = std::shared_ptr<T>;

@@ -1,6 +1,6 @@
 #include "minigl/minigl.hpp"
 
-using namespace minigl;
+using namespace mgl;
 
 class Triangle: public App {
     public:

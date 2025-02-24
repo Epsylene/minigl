@@ -1,6 +1,6 @@
 #include "color.hpp"
 
-namespace minigl
+namespace mgl
 {
     const Color Color::Black {0.f, 0.f, 0.f};
     const Color Color::White {1.f, 1.f, 1.f};

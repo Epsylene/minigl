@@ -4,7 +4,7 @@
 #include "minigl/geometry.hpp"
 #include "input/input.hpp"
 
-namespace minigl
+namespace mgl
 {
     /// Generic camera object
     ///

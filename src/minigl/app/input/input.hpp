@@ -3,7 +3,7 @@
 #include "minigl/geometry.hpp"
 #include <GLFW/glfw3.h>
 
-namespace minigl
+namespace mgl
 {
     /// Input class
     /// 

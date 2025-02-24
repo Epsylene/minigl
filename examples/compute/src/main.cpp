@@ -1,5 +1,5 @@
 #include <minigl/minigl.hpp>
-using namespace minigl;
+using namespace mgl;
 
 void print_workgroup_capabilities() {
     info("\nWorkgroup capabilities:");

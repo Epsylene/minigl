@@ -3,7 +3,7 @@
 #include <fmt/format.h>
 #include <glm/glm.hpp>
 
-namespace minigl
+namespace mgl
 {
     template<typename T, int N>
     using Vector = glm::vec<N, T>;
@@ -45,7 +45,7 @@ namespace minigl
 
 // Vec3 formatting
 template<typename T>
-class fmt::formatter<minigl::Vector<T,3>>
+class fmt::formatter<mgl::Vector<T,3>>
 {
     public:
 
@@ -55,7 +55,7 @@ class fmt::formatter<minigl::Vector<T,3>>
         }
 
         template<typename FormatContext>
-        auto format(const minigl::Vector<T,3>& vec, FormatContext& ctx) const
+        auto format(const mgl::Vector<T,3>& vec, FormatContext& ctx) const
         {
             return format_to(ctx.out(), "({}, {}, {})", vec.x, vec.y, vec.z);
         }

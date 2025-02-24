@@ -1,5 +1,5 @@
 #include <minigl/minigl.hpp>
-using namespace minigl;
+using namespace mgl;
 
 class Compute: public App {
     public:

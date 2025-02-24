@@ -3,7 +3,7 @@
 #include "input/key_codes.h"
 #include "input/mouse_codes.h"
 
-namespace minigl
+namespace mgl
 {
     Camera::Camera(): pos(0.f, 0.f, 3.f), direction(0.f, 0.f, -1.f), up(0.f, 1.f, 0.f)
     {}
@@ -87,30 +87,30 @@ namespace minigl
         Vec3 dir = direction;
         Vec3 up {0, 1, 0};
 
-        bool shift = input->isKeyPressed(GLS_KEY_LEFT_SHIFT);
+        bool shift = input->isKeyPressed(GLFW_KEY_LEFT_SHIFT);
         float movSpeed = shift ? 0.1f : 5.f;
         float rotSpeed = shift ? 50.f : 200.f;
 
         movSpeed *= speed_factor;
 
         // Move around
-        if(input->isKeyPressed(GLS_KEY_W))
+        if(input->isKeyPressed(GLFW_KEY_W))
             pos += dir * movSpeed * float(dt);
-        if(input->isKeyPressed(GLS_KEY_A))
+        if(input->isKeyPressed(GLFW_KEY_A))
             pos -= normalize(cross(dir, up)) * movSpeed * float(dt);
-        if(input->isKeyPressed(GLS_KEY_S))
+        if(input->isKeyPressed(GLFW_KEY_S))
             pos -= dir * movSpeed * float(dt);
-        if(input->isKeyPressed(GLS_KEY_D))
+        if(input->isKeyPressed(GLFW_KEY_D))
             pos += normalize(cross(dir, up)) * movSpeed * float(dt);
 
         // Move up and down
-        if(input->isKeyPressed(GLS_KEY_R))
+        if(input->isKeyPressed(GLFW_KEY_R))
             pos.y += movSpeed * dt;
-        if(input->isKeyPressed(GLS_KEY_F))
+        if(input->isKeyPressed(GLFW_KEY_F))
             pos.y -= movSpeed * dt;
 
         // Look around with the mouse
-        if(input->isMouseButtonPressed(GLS_MOUSE_BUTTON_LEFT))
+        if(input->isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
         {
             float xOffset = input->getMouseX() - input->lastMousePos.x;
             float yOffset = input->lastMousePos.y - input->getMouseY();

@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/vector_relational.hpp>
 
-namespace minigl
+namespace mgl
 {
     Mat4 translate(const Vec3& offset)
     {

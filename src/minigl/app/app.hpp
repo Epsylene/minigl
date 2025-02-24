@@ -4,7 +4,7 @@
 #include "window.hpp"
 #include "input/input.hpp"
 
-namespace minigl
+namespace mgl
 {
     class App 
     {

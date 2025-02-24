@@ -1,6 +1,6 @@
 #include "buffer.hpp"
 
-namespace minigl
+namespace mgl
 {
     //----------- VERTEX BUFFER -----------//
 

@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include <stb_image.h>
 
-namespace minigl
+namespace mgl
 {
     Texture::Texture(int width, int height, TextureFormat format):
         width(width), height(height), format(format)

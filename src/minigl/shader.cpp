@@ -1,7 +1,7 @@
 #include "core.hpp"
 #include "shader.hpp"
 
-namespace minigl
+namespace mgl
 {
     std::string to_string(ShaderType type)
     {

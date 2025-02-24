@@ -1,7 +1,7 @@
 #pragma once
 #include "geometry.hpp"
 
-namespace minigl
+namespace mgl
 {
     /// Color struct. This is actually the same as a Vec4 but
     /// with (r,g,b,a) components instead of (x,y,z,w).

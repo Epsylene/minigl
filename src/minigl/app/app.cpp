@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 
-namespace minigl
+namespace mgl
 {
     void debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, GLchar const* message, void const* user_param)
     {

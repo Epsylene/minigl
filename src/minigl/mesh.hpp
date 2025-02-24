@@ -3,7 +3,7 @@
 #include "core.hpp"
 #include "buffer.hpp"
 
-namespace minigl
+namespace mgl
 {
     struct Material
     {

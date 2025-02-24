@@ -5,7 +5,7 @@
 
 #include <glad/glad.h>
 
-namespace minigl
+namespace mgl
 {
     static bool glfwInitialized = false;
 

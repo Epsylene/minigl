@@ -3,7 +3,7 @@
 #include "app.hpp"
 #include "minigl/app/camera.hpp"
 
-namespace minigl
+namespace mgl
 {
     class App3D: public App
     {

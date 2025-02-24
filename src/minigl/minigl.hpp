@@ -2,13 +2,13 @@
 
 #include "core.hpp"
 
-using minigl::Ref;
-using minigl::Box;
-using minigl::ref;
-using minigl::box;
+using mgl::Ref;
+using mgl::Box;
+using mgl::ref;
+using mgl::box;
 
-using minigl::print;
-using minigl::println;
+using mgl::print;
+using mgl::println;
 
 #include "app/input/input.hpp"
 #include "app/window.hpp"

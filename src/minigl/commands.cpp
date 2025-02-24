@@ -1,6 +1,6 @@
 #include "commands.hpp"
 
-namespace minigl
+namespace mgl
 {
     void Fence::wait()
     {

@@ -8,7 +8,7 @@
 
 #include <glad/glad.h>
 
-namespace minigl
+namespace mgl
 {
     /// Buffer data type abstraction
     enum class DataType

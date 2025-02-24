@@ -1,6 +1,6 @@
 #include "minigl/minigl.hpp"
 
-using namespace minigl;
+using namespace mgl;
 
 constexpr uint32_t N = 5;
 

@@ -6,7 +6,7 @@
 #include <string>
 #include <glad/glad.h>
 
-namespace minigl
+namespace mgl
 {
     enum class ShaderType
     {

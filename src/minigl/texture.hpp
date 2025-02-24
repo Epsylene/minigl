@@ -1,7 +1,7 @@
 #pragma once
 #include <glad/glad.h>
 
-namespace minigl
+namespace mgl
 {
     /// Format of the texture as stored on the GPU. This
     /// corresponds to OpenGL's `internalFormat`.

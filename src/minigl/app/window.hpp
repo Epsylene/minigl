@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include <glad/glad.h>
 
-namespace minigl
+namespace mgl
 {
     class Window 
     {

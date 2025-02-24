@@ -4,7 +4,7 @@
 #include <fmt/os.h>
 #include <fmt/color.h>
 
-namespace minigl
+namespace mgl
 {
     template<typename T>
     constexpr void print(T&& arg) {
