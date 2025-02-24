@@ -12,10 +12,10 @@ namespace mgl
         public:
 
             Window(const int width, const int height);
-            GLFWwindow* get_native_window() { return window; }
+            GLFWwindow* get_native_window() { return _window; }
             
             ~Window() {
-                glfwDestroyWindow(window);
+                glfwDestroyWindow(_window);
                 glfwTerminate();
             }
             
@@ -25,9 +25,13 @@ namespace mgl
                 glViewport(0, 0, width, height);
             }
 
+        public:
+
+            unsigned int width, height;
+            bool minimized;
+
         private:
 
-            GLFWwindow* window;
-            unsigned int width, height;
+            GLFWwindow* _window;
     };
 }

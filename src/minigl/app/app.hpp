@@ -1,8 +1,10 @@
 #pragma once
 
 #include "core.hpp"
+
 #include "window.hpp"
 #include "input/input.hpp"
+#include "event.hpp"
 
 namespace mgl
 {
@@ -23,18 +25,14 @@ namespace mgl
 
         protected:
         
-            Ref<Input> input;
             float dt = 0.f;
+            Ref<Event> event;
         
         private:
 
-            void onWindowClose();
-            void onWindowResize(int new_width, int new_height);
-
             void set_glfw_callbacks();
+            Ref<Window> window;
 
-            Box<Window> window;
-            bool running = true, minimized = false;
             float lastFrameTime = 0.f;
     };
 }

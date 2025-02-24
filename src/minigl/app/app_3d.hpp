@@ -15,7 +15,7 @@ namespace mgl
 
             virtual void onUpdate(float dt) override
             {
-                camera.onUpdate(input, dt);
+                camera.onUpdate(event->input, dt);
             }
 
         protected:

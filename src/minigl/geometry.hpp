@@ -43,6 +43,24 @@ namespace mgl
     bool allclose(const Vec3& a, float b, float epsilon=1e-6);
 }
 
+// Vec2 formatting
+template<typename T>
+class fmt::formatter<mgl::Vector<T,2>>
+{
+    public:
+
+        constexpr auto parse(format_parse_context& ctx)
+        {
+            return ctx.begin();
+        }
+
+        template<typename FormatContext>
+        auto format(const mgl::Vector<T,2>& vec, FormatContext& ctx) const
+        {
+            return format_to(ctx.out(), "({}, {})", vec.x, vec.y);
+        }
+};
+
 // Vec3 formatting
 template<typename T>
 class fmt::formatter<mgl::Vector<T,3>>

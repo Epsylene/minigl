@@ -112,11 +112,10 @@ namespace mgl
         // Look around with the mouse
         if(input->isMouseButtonPressed(GLFW_MOUSE_BUTTON_LEFT))
         {
-            float xOffset = input->getMouseX() - input->lastMousePos.x;
-            float yOffset = input->lastMousePos.y - input->getMouseY();
+            Vec2 delta = input->getMouseDelta();
 
-            pitch += yOffset * rotSpeed * dt;
-            yaw += xOffset * rotSpeed * dt;
+            pitch += delta.y * rotSpeed * dt;
+            yaw += delta.x * rotSpeed * dt;
 
             pitch = glm::clamp(pitch, -89.f, 89.f);
             set_rotation(pitch, yaw, roll);

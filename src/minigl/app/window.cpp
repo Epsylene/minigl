@@ -24,8 +24,8 @@ namespace mgl
         }
 
         // GLFW window
-        window = glfwCreateWindow((int)width, (int)height, "App window", nullptr, nullptr);
-        glfwMakeContextCurrent(window);
+        _window = glfwCreateWindow((int)width, (int)height, "App window", nullptr, nullptr);
+        glfwMakeContextCurrent(_window);
 
         // Binds GLAD to GLFW's OpenGL context
         int status = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

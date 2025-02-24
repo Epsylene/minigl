@@ -34,7 +34,7 @@ set(SOURCES
     
     src/minigl/app/window.hpp
     src/minigl/app/window.cpp
-    src/minigl/app/input/input.cpp
+    src/minigl/app/event.hpp
     src/minigl/app/input/input.hpp
     src/minigl/app/input/key_codes.h
     src/minigl/app/input/mouse_codes.h

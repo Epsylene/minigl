@@ -17,6 +17,8 @@ namespace mgl
                 case GL_DEBUG_SOURCE_APPLICATION: return "APPLICATION";
                 case GL_DEBUG_SOURCE_OTHER: return "OTHER";
             }
+
+            return "UNKNOWN";
         }();
 
         auto const type_str = [type]() {
@@ -30,6 +32,8 @@ namespace mgl
                 case GL_DEBUG_TYPE_MARKER: return "MARKER";
                 case GL_DEBUG_TYPE_OTHER: return "OTHER";
             }
+
+            return "UNKNOWN";
         }();
 
         switch (severity) {
@@ -42,8 +46,8 @@ namespace mgl
 
     App::App(const int width, const int height)
     {
-        window = box<Window>(width, height);
-        input = box<Input>(window->get_native_window());
+        window = ref<Window>(width, height);
+        event = ref<Event>(window);
 
         // Set the GLFW callbacks
         set_glfw_callbacks();
@@ -58,31 +62,15 @@ namespace mgl
         // RenderCommand::set_face_culling(true);
     }
 
-    void App::onWindowClose()
-    {
-        running = false;
-    }
-
-    void App::onWindowResize(int new_width, int new_height)
-    {
-        window->set_viewport(new_width, new_height);
-
-        if(new_width == 0 || new_height == 0)
-        {
-            minimized = true;
-        }
-        minimized = false;
-    }
-
     void App::run()
     {
-        while (running) {
+        while (!event->quit) {
             // Update dt
             auto time = (float)glfwGetTime();
             dt = time - lastFrameTime;
             lastFrameTime = time;
 
-            if(!minimized) {
+            if(!window->minimized) {
                 // Clear the screen
                 RenderCommand::set_clear_color({0.2f});
                 RenderCommand::clear();
@@ -105,19 +93,37 @@ namespace mgl
 
     void App::set_glfw_callbacks()
     {
+        auto _window = window->get_native_window();
+
         // App pointer for the callbacks
-        glfwSetWindowUserPointer(window->get_native_window(), this);
+        glfwSetWindowUserPointer(_window, this);
+        #define event(callback) \
+            auto app = (App*)glfwGetWindowUserPointer(window); \
+            app->event->callback;
 
         // Window close callback
-        glfwSetWindowCloseCallback(window->get_native_window(), [](GLFWwindow* window) {
-            auto app = (App*)glfwGetWindowUserPointer(window);
-            app->onWindowClose();
+        glfwSetWindowCloseCallback(_window, [](GLFWwindow* window) {
+            event(onWindowClose());
         });
 
         // Window resize callback
-        glfwSetWindowSizeCallback(window->get_native_window(), [](GLFWwindow* window, int width, int height) {
-            auto app = (App*)glfwGetWindowUserPointer(window);
-            app->onWindowResize(width, height);
+        glfwSetWindowSizeCallback(_window, [](GLFWwindow* window, int width, int height) {
+            event(onWindowResize(width, height));
+        });
+
+        // Key input callback
+        glfwSetKeyCallback(_window, [](GLFWwindow* window, int key, int scancode, int action, int mods) {
+            event(onKeyEvent(key, scancode, action, mods));
+        });
+
+        // Mouse button callback
+        glfwSetMouseButtonCallback(_window, [](GLFWwindow* window, int button, int action, int mods) {
+            event(onMouseEvent(button, action, mods));
+        });
+
+        // Mouse cursor callback
+        glfwSetCursorPosCallback(_window, [](GLFWwindow* window, double xpos, double ypos) {
+            event(onCursorEvent(xpos, ypos));
         });
     }
 }
