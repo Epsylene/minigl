@@ -151,7 +151,7 @@ Input events can be handled with the `App::event_handler()` method. This method 
 
 ```cpp
 app.event_handler([&](mgl::Ref<mgl::Input> input, float dt) {
-    if (input->key_down(GLFW_KEY_SPACE)) {
+    if (input->isKeyPressed(GLFW_KEY_SPACE)) {
         print("Space bar pressed!");
     }
 });
