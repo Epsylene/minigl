@@ -1,7 +1,8 @@
 #pragma once
 
 #include "core.hpp"
-#include "minigl/geometry.hpp"
+
+#include "minigl/util/geometry.hpp"
 #include "input/input.hpp"
 
 namespace mgl

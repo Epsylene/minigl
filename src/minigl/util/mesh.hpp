@@ -1,7 +1,7 @@
 #pragma once
 
 #include "core.hpp"
-#include "buffer.hpp"
+#include "minigl/buffer.hpp"
 
 namespace mgl
 {

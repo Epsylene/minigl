@@ -15,18 +15,19 @@ set(SOURCES
     src/minigl/commands.hpp
     src/minigl/buffer.cpp
     src/minigl/buffer.hpp
-    src/minigl/shader.cpp
-    src/minigl/shader.hpp
     
-    src/minigl/mesh.cpp
-    src/minigl/mesh.hpp
     src/minigl/texture.cpp
     src/minigl/texture.hpp
+    src/minigl/shader.cpp
+    src/minigl/shader.hpp
+
+    src/minigl/util/mesh.cpp
+    src/minigl/util/mesh.hpp
     
-    src/minigl/geometry.cpp
-    src/minigl/geometry.hpp
-    src/minigl/color.cpp
-    src/minigl/color.hpp
+    src/minigl/util/geometry.cpp
+    src/minigl/util/geometry.hpp
+    src/minigl/util/color.cpp
+    src/minigl/util/color.hpp
     
     src/minigl/app/app.hpp
     src/minigl/app/app.cpp

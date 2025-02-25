@@ -411,7 +411,7 @@ namespace mgl
     {
         public:
 
-            IndirectBuffer(const std::vector<DrawCommand>& commands, DataAccess usage = DataAccess::Static);
+            IndirectBuffer(const std::vector<DrawCommand>& commands, DataAccess usage = DataAccess::MapReadWrite);
             virtual ~IndirectBuffer();
 
             void bind() const;

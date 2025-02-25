@@ -15,12 +15,12 @@ using mgl::println;
 #include "app/app.hpp"
 #include "app/app3d.hpp"
 
-#include "geometry.hpp"
-#include "color.hpp"
+#include "util/geometry.hpp"
+#include "util/color.hpp"
+#include "util/mesh.hpp"
 
 #include "commands.hpp"
 #include "buffer.hpp"
-#include "shader.hpp"
 
-#include "mesh.hpp"
+#include "shader.hpp"
 #include "texture.hpp"

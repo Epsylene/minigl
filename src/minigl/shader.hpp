@@ -1,6 +1,6 @@
 #pragma once
 
-#include "geometry.hpp"
+#include "util/geometry.hpp"
 #include "texture.hpp"
 
 #include <string>

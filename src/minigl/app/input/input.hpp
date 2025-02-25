@@ -1,7 +1,7 @@
 #pragma once
 
 #include "mglpch.hpp"
-#include "minigl/geometry.hpp"
+#include "minigl/util/geometry.hpp"
 
 #include "key_codes.h"
 #include "mouse_codes.h"

@@ -1,5 +1,6 @@
 #include "mglpch.hpp"
-#include "color.hpp"
+
+#include "util/color.hpp"
 #include "buffer.hpp"
 
 #include <glad/glad.h>
