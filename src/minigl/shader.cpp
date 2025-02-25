@@ -33,10 +33,10 @@ namespace mgl
         std::unordered_map<GLenum, std::string> srcs;
         for (auto&[source, type]: sources)
         {
-            srcs[type] = source;
+            srcs[(GLenum)type] = source;
         }
-        
-        compile(sources);
+
+        compile(srcs);
     }
 
     Shader::~Shader()
@@ -170,11 +170,6 @@ namespace mgl
     void Shader::use() const
     {
         glUseProgram(shaderID);
-    }
-
-    void Shader::unbind() const
-    {
-        glUseProgram(0);
     }
 
     void Shader::upload(const std::string& name, bool val)

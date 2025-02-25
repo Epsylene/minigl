@@ -35,7 +35,6 @@ namespace mgl
             virtual ~Shader();
 
             void use() const;
-            void unbind() const;
 
             void upload(const std::string& name, bool val);
             void upload(const std::string& name, uint32_t val);

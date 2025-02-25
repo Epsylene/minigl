@@ -59,7 +59,6 @@ int main() {
 
         depth_map->bind(0);
         render_objects();
-        scene_shader->unbind();
     });
 
     return 0;
