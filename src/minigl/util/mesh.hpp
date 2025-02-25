@@ -18,8 +18,6 @@ namespace mgl
     struct Mesh
     {
         Ref<VertexArray> vertexArray;
-        std::vector<Vertex> vertices;
-        std::vector<uint32_t> indices;
 
         Mesh() = default;
 

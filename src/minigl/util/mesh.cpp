@@ -5,8 +5,7 @@
 
 namespace mgl
 {
-    Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, DataAccess usage):
-        vertices(vertices), indices(indices)
+    Mesh::Mesh(const std::vector<Vertex>& vertices, const std::vector<uint32_t>& indices, DataAccess usage)
     {
         auto vb = std::make_shared<VertexBuffer>(vertices, usage);
         auto ib = std::make_shared<IndexBuffer>(indices, usage);
@@ -16,6 +15,8 @@ namespace mgl
 
     Mesh::Mesh(const std::string& path, DataAccess usage)
     {
+        std::vector<Vertex> vertices;
+        std::vector<uint32_t> indices;
         load_mesh(path, vertices, indices);
         
         auto vb = std::make_shared<VertexBuffer>(vertices, usage);
