@@ -266,10 +266,16 @@ namespace mgl
         glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fboID);
     }
 
-    void FrameBuffer::blit(const Ref<FrameBuffer>& dst, BufferBit buffer)
+    void FrameBuffer::blit_to(const Ref<FrameBuffer>& dst, BufferBit buffer)
     {
         auto [dst_width, dst_height] = dst->size();
         glBlitNamedFramebuffer(fboID, dst->fboID, 0, 0, width, height, 0, 0, dst_width, dst_height, (GLbitfield)buffer, GL_NEAREST);
+    }
+
+    void FrameBuffer::blit_from(const Ref<FrameBuffer>& src, BufferBit buffer)
+    {
+        auto [src_width, src_height] = src->size();
+        glBlitNamedFramebuffer(src->fboID, fboID, 0, 0, src_width, src_height, 0, 0, width, height, (GLbitfield)buffer, GL_NEAREST);
     }
 
     void FrameBuffer::blit_to_default(BufferBit buffer, uint32_t default_fbo_w, uint32_t default_fbo_h)

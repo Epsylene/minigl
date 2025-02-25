@@ -2,8 +2,9 @@
 
 #include "core.hpp"
 #include "mglpch.hpp"
-#include "geometry.hpp"
-#include "color.hpp"
+
+#include "util/geometry.hpp"
+#include "util/color.hpp"
 #include "texture.hpp"
 
 #include <glad/glad.h>
@@ -358,8 +359,20 @@ namespace mgl
 
             std::pair<uint32_t, uint32_t> size() const;
 
-            void blit(const Ref<FrameBuffer>& dst, BufferBit buffer);
+            /// Blit (copy) the current framebuffer to another
+            /// framebuffer.
+            void blit_to(const Ref<FrameBuffer>& dst, BufferBit buffer);
+
+            /// Blit (copy) to the current framebuffer from
+            /// another framebuffer.
+            void blit_from(const Ref<FrameBuffer>& src, BufferBit buffer);
+            
+            /// Blit (copy) the current framebuffer to the
+            /// default framebuffer (the window).
             void blit_to_default(BufferBit buffer, uint32_t default_w, uint32_t default_h);
+            
+            /// Blit (copy) to the current framebuffer from the
+            /// default framebuffer (the window).
             void blit_from_default(BufferBit buffer, uint32_t default_w, uint32_t default_h);
 
         private:
