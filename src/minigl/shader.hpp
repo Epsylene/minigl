@@ -28,10 +28,8 @@ namespace mgl
             /// `filepath`
             explicit Shader(const std::string& filepath);
 
-            /// Create a shader from a vertex and fragment
-            /// source
-            Shader(const std::string& vertexSrc,
-                   const std::string& fragmentSrc);
+            /// Create a shader from several sources
+            explicit Shader(const std::vector<std::pair<std::string, ShaderType>>& sources);
             
             /// Destructor: calls `glDeleteProgram()`.
             virtual ~Shader();

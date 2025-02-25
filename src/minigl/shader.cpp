@@ -27,13 +27,15 @@ namespace mgl
         trace("Loaded shader from file '{}'", filepath);
     }
 
-    Shader::Shader(const std::string& vertexSrc,
-                   const std::string& fragmentSrc)
+    Shader::Shader(const std::vector<std::pair<std::string, ShaderType>>& sources)
     {
         // Compile the shaders from their sources
-        std::unordered_map<GLenum, std::string> sources;
-        sources[GL_VERTEX_SHADER] = vertexSrc;
-        sources[GL_FRAGMENT_SHADER] = fragmentSrc;
+        std::unordered_map<GLenum, std::string> srcs;
+        for (auto&[source, type]: sources)
+        {
+            srcs[type] = source;
+        }
+        
         compile(sources);
     }
 
