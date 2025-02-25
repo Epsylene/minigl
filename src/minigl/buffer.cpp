@@ -288,21 +288,6 @@ namespace mgl
         glBlitNamedFramebuffer(0, fboID, 0, 0, default_w, default_h, 0, 0, width, height, (GLbitfield)buffer, GL_NEAREST);
     }
 
-    void DefaultFrameBuffer::bind()
-    {
-        glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    }
-
-    void DefaultFrameBuffer::bind_read()
-    {
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
-    }
-
-    void DefaultFrameBuffer::bind_draw()
-    {
-        glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
-    }
-
     //----------- INDIRECT BUFFER -----------//
 
     IndirectBuffer::IndirectBuffer(const std::vector<DrawCommand>& commands, DataAccess usage)

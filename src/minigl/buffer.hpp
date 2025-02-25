@@ -383,17 +383,6 @@ namespace mgl
             int width, height;
     };
 
-    class DefaultFrameBuffer
-    {
-        public:
-
-            DefaultFrameBuffer() = delete;
-
-            static void bind();
-            static void bind_read();
-            static void bind_draw();
-    };
-
     /// Command for drawing a given set of vertices. The "multi
     /// draw indirect" command (called with
     /// `RenderCommand::draw_indirect()`) takes a set of draw
