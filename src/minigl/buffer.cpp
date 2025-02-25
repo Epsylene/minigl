@@ -190,6 +190,8 @@ namespace mgl
     {
         glCreateFramebuffers(1, &fboID);
 
+        // Necessary when adding attachments, since the final
+        // size is the intersection of all the attachments
         width = std::numeric_limits<int>::max();
         height = std::numeric_limits<int>::max();
     }
